@@ -21,7 +21,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             override fun onSuccess(data: AuthResponse.Token) {
                 data.apply {
                     AuthModel.accessToken = access_token
-
                     AuthModel.refreshToken = refresh_token
                 }
 
