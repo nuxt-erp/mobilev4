@@ -20,9 +20,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         viewModel.resourceToken.observe(this, object : ObserverResource<AuthResponse.Token>() {
             override fun onSuccess(data: AuthResponse.Token) {
                 data.apply {
-                    AuthModel.accessToken = accessToken
+                    AuthModel.accessToken = access_token
 
-                    AuthModel.refreshToken = refreshToken
+                    AuthModel.refreshToken = refresh_token
                 }
 
                 startActivity<MainActivity>()
@@ -51,7 +51,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         btnLogin.setOnClickListener {
             viewModel.login(
-                edtPhone.text.toString(), edtPassword.text.toString()
+                edtUsername.text.toString(), edtPassword.text.toString()
             )
         }
     }

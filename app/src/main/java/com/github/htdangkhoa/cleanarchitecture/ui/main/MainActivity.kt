@@ -18,11 +18,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.resourceUser.observe(this, object : ObserverResource<GetMeResponse.User>() {
             override fun onSuccess(data: GetMeResponse.User) {
                 data.apply {
-                    txtPhone.text = "Phone: $phone"
+                    txtPhone.text = "Phone: $email"
 
-                    txtFirstName.text = "First name: $firstName"
+                    txtFirstName.text = "First name: $name"
 
-                    txtLastName.text = "Last name: $lastName"
                 }
             }
 

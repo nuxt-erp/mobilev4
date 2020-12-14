@@ -1,6 +1,8 @@
 package com.github.htdangkhoa.cleanarchitecture.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.github.htdangkhoa.cleanarchitecture.Constant
 import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.cleanarchitecture.domain.auth.AuthParam
@@ -13,18 +15,20 @@ class LoginViewModel(
 ) : ViewModel() {
     val resourceToken = liveDataOf<Resource<AuthResponse.Token>>()
 
-    fun login(phone: String, password: String) {
+    fun login(username: String, password: String) {
         val request = LoginRequest(
-            phone
-                .replace("[^0-9]", "", true)
-                .prependIndent("+"),
-            password
-        )
+            username.trim(),
+            password,
+            clientSecret = Constant.CLIENT_SECRET,
+            clientId = Constant.CLIENT_ID,
+            grantType = Constant.GRANT_TYPE
+            )
 
         resourceToken.postValue(Resource.loading())
 
         authUseCase.execute<AuthResponse.Token>(AuthParam(request)) {
             onComplete {
+                Log.e("it->>>", "$it")
                 resourceToken.postValue(Resource.success(it))
             }
 

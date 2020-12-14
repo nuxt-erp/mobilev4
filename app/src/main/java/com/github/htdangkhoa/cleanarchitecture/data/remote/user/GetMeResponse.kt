@@ -8,19 +8,17 @@ data class GetMeResponse(
     override val data: User?
 ) : ResponseModel<GetMeResponse.User?>() {
     data class User(
-        @SerializedName("firstName")
-        val firstName: String?,
-        @SerializedName("_id")
-        val id: String?,
-        @SerializedName("isApproved")
-        val isApproved: Boolean?,
-        @SerializedName("lastName")
-        val lastName: String?,
-        @SerializedName("phone")
-        val phone: String?,
-        @SerializedName("role")
-        val role: String?,
-        @SerializedName("session")
-        val session: String?
+        @SerializedName("id")
+        var id: Int,
+
+        @SerializedName("name")
+        var name: String,
+
+        @SerializedName("email")
+        var email: String,
+
+        @SerializedName("roles")
+        var roles: Set<String>
+
     )
 }

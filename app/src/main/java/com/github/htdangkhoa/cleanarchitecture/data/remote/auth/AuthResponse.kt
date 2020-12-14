@@ -8,10 +8,10 @@ data class AuthResponse(
     override val data: Token?
 ) : ResponseModel<AuthResponse.Token?>() {
     data class Token(
-        @SerializedName("accessToken")
-        val accessToken: String,
+        @SerializedName("access_token")
+        val access_token: String,
 
-        @SerializedName("refreshToken")
-        val refreshToken: String
+        @SerializedName("refresh_token")
+        val refresh_token: String
     )
 }

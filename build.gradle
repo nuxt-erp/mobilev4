@@ -37,6 +37,10 @@ buildscript {
                 kotpref: "2.10.0",
 
                 materialDialogs: "3.1.1",
+
+                material: "1.2.1",
+
+                recycler: "1.1.0",
         ]
     }
     

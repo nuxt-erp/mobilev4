@@ -22,9 +22,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.resourceToken.observe(this, object : ObserverResource<AuthResponse.Token>() {
             override fun onSuccess(data: AuthResponse.Token) {
                 data.apply {
-                    AuthModel.accessToken = accessToken
+                    AuthModel.accessToken = access_token
 
-                    AuthModel.refreshToken = refreshToken
+                    AuthModel.refreshToken = refresh_token
                 }
 
                 startActivity<MainActivity>()

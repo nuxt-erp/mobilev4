@@ -19,12 +19,28 @@ android {
     buildTypes {
         def BASE_URL = "BASE_URL"
 
-        def DEV = "\"" + "http://0.0.0.0:80/" + "\""
+        def CLIENT_SECRET = "CLIENT_SECRET"
+
+        def CLIENT_ID = "CLIENT_ID"
+
+        def GRANT_TYPE = "GRANT_TYPE"
+
+        def SECRET = "\"" + "fpzZZCXCWPV6LoDOz2F1MYktWyAJaRUBGowzkWZz"  + "\""
+
+        def ID = "12"
+
+        def TYPE = "\"" +  "password" + "\""
+
+        def DEV = "\"" + "http://192.168.0.21/next-api/public/" + "\""
 
         def PROD = "\"" + "<ENTER_YOUR_HOST>" + "\""
 
         debug {
             buildConfigField "String", BASE_URL, DEV
+            buildConfigField "String", CLIENT_SECRET, SECRET
+            buildConfigField "String", GRANT_TYPE, TYPE
+            buildConfigField "int", CLIENT_ID, ID
+
         }
 
         release {
@@ -85,6 +101,12 @@ dependencies {
 
     implementation "com.afollestad.material-dialogs:core:$versions.materialDialogs"
     implementation "com.afollestad.material-dialogs:input:$versions.materialDialogs"
+
+    // Interface
+    implementation "com.google.android.material:material:$versions.material"
+
+    // TableView
+    implementation "androidx.recyclerview:recyclerview:$versions.recycler"
 }
 
 ktlint {

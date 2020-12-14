@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
-    @POST("auth/login")
+    @POST("login")
     suspend fun login(
         @Body loginRequest: LoginRequest
     ): AuthResponse
@@ -23,6 +23,6 @@ interface ApiService {
     @GET("me")
     suspend fun getMe(): GetMeResponse
 
-    @GET("auth/logout")
+    @GET("logout")
     suspend fun logout(): SuccessResponse
 }
