@@ -2,6 +2,7 @@ package com.github.htdangkhoa.cleanarchitecture.ui.splash
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import com.github.htdangkhoa.cleanarchitecture.R
 import com.github.htdangkhoa.cleanarchitecture.base.BaseActivity
 import com.github.htdangkhoa.cleanarchitecture.data.model.AuthModel
@@ -23,9 +24,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             override fun onSuccess(data: AuthResponse.Token) {
                 data.apply {
                     AuthModel.accessToken = access_token
-
                     AuthModel.refreshToken = refresh_token
                 }
+                Log.e("SUCCESS->>>", "SUCCESS")
 
                 startActivity<MainActivity>()
 
@@ -37,13 +38,17 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     it?.message?.let { message ->
                         showDialog("Error", message)
                             .positiveButton {
-                                handleHttpError(throwable)
+                                startActivity<LoginActivity>()
+                                finishAfterTransition()
+
                             }
                     }
                 }
             }
 
             override fun onLoading(isShow: Boolean) {
+                Log.e("LOADING->>>", "LOADING")
+
                 progressCircular.apply {
                     if (isShow) show() else hide(true)
                 }
@@ -52,8 +57,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
         if (TextUtils.isEmpty(AuthModel.refreshToken).not()) {
             viewModel.renewToken(AuthModel.refreshToken!!)
+
+
         } else {
             startActivity<LoginActivity>()
+            Log.e("startActivity->>>", "Start")
 
             finishAfterTransition()
         }

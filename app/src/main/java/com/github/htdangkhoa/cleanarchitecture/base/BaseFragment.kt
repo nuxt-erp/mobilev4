@@ -72,7 +72,7 @@ abstract class BaseFragment<VM : ViewModel>(val clazz: KClass<VM>) : Fragment() 
     }
 
     protected fun showDialog(title: String? = "Info", message: String? = null): MaterialDialog {
-        return MaterialDialog(context!!).show {
+        return MaterialDialog(requireContext()).show {
             title(text = title)
 
             message(text = message)

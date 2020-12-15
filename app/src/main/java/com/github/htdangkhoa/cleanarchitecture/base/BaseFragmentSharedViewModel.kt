@@ -71,7 +71,7 @@ abstract class BaseFragmentSharedViewModel<VM : ViewModel, A : BaseActivity<VM>>
     }
 
     protected fun showDialog(title: String? = "Info", message: String? = null): MaterialDialog {
-        return MaterialDialog(context!!).show {
+        return MaterialDialog(requireContext()).show {
             title(text = title)
 
             message(text = message)
