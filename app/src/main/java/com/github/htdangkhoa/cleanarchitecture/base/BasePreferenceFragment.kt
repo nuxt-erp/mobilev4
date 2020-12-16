@@ -14,15 +14,24 @@ import com.github.htdangkhoa.cleanarchitecture.data.model.AuthModel
 import com.github.htdangkhoa.cleanarchitecture.data.model.ResponseExceptionModel
 import com.github.htdangkhoa.cleanarchitecture.ui.login.LoginActivity
 import com.pawegio.kandroid.startActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.HttpException
 import kotlin.reflect.KClass
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import retrofit2.HttpException
 
+abstract class BasePreferenceFragment<VM : ViewModel, A : BaseActivity<VM>>(
+    clazz: KClass<VM>
+) : PreferenceFragmentCompat() {
+    @get:LayoutRes
+    abstract val layoutResID: Int
 
-abstract class BasePreferenceFragment<VM : ViewModel>(val clazz: KClass<VM>) : PreferenceFragmentCompat() {
     abstract val preferenceResID: Int
 
-    protected val viewModel: VM by viewModel(clazz)
+    protected val viewModel: VM by sharedViewModel(clazz)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        render(view, savedInstanceState)
+        return super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(preferenceResID, rootKey)

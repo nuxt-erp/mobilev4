@@ -2,14 +2,13 @@ package com.github.htdangkhoa.cleanarchitecture.ui.settings
 
 import android.os.Bundle
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.github.htdangkhoa.cleanarchitecture.R
 import com.github.htdangkhoa.cleanarchitecture.base.BaseActivity
-import com.github.htdangkhoa.cleanarchitecture.data.remote.location.LocationResponse
 import com.github.htdangkhoa.cleanarchitecture.resource.ObserverResource
+import com.github.htdangkhoa.cleanarchitecture.ui.main.MainActivity
 import com.github.htdangkhoa.cleanarchitecture.ui.settings.fragments.SettingsFragment
-import com.pawegio.kandroid.hide
-import com.pawegio.kandroid.show
-import com.pawegio.kandroid.toast
+import com.pawegio.kandroid.startActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : BaseActivity<SettingsViewModel>(SettingsViewModel::class) {
@@ -18,7 +17,6 @@ class SettingsActivity : BaseActivity<SettingsViewModel>(SettingsViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
@@ -27,7 +25,17 @@ class SettingsActivity : BaseActivity<SettingsViewModel>(SettingsViewModel::clas
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
     override fun render(savedInstanceState: Bundle?) {
+        btnSave.setOnClickListener {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            val locationId = sharedPreferences.getString("location", null)?.toInt()
+            if (locationId == null) {
+                showDialog("Error", "You must select a location.")
+            } else {
+                startActivity<MainActivity>()
+            }
+        }
 
         viewModel.resourceLogout.observe(this, object : ObserverResource<String>() {
             override fun onSuccess(data: String) {
@@ -42,26 +50,5 @@ class SettingsActivity : BaseActivity<SettingsViewModel>(SettingsViewModel::clas
                 }
             }
         })
-        viewModel.resourceLocations.observe(this, object : ObserverResource<Array<LocationResponse.Location>>() {
-            override fun onSuccess(data: Array<LocationResponse.Location>) {
-                SettingsFragment().setListPreferenceData(data)
-            }
-
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    Log.e("ERROR->>>",it.toString() )
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
-                }
-            }
-
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
-                }
-            }
-
-        })
-        viewModel.getLocations()
     }
 }
