@@ -9,7 +9,7 @@ import com.github.htdangkhoa.cleanarchitecture.data.model.AuthModel
 import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.cleanarchitecture.resource.ObserverResource
 import com.github.htdangkhoa.cleanarchitecture.ui.login.LoginActivity
-import com.github.htdangkhoa.cleanarchitecture.ui.main.MainActivity
+import com.github.htdangkhoa.cleanarchitecture.ui.settings.SettingsActivity
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.startActivity
@@ -28,7 +28,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 Log.e("SUCCESS->>>", "SUCCESS")
 
-                startActivity<MainActivity>()
+                startActivity<SettingsActivity>()
 
                 finishAfterTransition()
             }

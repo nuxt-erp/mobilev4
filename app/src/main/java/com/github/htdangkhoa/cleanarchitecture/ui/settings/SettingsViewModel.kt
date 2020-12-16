@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.cleanarchitecture.ui.main
+package com.github.htdangkhoa.cleanarchitecture.ui.settings
 
 import androidx.lifecycle.ViewModel
 import com.github.htdangkhoa.cleanarchitecture.data.remote.location.LocationResponse
@@ -13,7 +13,7 @@ import com.github.htdangkhoa.cleanarchitecture.domain.user.UserUseCase
 import com.github.htdangkhoa.cleanarchitecture.extension.liveDataOf
 import com.github.htdangkhoa.cleanarchitecture.resource.Resource
 
-class MainViewModel(
+class SettingsViewModel(
     private val userUseCase: UserUseCase,
     private val locationUseCase: LocationUseCase,
     private val authUseCase: AuthUseCase

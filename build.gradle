@@ -46,6 +46,8 @@ buildscript {
 
                 nav_version : "2.3.2",
 
+                preference_version: "1.1.1",
+
         ]
     }
     

@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/usersListFragment">
+    app:startDestination="@id/settingsFragment">
     <fragment
-        android:id="@+id/usersListFragment"
-        android:name="com.github.htdangkhoa.cleanarchitecture.ui.main.fragments.UsersListFragment"
-        android:label="users_list_fragment"
-        tools:layout="@layout/users_list_fragment" />
+        android:id="@+id/settingsFragment"
+        android:name="com.github.htdangkhoa.cleanarchitecture.ui.settings.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
