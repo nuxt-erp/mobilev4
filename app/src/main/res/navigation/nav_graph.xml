@@ -14,5 +14,18 @@
         android:id="@+id/nav_receiving"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragment"
         android:label="@string/menu_receiving"
-        tools:layout="@layout/fragment_receiving_list" />
+        tools:layout="@layout/fragment_receiving_list" >
+        <action
+            android:id="@+id/action_nav_receiving_to_receivingFormFragment"
+            app:destination="@id/receivingFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/receivingFormFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form.ReceivingFormFragment"
+        android:label="fragment_receiving_form"
+        tools:layout="@layout/fragment_receiving_form" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

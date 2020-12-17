@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.github.htdangkhoa.nexterp.data.remote.receiving.ReceivingResponse.Receiving"/>
+        <import type="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse.Receiving"/>
         <import type="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel"/>
 
         <variable name="receiving" type="Receiving"/>
@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:padding="20sp"
         android:background="@drawable/layout_border"
+        android:onClick="@{(view) -> viewModel.onReceivingClick(view, receiving)}"
+
         >
         <TextView
             android:id="@+id/gridIdLabel"

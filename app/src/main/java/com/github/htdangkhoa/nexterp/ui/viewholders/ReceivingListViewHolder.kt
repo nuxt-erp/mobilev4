@@ -1,6 +1,6 @@
 package com.github.htdangkhoa.nexterp.ui.viewholders
 import androidx.recyclerview.widget.RecyclerView
-import com.github.htdangkhoa.nexterp.data.remote.receiving.ReceivingResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.databinding.ReceivingItemViewHolderBinding
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
 

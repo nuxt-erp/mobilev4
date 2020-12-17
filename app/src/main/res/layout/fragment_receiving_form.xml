@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".ui.main.fragments.receiving.form.ReceivingFormFragment">
+
+    <TextView
+        android:id="@+id/receivingNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/receiving_prefix"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/receivingNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:textSize="18sp"
+        android:gravity="right"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/po_number"
+        app:layout_constraintStart_toEndOf="@+id/receivingNumberLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/receivingStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:fontFamily="sans-serif-light"
+        android:textAllCaps="true"
+        android:textFontWeight="600"
+        android:textColor="@color/colorAccent"
+        android:text="@string/in_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light"
+        android:textFontWeight="800"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/no_item_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receivingNumberLabel" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/itemLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/select_an_item"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/qtyLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemName">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/itemField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/qtyLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:hint="@string/input_a_qty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemLayout"
+        app:layout_constraintTop_toBottomOf="@+id/itemName">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/qtyField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemLayout"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/receivingDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@drawable/table_parent_bg"
+            tools:listitem="@layout/receiving_details_item" />
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/finishButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:contentDescription="@string/button_finish"
+        android:text="@string/button_finish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/saveButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:textColor="#FFF"
+        android:contentDescription="@string/save"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/finishButton" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/voidButton"
+        android:theme="@style/SecondaryButton"
+        app:backgroundTint="@color/colorAccent"
+        android:textColor="#FFF"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/button_void"
+        android:singleLine="true"
+        android:text="@string/button_void"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressCircular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

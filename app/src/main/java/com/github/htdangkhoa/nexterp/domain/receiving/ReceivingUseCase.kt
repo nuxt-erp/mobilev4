@@ -8,6 +8,7 @@ class ReceivingUseCase(
     override suspend fun buildUseCase(params: ReceivingParam?): Result<*> {
         return when (params?.type) {
             ReceivingParam.Type.GET_RECEIVING -> repository.getReceiving()
+            ReceivingParam.Type.GET_RECEIVING_DETAILS -> repository.getReceivingDetails(params.id)
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
     }

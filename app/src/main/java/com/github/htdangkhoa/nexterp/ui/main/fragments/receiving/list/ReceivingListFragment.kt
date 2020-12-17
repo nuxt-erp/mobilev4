@@ -2,13 +2,13 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
-import com.github.htdangkhoa.nexterp.data.remote.receiving.ReceivingResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingListAdapter
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
@@ -16,7 +16,6 @@ import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.fragment_receiving_list.*
-import timber.log.Timber
 
 class ReceivingListFragment() : BaseFragment<ReceivingViewModel>(
     ReceivingViewModel::class) {

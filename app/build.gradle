@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion config.compileSdk
     defaultConfig {
@@ -18,7 +20,12 @@ android {
         versionName config.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    android {
 
+        buildFeatures {
+            dataBinding = true
+        }
+    }
     buildTypes {
         def BASE_URL = "BASE_URL"
 
@@ -65,9 +72,6 @@ android {
         freeCompilerArgs = ["-Xallow-result-return-type"]
     }
 
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -126,6 +130,7 @@ dependencies {
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$versions.nav_version"
+
     implementation "androidx.preference:preference-ktx:$versions.preference_version"
 
     // Feature module Support

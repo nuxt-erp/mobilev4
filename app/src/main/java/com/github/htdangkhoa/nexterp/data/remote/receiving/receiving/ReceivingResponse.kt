@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.data.remote.receiving
+package com.github.htdangkhoa.nexterp.data.remote.receiving.receiving
 
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
 import com.google.gson.annotations.SerializedName
