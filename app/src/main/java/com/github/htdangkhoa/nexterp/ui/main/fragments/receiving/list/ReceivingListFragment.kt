@@ -15,23 +15,17 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewMo
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_receiving.*
+import kotlinx.android.synthetic.main.fragment_receiving_list.*
+import timber.log.Timber
 
 class ReceivingListFragment() : BaseFragment<ReceivingViewModel>(
     ReceivingViewModel::class) {
 
     override val layoutResID: Int
-        get() = R.layout.fragment_receiving
+        get() = R.layout.fragment_receiving_list
 
     private val alphabeticalComparator: Comparator<ReceivingResponse.Receiving> =
         Comparator { a, b -> a.id.compareTo(b.id) }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_receiving, container, false)
-    }
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         val mAdapter = ReceivingListAdapter(

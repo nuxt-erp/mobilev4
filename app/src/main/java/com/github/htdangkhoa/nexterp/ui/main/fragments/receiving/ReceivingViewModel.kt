@@ -17,10 +17,8 @@ class ReceivingViewModel(
     val resourceReceiving = liveDataOf<Resource<Array<ReceivingResponse.Receiving>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
 
-
     fun getReceiving() {
         resourceReceiving.postValue(Resource.loading())
-
         receivingUseCase.execute<Array<ReceivingResponse.Receiving>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING)) {
             onComplete {
                 resourceReceiving.postValue(Resource.success(it))
@@ -37,9 +35,9 @@ class ReceivingViewModel(
             }
         }
     }
+
     fun logout() {
         resourceLogout.postValue(Resource.loading())
-
         authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
             onComplete {
                 resourceLogout.postValue(Resource.success(it))

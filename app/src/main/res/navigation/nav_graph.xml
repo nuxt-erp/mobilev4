@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/receivingListFragment">
+    app:startDestination="@+id/nav_home">
+
     <fragment
-        android:id="@+id/receivingListFragment"
+        android:id="@+id/nav_home"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.home.index.HomeIndexFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_receiving"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragment"
-        android:label="ReceivingListFragment" />
+        android:label="@string/menu_receiving"
+        tools:layout="@layout/fragment_receiving_list" />
 </navigation>
