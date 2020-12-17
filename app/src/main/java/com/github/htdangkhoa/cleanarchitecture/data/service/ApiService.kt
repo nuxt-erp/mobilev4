@@ -5,6 +5,8 @@ import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.cleanarchitecture.data.remote.auth.renew_token.RenewTokenRequest
 import com.github.htdangkhoa.cleanarchitecture.data.remote.location.LocationResponse
+import com.github.htdangkhoa.cleanarchitecture.data.remote.receiving.ReceivingResponse
+import com.github.htdangkhoa.cleanarchitecture.data.remote.stockcount.StockCountResponse
 import com.github.htdangkhoa.cleanarchitecture.data.remote.user.GetMeResponse
 import com.github.htdangkhoa.cleanarchitecture.data.remote.user.UsersResponse
 import retrofit2.Call
@@ -40,4 +42,14 @@ interface ApiService {
 
     @GET("general/locations?is_enabled=1&list=1")
     suspend fun getLocations(): LocationResponse
+
+    // Receiving
+
+    @GET("inventory/receiving")
+    suspend fun getReceiving(): ReceivingResponse
+
+    // Stock Count
+
+    @GET("inventory/stock_count")
+    suspend fun getStockCount(): StockCountResponse
 }

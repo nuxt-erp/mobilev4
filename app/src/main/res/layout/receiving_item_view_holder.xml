@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="ca.valor.nexterp.data.models.Receiving"/>
+        <import type="ca.valor.nexterp.utils.MoneyFormatKt"/>
+        <import type="ca.valor.nexterp.utils.DateFormatKt"/>
+        <variable name="receiving" type="Receiving"/>
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20sp"
+        android:background="@drawable/layout_border"
+        >
+        <TextView
+            android:id="@+id/gridIdLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/receiving_prefix"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            android:textFontWeight="800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/gridId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(receiving.id)}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            android:textFontWeight="800"
+            app:layout_constraintStart_toEndOf="@+id/gridIdLabel"
+            app:layout_constraintTop_toTopOf="@+id/gridIdLabel" />
+        <TextView
+            android:id="@+id/gridIdInvoiceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/invoiceLabel"
+            android:fontFamily="sans-serif-light"
+            android:textFontWeight="800"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/gridName"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/gridName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@{receiving.invoice_number}"
+            android:fontFamily="sans-serif-light"
+            android:textFontWeight="800"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/gridSupplier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{receiving.supplier_name}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gridIdLabel" />
+
+        <TextView
+            android:id="@+id/gridDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{receiving.created_at}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
