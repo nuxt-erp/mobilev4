@@ -3,10 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="ca.valor.nexterp.data.models.Receiving"/>
-        <import type="ca.valor.nexterp.utils.MoneyFormatKt"/>
-        <import type="ca.valor.nexterp.utils.DateFormatKt"/>
+        <import type="com.github.htdangkhoa.nexterp.data.remote.receiving.ReceivingResponse.Receiving"/>
+        <import type="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel"/>
+
         <variable name="receiving" type="Receiving"/>
+        <variable
+            name="viewModel"
+            type="ReceivingViewModel" />
     </data>
 
 

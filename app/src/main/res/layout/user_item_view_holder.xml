@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="com.github.htdangkhoa.cleanarchitecture.data.remote.user.UsersResponse.User"/>
-        <import type="com.github.htdangkhoa.cleanarchitecture.ui.main.MainViewModel"/>
+        <import type="com.github.htdangkhoa.nexterp.data.remote.user.UsersResponse.User"/>
+        <import type="com.github.htdangkhoa.nexterp.ui.main.MainViewModel"/>
         <variable
             name="user"
             type="User" />
