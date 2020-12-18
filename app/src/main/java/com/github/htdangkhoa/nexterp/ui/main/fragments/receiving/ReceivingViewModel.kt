@@ -4,9 +4,13 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
+import com.github.htdangkhoa.nexterp.Constant
+import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
+import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.product.ProductParam
@@ -25,6 +29,7 @@ class ReceivingViewModel(
 ) : ViewModel() {
     val resourceProduct = liveDataOf<Resource<Array<ProductResponse.Product>>>()
     val resourceReceiving = liveDataOf<Resource<Array<ReceivingResponse.Receiving>>>()
+    val resourceReceivingObject = liveDataOf<Resource<ReceivingResponse.Receiving>>()
     val resourceReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
 
@@ -70,6 +75,28 @@ class ReceivingViewModel(
         }
     }
 
+    fun updateReceiving(id: Int, locationId: Int, list_products: List<ReceivingDetailsResponse.ReceivingDetails>) {
+        val request = UpdateReceivingRequest(
+            location_id = locationId,
+            list_products = list_products
+        )
+
+        resourceReceivingObject.postValue(Resource.loading())
+
+        receivingUseCase.execute<ReceivingResponse.Receiving>(ReceivingParam(ReceivingParam.Type.UPDATE_RECEIVING, id, request)) {
+            onComplete {
+                resourceReceivingObject.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceReceivingObject.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceReceivingObject.postValue(Resource.error(it))
+            }
+        }
+    }
 
     fun getReceivingDetails(id: Int) {
         resourceReceivingDetails.postValue(Resource.loading())

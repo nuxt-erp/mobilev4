@@ -127,45 +127,63 @@
             tools:listitem="@layout/receiving_details_item" />
 
     </HorizontalScrollView>
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/finishButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
         app:backgroundTint="@color/colorPrimary"
         android:textColor="#FFF"
         android:contentDescription="@string/button_finish"
         android:text="@string/button_finish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/saveButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
         app:backgroundTint="@color/colorPrimaryDark"
         android:textColor="#FFF"
+        android:gravity="center"
         android:contentDescription="@string/save"
         android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/finishButton" />
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/voidButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/voidButton"
         android:theme="@style/SecondaryButton"
         app:backgroundTint="@color/colorAccent"
         android:textColor="#FFF"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/button_void"
+        android:visibility="invisible"
+        android:singleLine="true"
+        android:text="@string/button_void"
+        app:layout_constraintBottom_toTopOf="@id/expandButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/expandButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:contentDescription="@string/button_void"
-        android:singleLine="true"
-        android:text="@string/button_void"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/colorWhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_add_24"/>
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"

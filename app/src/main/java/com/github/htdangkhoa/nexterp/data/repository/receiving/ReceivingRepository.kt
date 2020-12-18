@@ -3,10 +3,16 @@ package com.github.htdangkhoa.nexterp.data.repository.receiving
 import com.github.htdangkhoa.nexterp.base.BaseRepository
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 
 interface ReceivingRepository : BaseRepository {
+    suspend fun updateReceiving(
+        id: Int,
+        receivingRequest: UpdateReceivingRequest
+    ): Result<ReceivingResponse.Receiving?>
     suspend fun getReceiving(): Result<Array<ReceivingResponse.Receiving>>
     suspend fun getReceivingDetails(id: Int): Result<Array<ReceivingDetailsResponse.ReceivingDetails>>
 }

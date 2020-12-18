@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.StringUtils.getString
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
 import kotlinx.android.synthetic.main.receiving_details_item.view.*
-
+import java.util.*
 
 
 class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.ReceivingDetails>, val callback: (ReceivingDetailsResponse.ReceivingDetails) -> Unit) : RecyclerView.Adapter<ReceivingRecyclerAdapter.ListHolder>() {
@@ -43,20 +44,43 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         return updateList.toList()
     }
 
+    fun updateQty(productId : Int, text: String) {
+        if(productId != null) {
+            updateList.forEach {
+                if(it.product_id == productId) {
+                    val previousQty = it.qty_received
+                    it.qty_received = try {
+                        text.toInt()
+                    } catch (e: NumberFormatException) {
+                        previousQty
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkProductAndUpdate(searchable : String): ReceivingDetailsResponse.ReceivingDetails? {
+        if(searchable.isEmpty().not()) {
+            updateList.forEach {
+                if(it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
+                    it.qty_received = it.qty_received + 1
+                    return it
+                }
+            }
+        }
+        return null
+    }
+
     fun updateList(result: Array<ProductResponse.Product>) {
         for (item in result) {
             var found = false
             for (detail in updateList) {
                 if (item.id == detail.product_id) {
-
-                    Log.e("RESULT->>>", detail.toString())
-                    Log.e("RESULT ITEM->>>", item.toString())
                     found = true
                     detail.qty_received += 1
                 }
             }
             if (!found) {
-                Log.e("SEARCHABLE->>>", item.toString())
                 val receivingDetail = ReceivingDetailsResponse.ReceivingDetails(
                     id = null,
                     product_id = item.id,
