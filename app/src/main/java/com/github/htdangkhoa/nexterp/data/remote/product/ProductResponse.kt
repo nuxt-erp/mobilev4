@@ -1,50 +1,53 @@
-package com.github.htdangkhoa.nexterp.data.remote.receiving.receiving
+package com.github.htdangkhoa.nexterp.data.remote.product
 
 import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-data class ReceivingResponse(
+data class ProductResponse(
     @SerializedName("status")
     var status: Boolean,
 
     @SerializedName("data")
-    override val data: Array<Receiving>,
+    override val data: Array<Product>,
 
     @SerializedName("message")
     var message: String
 
-) : ResponseModel<Array<ReceivingResponse.Receiving>>() {
+) : ResponseModel<Array<ProductResponse.Product>>() {
     @Parcelize
-    data class Receiving(
+    data class Product(
         @SerializedName("id")
         var id: Int,
 
         @SerializedName("name")
         var name: String,
 
-        @SerializedName("po_number")
-        var po_number: String,
+        @SerializedName("sku")
+        var sku: String,
 
-        @SerializedName("invoice_number")
-        var invoice_number: String,
+        @SerializedName("brand")
+        var brand: String,
 
-        @SerializedName("supplier_name")
-        var supplier_name: String,
+        @SerializedName("searchable")
+        var searchable: String,
 
-        @SerializedName("status")
-        var status: String,
+        @SerializedName("category")
+        var category: String,
 
-        @SerializedName("created_at")
-        var created_at: String
+        @SerializedName("location_id")
+        var location_id: Int,
+
+        @SerializedName("location_name")
+        var location_name: String
     ) : Parcelable
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ReceivingResponse
+        other as ProductResponse
 
         if (!data.contentEquals(other.data)) return false
 

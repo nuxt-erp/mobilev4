@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  App Colours  -->
+
     <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryLight">#7FC2BB</color>
+    <color name="colorPrimaryUltraLight">#e5f2f1</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#D68B00</color>
+    <color name="colorBlack">#2d2925</color>
+
+    <!--  Receiving Statuses  -->
+
+    <color name="statusReceived">#19bf13</color>
+    <color name="statusPartiallyReceived">#d49e31</color>
+    <color name="statusNew">#4272f5</color>
 
 </resources>

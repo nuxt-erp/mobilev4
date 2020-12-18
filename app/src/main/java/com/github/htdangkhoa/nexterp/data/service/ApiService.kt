@@ -5,6 +5,7 @@ import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
+import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.StockCountResponse
@@ -52,6 +53,14 @@ interface ApiService {
 
     @GET("inventory/receiving_details")
     suspend fun getReceivingDetails(@Query("receiving_id") receiving_id: Int):ReceivingDetailsResponse
+
+    // Product
+    @GET("inventory/products")
+    suspend fun getProduct(
+        @Query("searchable") searchable: String,
+        @Query("location_id") location_id: Int,
+    ):ProductResponse
+
 
     // Stock Count
 
