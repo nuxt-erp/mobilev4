@@ -124,7 +124,9 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:background="@drawable/table_parent_bg"
-            tools:listitem="@layout/receiving_details_item" />
+            tools:listitem="@layout/receiving_details_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </HorizontalScrollView>
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

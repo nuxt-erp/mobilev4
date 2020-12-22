@@ -1,5 +1,6 @@
 package com.github.htdangkhoa.nexterp.domain.receiving
 
+import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
@@ -13,13 +14,15 @@ class ReceivingParam constructor(val type: Int) {
             const val GET_RECEIVING = 1
             const val GET_RECEIVING_DETAILS = 2
             const val UPDATE_RECEIVING = 3
+            const val VOID_RECEIVING = 4
+            const val FINISH_RECEIVING = 5
         }
     }
 
     lateinit var receivingRequest: UpdateReceivingRequest
     var id: Int = 0
 
-    constructor(type: Int, id: Int) : this(ReceivingParam.Type.GET_RECEIVING_DETAILS) {
+    constructor(type: Int, id: Int) : this(type) {
         this.id = id
     }
 

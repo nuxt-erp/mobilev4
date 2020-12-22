@@ -9,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,8 @@ import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
+import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
+import kotlinx.android.synthetic.main.fragment_receiving_list.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -80,6 +83,45 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                 }
             }
         })
+        viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<ReceivingResponse.Receiving>() {
+            override fun onSuccess(data: ReceivingResponse.Receiving) {
+                Log.e("FINISH->>>", data.toString())
+                val action = ReceivingFormFragmentDirections.actionReceivingFormFragmentToNavReceiving()
+                view.findNavController().navigate(action)            }
+
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let { toast(it) }
+                    handleHttpError(it)
+                }
+            }
+
+            override fun onLoading(isShow: Boolean) {
+                progressCircular.apply {
+                    if (isShow) show() else hide(true)
+                }
+            }
+
+        })
+
+
+        viewModel.resourceVoid.observe(this, object : ObserverResource<Array<ReceivingResponse.Receiving?>>() {
+            override fun onSuccess(data: Array<ReceivingResponse.Receiving?>) {
+                Log.e("VOID->>>", data.toString())
+                val action = ReceivingFormFragmentDirections.actionReceivingFormFragmentToNavReceiving()
+                view.findNavController().navigate(action)
+            }
+
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let {
+                        showDialog("Error", it)
+                    }
+                    throw it!!
+
+                }
+            }
+        })
 
         viewModel.resourceReceivingObject.observe(viewLifecycleOwner, object : ObserverResource<ReceivingResponse.Receiving>() {
             override fun onSuccess(data: ReceivingResponse.Receiving) {
@@ -127,7 +169,19 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                 }
             }
         })
+        viewModel.resourceLogout.observe(this, object : ObserverResource<String>() {
+            override fun onSuccess(data: String) {
+                logout(401)
+            }
 
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let {
+                        showDialog("Error", it)
+                    }
+                }
+            }
+        })
         viewModel.getReceivingDetails(args.receiving.id)
     }
 
@@ -180,8 +234,17 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             setAnimation(clicked)
             clicked = !clicked
         }
+
         saveButton.setOnClickListener {
             viewModel.updateReceiving(args.receiving.id, locationId,  receivingDetailsAdapter.getUpdateList())
+        }
+
+        finishButton.setOnClickListener {
+            viewModel.finishReceiving(args.receiving.id)
+        }
+
+        voidButton.setOnClickListener {
+            viewModel.voidReceiving(args.receiving.id)
         }
     }
 
@@ -229,5 +292,4 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             expandButton.startAnimation(rotateClose)
         }
     }
-
 }

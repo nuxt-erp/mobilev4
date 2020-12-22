@@ -26,5 +26,8 @@
         <argument
             android:name="receiving"
             app:argType="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse$Receiving" />
+        <action
+            android:id="@+id/action_receivingFormFragment_to_nav_receiving"
+            app:destination="@id/nav_receiving" />
     </fragment>
 </navigation>

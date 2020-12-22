@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.data.remote.stockcount
+package com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount
 
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
 import com.google.gson.annotations.SerializedName
@@ -8,12 +8,12 @@ data class StockCountResponse(
     var status: Boolean,
 
     @SerializedName("data")
-    override val data: Array<StockCount>,
+    override val data: Array<StockCount?>,
 
     @SerializedName("message")
     var message: String
 
-) : ResponseModel<Array<StockCountResponse.StockCount>>() {
+) : ResponseModel<Array<StockCountResponse.StockCount?>>() {
     data class StockCount(
         @SerializedName("id")
         var id: Int,

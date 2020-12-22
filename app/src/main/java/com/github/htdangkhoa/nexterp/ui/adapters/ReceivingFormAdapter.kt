@@ -45,15 +45,13 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
     }
 
     fun updateQty(productId : Int, text: String) {
-        if(productId != null) {
-            updateList.forEach {
-                if(it.product_id == productId) {
-                    val previousQty = it.qty_received
-                    it.qty_received = try {
-                        text.toInt()
-                    } catch (e: NumberFormatException) {
-                        previousQty
-                    }
+        updateList.forEach {
+            if(it.product_id == productId) {
+                val previousQty = it.qty_received
+                it.qty_received = try {
+                    text.toInt()
+                } catch (e: NumberFormatException) {
+                    previousQty
                 }
             }
         }
@@ -132,6 +130,7 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
             view.productName.setTypeface(null, Typeface.BOLD)
             view.receivingQty.setTypeface(null, Typeface.BOLD)
             view.receivingQtyReceived.setTypeface(null, Typeface.BOLD)
+
         }
 
         fun bindItem(item: ReceivingDetailsResponse.ReceivingDetails) {

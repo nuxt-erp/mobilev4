@@ -1,7 +1,7 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount
 
 import androidx.lifecycle.ViewModel
-import com.github.htdangkhoa.nexterp.data.remote.stockcount.StockCountResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam

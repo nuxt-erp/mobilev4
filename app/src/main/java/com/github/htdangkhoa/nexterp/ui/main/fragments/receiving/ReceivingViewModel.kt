@@ -1,12 +1,8 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
-import com.github.htdangkhoa.nexterp.Constant
-import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
-import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
@@ -31,6 +27,8 @@ class ReceivingViewModel(
     val resourceReceiving = liveDataOf<Resource<Array<ReceivingResponse.Receiving>>>()
     val resourceReceivingObject = liveDataOf<Resource<ReceivingResponse.Receiving>>()
     val resourceReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails>>>()
+    val resourceFinish = liveDataOf<Resource<ReceivingResponse.Receiving>>()
+    val resourceVoid =  liveDataOf<Resource<Array<ReceivingResponse.Receiving?>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
 
     fun onReceivingClick(view : View, receiving: ReceivingResponse.Receiving) {
@@ -94,6 +92,42 @@ class ReceivingViewModel(
 
             onCancel {
                 resourceReceivingObject.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun voidReceiving(id: Int) {
+        resourceVoid.postValue(Resource.loading())
+
+        receivingUseCase.execute<Array<ReceivingResponse.Receiving?>>(ReceivingParam(ReceivingParam.Type.VOID_RECEIVING, id)) {
+            onComplete {
+                resourceVoid.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceVoid.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceVoid.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun finishReceiving(id: Int) {
+        resourceFinish.postValue(Resource.loading())
+
+        receivingUseCase.execute<ReceivingResponse.Receiving>(ReceivingParam(ReceivingParam.Type.FINISH_RECEIVING, id)) {
+            onComplete {
+                resourceFinish.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceFinish.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceFinish.postValue(Resource.error(it))
             }
         }
     }

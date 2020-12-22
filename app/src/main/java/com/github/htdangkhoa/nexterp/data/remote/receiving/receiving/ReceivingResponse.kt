@@ -10,12 +10,12 @@ data class ReceivingResponse(
     var status: Boolean,
 
     @SerializedName("data")
-    override val data: Array<Receiving>,
+    override val data: Array<Receiving?>,
 
     @SerializedName("message")
     var message: String
 
-) : ResponseModel<Array<ReceivingResponse.Receiving>>() {
+) : ResponseModel<Array<ReceivingResponse.Receiving?>>() {
     @Parcelize
     data class Receiving(
         @SerializedName("id")
