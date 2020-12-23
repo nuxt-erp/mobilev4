@@ -23,6 +23,13 @@
     <string name="button_void">Void</string>
     <string name="button_finish">Finish</string>
 
+    <!-- StockCount List -->
+    <string name="stock_count_prefix">ST-</string>
+
+    <!-- StockCount Form -->
+    <string name="select_a_bin">Select a bin</string>
+    <string name="st_number">ST Number</string>
+
     <!-- Receiving List -->
     <string name="receiving_prefix">RC-</string>
     <string name="invoiceLabel">&#35;</string>

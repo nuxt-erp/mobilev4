@@ -30,4 +30,11 @@
             android:id="@+id/action_receivingFormFragment_to_nav_receiving"
             app:destination="@id/nav_receiving" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_stock_count"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragment"
+        android:label="fragment_stockcount_list"
+        tools:layout="@layout/fragment_stockcount_list">
+
+    </fragment>
 </navigation>

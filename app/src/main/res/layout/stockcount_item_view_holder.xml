@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse.StockCount"/>
+        <import type="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel"/>
+
+        <variable name="stockitem" type="StockCount"/>
+        <variable
+            name="viewModel"
+            type="StockCountViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20sp"
+        android:background="@drawable/layout_border"
+        android:onClick="@{(view) -> viewModel.onStockCountClick(view, stockitem)}"
+
+        >
+        <TextView
+            android:id="@+id/gridIdLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stock_count_prefix"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            android:textFontWeight="800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/gridId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(stockitem.id)}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            android:textFontWeight="800"
+            app:layout_constraintStart_toEndOf="@+id/gridIdLabel"
+            app:layout_constraintTop_toTopOf="@+id/gridIdLabel" />
+
+        <TextView
+            android:id="@+id/gridStatusName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@{stockitem.status_name}"
+            android:fontFamily="sans-serif-light"
+            android:textFontWeight="800"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/gridName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockitem.name}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gridIdLabel" />
+        <TextView
+            android:id="@+id/gridDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockitem.date}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

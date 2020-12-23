@@ -1,6 +1,9 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount
 
+import android.view.View
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
@@ -8,6 +11,7 @@ import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
 
 class StockCountViewModel(
     private val stockCountUseCase: StockCountUseCase,
@@ -16,7 +20,10 @@ class StockCountViewModel(
 ) : ViewModel() {
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
-
+    fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {
+//        val action = ReceivingListFragmentDirections.actionNavReceivingToReceivingFormFragment(stockCount)
+//        view.findNavController().navigate(action)
+    }
     fun getStockCount() {
         resourceStockCount.postValue(Resource.loading())
 
