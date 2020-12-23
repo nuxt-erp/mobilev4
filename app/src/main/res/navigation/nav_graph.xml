@@ -35,6 +35,18 @@
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragment"
         android:label="fragment_stockcount_list"
         tools:layout="@layout/fragment_stockcount_list">
+      <action
+            android:id="@+id/action_nav_stock_count_to_stockCountFormFragment"
+            app:destination="@id/stockCountFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockCountFormFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.form.StockCountFormFragment"
+        android:label="fragment_stockcount_form"
+        tools:layout="@layout/fragment_stockcount_form" >
+        <argument
+            android:name="stockCount"
+            app:argType="com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse$StockCount" />
 
     </fragment>
 </navigation>

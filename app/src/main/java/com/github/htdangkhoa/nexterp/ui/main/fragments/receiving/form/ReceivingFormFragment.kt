@@ -205,6 +205,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             }
         }
     }
+
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->

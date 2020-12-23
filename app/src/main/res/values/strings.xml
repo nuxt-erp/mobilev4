@@ -41,10 +41,11 @@
     <string name="in_progress">IN PROGRESS</string>
     <string name="po_number">PO Number</string>
 
-    <!--  Receiving Form Headers  -->
+    <!--  Form Headers  -->
     <string name="receiving_header_id">ID</string>
     <string name="receiving_header_product">PRODUCT</string>
     <string name="receiving_header_qty">QTY</string>
+    <string name="stockcount_header_bin">BIN</string>
     <string name="receiving_header_qty_received">QTY RECEIVED</string>
 
 
