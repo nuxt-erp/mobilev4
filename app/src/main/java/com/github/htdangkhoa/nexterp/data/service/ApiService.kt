@@ -4,6 +4,8 @@ import com.github.htdangkhoa.nexterp.data.remote.SuccessResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
+import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
+import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingObjectResponse
@@ -16,6 +18,7 @@ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCoun
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.GetMeResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.UsersResponse
+import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
@@ -65,6 +68,29 @@ interface ApiService {
     suspend fun finishReceiving(@Path("id") id: Int) : ReceivingObjectResponse
 
     // Product
+
+    @GET("inventory/location_bins")
+    suspend fun getBin(
+        @Query("barcode") barcode: String? = null,
+        @Query("location_id") location_id: Int? = null,
+        @Query("list") list: Int = 1,
+        @Query("is_enabled") is_enabled: Int = 1
+    ):BinResponse
+
+    // Availabilities
+
+    @GET("inventory/start_stock_count")
+    suspend fun getProductAvailabilities(
+        @Query("searchable") searchable: String? = null,
+        @Query("location_id") location_id: Int? = null,
+        @Query("brand_ids[]") brand_ids: List<Long>? = null,
+        @Query("tag_ids[]") tag_ids: List<Long>? = null,
+        @Query("bin_ids[]") bin_ids: List<Long>? = null,
+        @Query("category_ids[]") category_ids: List<Long>? = null,
+        @Query("stock_locator_ids[]") stock_locator_ids: List<Long>? = null
+    ): ProductAvailabilityResponse
+
+    // Bin
 
     @GET("inventory/products")
     suspend fun getProduct(
