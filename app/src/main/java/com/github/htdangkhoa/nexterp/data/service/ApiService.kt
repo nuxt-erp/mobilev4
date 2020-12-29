@@ -26,6 +26,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
+
     // Auth
 
     @POST("login")
@@ -112,7 +113,6 @@ interface ApiService {
         @Query("is_enabled") is_enabled: Int = 1
     ):StockLocatorResponse
 
-
     // Availabilities
 
     @GET("inventory/start_stock_count_mobile")
@@ -150,4 +150,5 @@ interface ApiService {
 
     @GET("inventory/stock_count/finish/{id}")
     suspend fun finishStockCount(@Path("id") id: Int) : StockCountObjectResponse
+
 }

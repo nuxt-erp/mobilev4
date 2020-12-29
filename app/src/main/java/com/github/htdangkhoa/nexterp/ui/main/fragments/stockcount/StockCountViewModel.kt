@@ -5,21 +5,33 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
+import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
+import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
+import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.availability.ProductAvailabilityParam
 import com.github.htdangkhoa.nexterp.domain.availability.ProductAvailabilityUseCase
 import com.github.htdangkhoa.nexterp.domain.bin.BinParam
 import com.github.htdangkhoa.nexterp.domain.bin.BinUseCase
+import com.github.htdangkhoa.nexterp.domain.brand.BrandParam
+import com.github.htdangkhoa.nexterp.domain.brand.BrandUseCase
+import com.github.htdangkhoa.nexterp.domain.category.CategoryParam
+import com.github.htdangkhoa.nexterp.domain.category.CategoryUseCase
 import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase
+import com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorParam
+import com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorUseCase
+import com.github.htdangkhoa.nexterp.domain.tag.TagParam
+import com.github.htdangkhoa.nexterp.domain.tag.TagUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
@@ -29,7 +41,11 @@ class StockCountViewModel(
     private val stockCountUseCase: StockCountUseCase,
     private val authUseCase: AuthUseCase,
     private val binUseCase: BinUseCase,
-    private val availabilityUseCase: ProductAvailabilityUseCase
+    private val availabilityUseCase: ProductAvailabilityUseCase,
+    private val brandUseCase: BrandUseCase,
+    private val categoryUseCase: CategoryUseCase,
+    private val tagUseCase: TagUseCase,
+    private val stockLocatorUseCase: StockLocatorUseCase,
 
 ) : ViewModel() {
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
@@ -40,6 +56,10 @@ class StockCountViewModel(
     val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
+    val resourceBrands = liveDataOf<Resource<Array<BrandResponse.Brand>>>()
+    val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()
+    val resourceTags = liveDataOf<Resource<Array<TagResponse.Tag>>>()
+    val resourceStockLocators = liveDataOf<Resource<Array<StockLocatorResponse.StockLocator>>>()
 
     fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
@@ -106,6 +126,93 @@ class StockCountViewModel(
 
             onCancel {
                 resourceBins.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun getBrand(list: Int,
+                 is_enabled: Int) {
+        resourceBrands.postValue(Resource.loading())
+        brandUseCase.execute<Array<BrandResponse.Brand>> (
+            BrandParam(
+                BrandParam.Type.GET_BRANDS, list, is_enabled)
+        ) {
+            onComplete {
+                resourceBrands.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceBrands.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceBrands.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun getCategory(list: Int,
+                 is_enabled: Int) {
+        resourceCategories.postValue(Resource.loading())
+        categoryUseCase.execute<Array<CategoryResponse.Category>> (
+            CategoryParam(
+                CategoryParam.Type.GET_CATEGORIES, list, is_enabled)
+        ) {
+            onComplete {
+                resourceCategories.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceCategories.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceCategories.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun getTag(list: Int) {
+        resourceTags.postValue(Resource.loading())
+        tagUseCase.execute<Array<TagResponse.Tag>> (
+            TagParam(
+                TagParam.Type.GET_TAG, list)
+        ) {
+            onComplete {
+                resourceTags.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceTags.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceTags.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun getStockLocator(list: Int,
+                    is_enabled: Int) {
+        resourceStockLocators.postValue(Resource.loading())
+        stockLocatorUseCase.execute<Array<StockLocatorResponse.StockLocator>> (
+            StockLocatorParam(
+                StockLocatorParam.Type.GET_STOCK_LOCATOR, list, is_enabled)
+        ) {
+            onComplete {
+                resourceStockLocators.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceStockLocators.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceStockLocators.postValue(Resource.error(it))
             }
         }
     }
