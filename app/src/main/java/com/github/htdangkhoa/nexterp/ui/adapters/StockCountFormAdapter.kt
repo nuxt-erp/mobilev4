@@ -8,6 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.StringUtils.getString
 import com.github.htdangkhoa.nexterp.R
+import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
@@ -22,7 +23,7 @@ import java.util.*
 
 class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.StockCountDetail>, val callback: (StockCountDetailResponse.StockCountDetail) -> Unit) : RecyclerView.Adapter<StockCountRecyclerAdapter.ListHolder>() {
     private var updateList : MutableList<StockCountDetailResponse.StockCountDetail> = list as MutableList<StockCountDetailResponse.StockCountDetail>
-
+    private var selectedQty : Int? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val inflatedView = parent.inflate(R.layout.stockcount_details_item, false)
         return ListHolder(inflatedView)
@@ -37,7 +38,6 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
             holder.bindItem(item)
             holder.itemView.setOnClickListener { callback(item) }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -48,24 +48,27 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         return updateList.toList()
     }
 
-    fun updateQty(productId : Int, text: String) {
+    fun updateQty(productId : Int, binId: Int?, text: String) {
         updateList.forEach {
-            if(it.product_id == productId) {
+            if(it.product_id == productId && it.bin_id == binId) {
                 val previousQty = it.qty
                 it.qty = try {
+
                     text.toInt()
                 } catch (e: NumberFormatException) {
                     previousQty
                 }
             }
         }
+        notifyDataSetChanged()
     }
 
-    fun checkProductAndUpdate(searchable : String): StockCountDetailResponse.StockCountDetail? {
+    fun checkProductAndUpdate(searchable : String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
+                if(it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) && it.bin_id == binId) {
                     it.qty = it.qty + 1
+                    notifyDataSetChanged()
                     return it
                 }
             }
@@ -73,23 +76,37 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         return null
     }
 
-    fun updateList(result: Array<ProductResponse.Product>) {
+    fun updateList(result: Array<ProductAvailabilityResponse.ProductAvailability>, binId: Int?) {
         for (item in result) {
+            Log.e("ITEM->>>", item.toString())
             var found = false
+
             for (detail in updateList) {
-                if (item.id == detail.product_id) {
+                if (item.product_id == detail.product_id && item.bin_id == detail.bin_id) {
+                    Log.e("item bin->>>", item.bin_id.toString())
+                    Log.e("binId->>>", binId.toString())
                     found = true
-                    detail.qty += 1
+                    if(item.bin_id == binId) {
+                        detail.qty += 1
+                    }
                 }
+
+
             }
+
             if (!found) {
-//                val stockCountDetail = StockCountDetailResponse.StockCountDetail(
-//                    id = null,
-//                    product_id = item.id,
-//                    product_name = item.name,
-//                    searchable = item.searchable
-//                )
-//                updateList.add(stockCountDetail)
+                val stockCountDetail = StockCountDetailResponse.StockCountDetail(
+                    id = null,
+                    product_id = item.product_id,
+                    product_name = item.product_name,
+                    searchable = item.searchable,
+                    location_id = item.location_id,
+                    bin_name = item.bin_name,
+                    bin_id = item.bin_id,
+                    qty = item.qty,
+                    bin_searchable = item.bin_searchable
+                )
+                updateList.add(stockCountDetail)
             }
         }
 

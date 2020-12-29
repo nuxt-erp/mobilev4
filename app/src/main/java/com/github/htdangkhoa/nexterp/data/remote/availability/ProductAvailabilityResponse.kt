@@ -48,6 +48,9 @@ data class ProductAvailabilityResponse(
         @SerializedName("bin_name")
         var bin_name: String,
 
+        @SerializedName("bin_searchable")
+        var bin_searchable: String?,
+
         @SerializedName("on_hand")
         var on_hand: Int,
 

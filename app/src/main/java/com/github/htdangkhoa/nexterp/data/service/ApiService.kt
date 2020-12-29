@@ -79,7 +79,7 @@ interface ApiService {
 
     // Availabilities
 
-    @GET("inventory/start_stock_count")
+    @GET("inventory/start_stock_count_mobile")
     suspend fun getProductAvailabilities(
         @Query("searchable") searchable: String? = null,
         @Query("location_id") location_id: Int? = null,

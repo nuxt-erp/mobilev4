@@ -28,7 +28,10 @@ data class StockCountDetailResponse(
         var location_id: Int,
 
         @SerializedName("bin_name")
-        var bin_name: String,
+        var bin_name: String?,
+
+        @SerializedName("bin_searchable")
+        var bin_searchable: String?,
 
         @SerializedName("searchable")
         var searchable: String,

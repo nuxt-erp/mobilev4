@@ -7,7 +7,9 @@ import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilit
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
@@ -32,9 +34,13 @@ class StockCountViewModel(
 ) : ViewModel() {
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
     val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()
+    val resourceStockCountObject = liveDataOf<Resource<StockCountResponse.StockCount>>()
+    val resourceFinish = liveDataOf<Resource<StockCountResponse.StockCount>>()
+    val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
+
     fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
         view.findNavController().navigate(action)
@@ -129,6 +135,63 @@ class StockCountViewModel(
 
             onCancel {
                 resourceProductAvailability.postValue(Resource.error(it))
+            }
+        }
+    }
+    fun updateStockCount(id: Int, locationId: Int, list_products: List<StockCountDetailResponse.StockCountDetail>) {
+        val request = UpdateStockCountRequest(
+            list_products = list_products
+        )
+
+        resourceStockCountObject.postValue(Resource.loading())
+
+        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.UPDATE_STOCK_COUNT, id, request)) {
+            onComplete {
+                resourceStockCountObject.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceStockCountObject.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceStockCountObject.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun voidStockCount(id: Int) {
+        resourceVoid.postValue(Resource.loading())
+
+        stockCountUseCase.execute<Array<StockCountResponse.StockCount?>>(StockCountParam(StockCountParam.Type.VOID_STOCK_COUNT, id)) {
+            onComplete {
+                resourceVoid.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceVoid.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceVoid.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun finishStockCount(id: Int) {
+        resourceFinish.postValue(Resource.loading())
+
+        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.FINISH_STOCK_COUNT, id)) {
+            onComplete {
+                resourceFinish.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceFinish.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceFinish.postValue(Resource.error(it))
             }
         }
     }

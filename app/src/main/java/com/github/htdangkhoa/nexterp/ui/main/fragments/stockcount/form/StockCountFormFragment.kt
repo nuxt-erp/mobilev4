@@ -7,13 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,21 +15,17 @@ import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
-import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
-import com.google.android.material.textfield.TextInputEditText
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
-
 import kotlinx.android.synthetic.main.fragment_stockcount_form.*
 import kotlinx.android.synthetic.main.fragment_stockcount_form.expandButton
 import kotlinx.android.synthetic.main.fragment_stockcount_form.finishButton
@@ -45,9 +35,6 @@ import kotlinx.android.synthetic.main.fragment_stockcount_form.progressCircular
 import kotlinx.android.synthetic.main.fragment_stockcount_form.qtyField
 import kotlinx.android.synthetic.main.fragment_stockcount_form.saveButton
 import kotlinx.android.synthetic.main.fragment_stockcount_form.voidButton
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -57,7 +44,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     private val args: StockCountFormFragmentArgs by navArgs()
     private lateinit var sharedPreferences: SharedPreferences
     private var productId by Delegates.notNull<Int>()
-    private var binId by Delegates.notNull<Int>()
+    private var binId: Int? = null
+    private var selectedQty: Int? = null
     private var locationId by Delegates.notNull<Int>()
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this.context, R.anim.rotate_open_anim )}
@@ -76,10 +64,14 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
                 stockCountDetailsAdapter = StockCountRecyclerAdapter(data.toMutableList()) {
                     productId = it.product_id
-                    itemField.setText("")
+                    binId = it.bin_id
                     itemField.clearFocus()
                     itemName.text = it.product_name
+                    binName.text = it.bin_name
+                    binField.setText(it.bin_searchable)
+                    itemField.setText(it.searchable)
                     qtyField.setText(it.qty.toString())
+                    stockCountDetailsAdapter.notifyDataSetChanged()
                 }
 
                 stockCountDetails.apply {
@@ -107,9 +99,67 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     binName.text = data[0].name
                     binId = data[0].id
                     itemField.requestFocus()
-
                     Log.e("BIN->>>", data.toString())
                 }
+
+            }
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let { toast(it) }
+                    handleHttpError(it)
+                }
+            }
+
+            override fun onLoading(isShow: Boolean) {
+                progressCircular.apply {
+                    if (isShow) show() else hide(true)
+                }
+            }
+        })
+        viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
+            override fun onSuccess(data: StockCountResponse.StockCount) {
+
+                Log.e("FINISH->>>", data.toString())
+
+            }
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let { toast(it) }
+                    handleHttpError(it)
+                }
+            }
+
+            override fun onLoading(isShow: Boolean) {
+                progressCircular.apply {
+                    if (isShow) show() else hide(true)
+                }
+            }
+        })
+
+        viewModel.resourceVoid.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+            override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
+
+                Log.e("VOID->>>", data.toString())
+
+            }
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let { toast(it) }
+                    handleHttpError(it)
+                }
+            }
+
+            override fun onLoading(isShow: Boolean) {
+                progressCircular.apply {
+                    if (isShow) show() else hide(true)
+                }
+            }
+        })
+
+        viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
+            override fun onSuccess(data: StockCountResponse.StockCount) {
+
+                Log.e("UPDATE->>>", data.toString())
 
             }
             override fun onError(throwable: Throwable?) {
@@ -130,10 +180,15 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
                 if(data.isNotEmpty()) {
 
+                    stockCountDetailsAdapter.updateList(data, binId)
+                    productId = data[0].product_id
+                    itemName.text = data[0].product_name
+                    itemField.selectAll()
+                    stockCountDetailsAdapter.notifyDataSetChanged()
                     Log.e("AVAIL->>>", data.toString())
                 }
-
             }
+
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
                     it?.message?.let { toast(it) }
@@ -159,12 +214,11 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         stockCountNumber.text = args.stockCount.id.toString()
         stockStatus.text = args.stockCount.status_name
         itemField.setSelectAllOnFocus(true)
-//        stockStatus.setTextColor(ContextCompat.getColor(view.context, checkStatus(args.stockCount.status_name)))
 
         //functions
         binHandle()
         itemHandle()
-//        qtyHandle()
+        qtyHandle()
 
         //listeners
         expandButton.setOnClickListener {
@@ -174,25 +228,42 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
 
         saveButton.setOnClickListener {
+            viewModel.updateStockCount(args.stockCount.id, locationId,  stockCountDetailsAdapter.getUpdateList())
         }
 
         finishButton.setOnClickListener {
+            viewModel.finishStockCount(args.stockCount.id)
         }
 
         voidButton.setOnClickListener {
+            viewModel.voidStockCount(args.stockCount.id)
         }
     }
 
     private fun binHandle(){
         binField.addRxTextWatcher()
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+        .debounce(500, TimeUnit.MILLISECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            if (binField.hasFocus()) {
                 if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                     viewModel.getBin(it.toString(), locationId, 0, 1)
+                } else if (TextUtils.isEmpty(it)) {
+                    binId = null
+                    binName.text = ""
                 }
             }
+        }
+
+    }
+
+    // qty listener
+    private fun qtyHandle() {
+        qtyField.doAfterTextChanged { text ->
+            Log.e("TEXT->>>", text.toString())
+            stockCountDetailsAdapter.updateQty(productId, binId, text.toString())
+        }
     }
 
     //item text watcher
@@ -202,12 +273,31 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-                    viewModel.getProductAvailability(it, locationId, null, null, null, null, null)
+                if (itemField.hasFocus()) {
+
+                    if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
+                        val stockCountDetails: StockCountDetailResponse.StockCountDetail? =
+                            stockCountDetailsAdapter.checkProductAndUpdate(it, binId)
+                        if (stockCountDetails == null) {
+                            viewModel.getProductAvailability(
+                                it,
+                                locationId,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                        } else {
+                            productId = stockCountDetails.product_id
+                            itemName.text = stockCountDetails.product_name
+                            qtyField.setText(stockCountDetails.qty.toString())
+                            itemField.selectAll()
+                        }
+                    }
                 }
             }
     }
-
 
     //return fancy colours depending on status
     private fun checkStatus(status : String): Int {

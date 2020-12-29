@@ -210,7 +210,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
             receivingDetailsAdapter.updateQty(productId, text.toString())
-            receivingDetailsAdapter.notifyDataSetChanged()
         }
     }
 
