@@ -23,6 +23,9 @@
     <string name="button_void">Void</string>
     <string name="button_finish">Finish</string>
 
+    <!-- StockCount New -->
+    <string name="bins_spinner_title">Bins-</string>
+
     <!-- StockCount List -->
     <string name="stock_count_prefix">ST-</string>
 

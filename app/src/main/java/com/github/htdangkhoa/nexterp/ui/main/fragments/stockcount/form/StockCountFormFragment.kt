@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCoun
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form.ReceivingFormFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
@@ -118,7 +120,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         })
         viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
             override fun onSuccess(data: StockCountResponse.StockCount) {
-
+                val action = StockCountFormFragmentDirections.actionStockCountFormFragmentToNavStockCount()
+                view.findNavController().navigate(action)
                 Log.e("FINISH->>>", data.toString())
 
             }
@@ -138,7 +141,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
         viewModel.resourceVoid.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
             override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
-
+                val action = StockCountFormFragmentDirections.actionStockCountFormFragmentToNavStockCount()
+                view.findNavController().navigate(action)
                 Log.e("VOID->>>", data.toString())
 
             }

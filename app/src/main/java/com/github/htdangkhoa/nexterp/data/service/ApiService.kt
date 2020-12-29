@@ -6,6 +6,8 @@ import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
+import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingObjectResponse
@@ -16,6 +18,8 @@ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
+import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
+import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.GetMeResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.UsersResponse
 import retrofit2.Call
@@ -67,7 +71,7 @@ interface ApiService {
     @GET("inventory/receiving/finish/{id}")
     suspend fun finishReceiving(@Path("id") id: Int) : ReceivingObjectResponse
 
-    // Product
+    // Bin
 
     @GET("inventory/location_bins")
     suspend fun getBin(
@@ -76,6 +80,38 @@ interface ApiService {
         @Query("list") list: Int = 1,
         @Query("is_enabled") is_enabled: Int = 1
     ):BinResponse
+
+    // Category
+
+    @GET("inventory/categories")
+    suspend fun getCategory(
+        @Query("list") list: Int = 1,
+        @Query("is_enabled") is_enabled: Int = 1
+    ):CategoryResponse
+
+    // Tag
+
+    @GET("general/tag")
+    suspend fun getTag(
+        @Query("list") list: Int = 1
+    ):TagResponse
+
+    // Brand
+
+    @GET("inventory/brands")
+    suspend fun getBrand(
+        @Query("list") list: Int = 1,
+        @Query("is_enabled") is_enabled: Int = 1
+    ):BrandResponse
+
+    // Stock Locator
+
+    @GET("inventory/stock_locator")
+    suspend fun getStockLocator(
+        @Query("list") list: Int = 1,
+        @Query("is_enabled") is_enabled: Int = 1
+    ):StockLocatorResponse
+
 
     // Availabilities
 
@@ -90,7 +126,7 @@ interface ApiService {
         @Query("stock_locator_ids[]") stock_locator_ids: List<Long>? = null
     ): ProductAvailabilityResponse
 
-    // Bin
+    // Product
 
     @GET("inventory/products")
     suspend fun getProduct(

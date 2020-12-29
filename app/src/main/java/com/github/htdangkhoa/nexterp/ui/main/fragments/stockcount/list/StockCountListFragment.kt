@@ -4,12 +4,14 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockListAdapter
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
@@ -57,5 +59,9 @@ class StockCountListFragment() : BaseFragment<StockCountViewModel>(
         })
         viewModel.getStockCount()
 
+        newButton.setOnClickListener {
+            val action = StockCountListFragmentDirections.actionNavStockCountToStockCountNewFragment()
+            view.findNavController().navigate(action)
+        }
     }
 }
