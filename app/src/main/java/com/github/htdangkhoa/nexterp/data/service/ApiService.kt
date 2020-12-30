@@ -92,7 +92,7 @@ interface ApiService {
 
     // Tag
 
-    @GET("general/tag")
+    @GET("general/tags")
     suspend fun getTag(
         @Query("list") list: Int = 1
     ):TagResponse

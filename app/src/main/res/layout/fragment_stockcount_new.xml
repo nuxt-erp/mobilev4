@@ -17,31 +17,101 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_begin="86dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:hint="@string/product_filter"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <!-- Text Label -->
-    <TextView
-        android:id="@+id/binsSpinnerText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:autofillHints="Product Name"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.dev.materialspinner.MaterialSpinner
+        android:id="@+id/binSpinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="Category:"
-        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:prompt="@string/bins_spinner_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameLayout"
         />
 
-    <!-- Spinner Element -->
-    <Spinner
-        android:id="@+id/binsSpinner"
+
+    <com.dev.materialspinner.MaterialSpinner
+        android:id="@+id/brandSpinner"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:prompt="@string/bins_spinner_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binSpinner"
+        />
+
+    <com.dev.materialspinner.MaterialSpinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:prompt="@string/bins_spinner_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brandSpinner"
+        />
+
+    <com.dev.materialspinner.MaterialSpinner
+        android:id="@+id/stockLocatorSpinner"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="10dp"
+
         android:layout_height="wrap_content"
         android:prompt="@string/bins_spinner_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/binsSpinnerText"
+        app:layout_constraintTop_toBottomOf="@+id/categorySpinner"
         />
+
+    <com.dev.materialspinner.MaterialSpinner
+        android:id="@+id/tagSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:prompt="@string/bins_spinner_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockLocatorSpinner"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveFilters"
+        android:layout_width="246dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </com.google.android.material.button.MaterialButton>
+
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"

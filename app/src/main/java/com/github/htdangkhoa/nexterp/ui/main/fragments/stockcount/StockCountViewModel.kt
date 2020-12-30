@@ -106,8 +106,8 @@ class StockCountViewModel(
         }
     }
 
-    fun getBin(barcode: String,
-               location_id: Int,
+    fun getBin(barcode: String?,
+               location_id: Int?,
                list: Int,
                is_enabled: Int) {
         resourceBins.postValue(Resource.loading())

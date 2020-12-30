@@ -25,6 +25,7 @@
 
     <!-- StockCount New -->
     <string name="bins_spinner_title">Bins-</string>
+    <string name="product_filter">Stock Count Name</string>
 
     <!-- StockCount List -->
     <string name="stock_count_prefix">ST-</string>

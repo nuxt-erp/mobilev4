@@ -58,6 +58,6 @@
     <fragment
         android:id="@+id/stockCountNewFragment"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new.StockCountNewFragment"
-        android:label="fragment_stockcount_new"
+        android:label="New Stock Count"
         tools:layout="@layout/fragment_stockcount_new" />
 </navigation>

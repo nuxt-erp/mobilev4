@@ -4,25 +4,254 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
-import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
+import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
+import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
+import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
-import com.github.htdangkhoa.nexterp.ui.adapters.StockListAdapter
+import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter
+import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter.SpinnerItem
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_stockcount_list.*
+import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.fragment_stockcount_list.progressCircular
+import kotlinx.android.synthetic.main.fragment_stockcount_new.*
+
 
 class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
-    StockCountViewModel::class) {
+    StockCountViewModel::class
+) {
+    private val categorySpinnerItems: MutableList<SpinnerItem<CategoryResponse.Category>> = ArrayList()
+    private val categorySelectedItems: MutableSet<CategoryResponse.Category> = HashSet()
+
+    private val binSpinnerItems: MutableList<SpinnerItem<BinResponse.Bin>> = ArrayList()
+    private val binSelectedItems: MutableSet<BinResponse.Bin> = HashSet()
+
+    private val brandSpinnerItems: MutableList<SpinnerItem<BrandResponse.Brand>> = ArrayList()
+    private val brandSelectedItems: MutableSet<BrandResponse.Brand> = HashSet()
+
+    private val stockLocatorSpinnerItems: MutableList<SpinnerItem<StockLocatorResponse.StockLocator>> = ArrayList()
+    private val stockLocatorSelectedItems: MutableSet<StockLocatorResponse.StockLocator> = HashSet()
+
+    private val tagSpinnerItems: MutableList<SpinnerItem<TagResponse.Tag>> = ArrayList()
+    private val tagSelectedItems: MutableSet<TagResponse.Tag> = HashSet()
 
     override val layoutResID: Int
         get() = R.layout.fragment_stockcount_new
 
     override fun render(view: View, savedInstanceState: Bundle?) {
 
+        viewModel.resourceTags.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<TagResponse.Tag>>() {
+                override fun onSuccess(data: Array<TagResponse.Tag>) {
+                    Log.e("Tag->>>", data.toString())
+                    data.forEach {
+                        tagSpinnerItems.add(SpinnerItem<TagResponse.Tag>(it, it.name))
+                    }
+                    val adapter: CheckableSpinnerAdapter<*> =
+                        CheckableSpinnerAdapter<TagResponse.Tag>(
+                            context!!,
+                            "Tag",
+                            tagSpinnerItems,
+                            tagSelectedItems
+                        )
+                    tagSpinner.setAdapter(adapter)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+
+            })
+
+        viewModel.resourceBrands.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<BrandResponse.Brand>>() {
+                override fun onSuccess(data: Array<BrandResponse.Brand>) {
+                    Log.e("Brand->>>", data.toString())
+                    data.forEach {
+                        brandSpinnerItems.add(SpinnerItem<BrandResponse.Brand>(it, it.name))
+                    }
+                    val adapter: CheckableSpinnerAdapter<*> =
+                        CheckableSpinnerAdapter<BrandResponse.Brand>(
+                            context!!,
+                            "Brand",
+                            brandSpinnerItems,
+                            brandSelectedItems
+                        )
+                    brandSpinner.setAdapter(adapter)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+
+            })
+
+        viewModel.resourceCategories.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<CategoryResponse.Category>>() {
+                override fun onSuccess(data: Array<CategoryResponse.Category>) {
+                    Log.e("Category->>>", data.toString())
+
+                    data.forEach {
+                        categorySpinnerItems.add(SpinnerItem<CategoryResponse.Category>(it, it.name))
+                    }
+                    val adapter: CheckableSpinnerAdapter<*> =
+                        CheckableSpinnerAdapter<CategoryResponse.Category>(
+                            context!!,
+                            "Category",
+                            categorySpinnerItems,
+                            categorySelectedItems
+                        )
+                    categorySpinner.setAdapter(adapter)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
+
+        viewModel.resourceBins.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<BinResponse.Bin>>() {
+                override fun onSuccess(data: Array<BinResponse.Bin>) {
+                    Log.e("BIN->>>", data.toString())
+                    data.forEach {
+                        binSpinnerItems.add(SpinnerItem<BinResponse.Bin>(it, it.name))
+                    }
+                    val adapter: CheckableSpinnerAdapter<*> =
+                        CheckableSpinnerAdapter<BinResponse.Bin>(
+                            context!!,
+                            "Bin",
+                            binSpinnerItems,
+                            binSelectedItems
+                        )
+                    binSpinner.setAdapter(adapter)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
+
+        viewModel.resourceStockLocators.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<StockLocatorResponse.StockLocator>>() {
+                override fun onSuccess(data: Array<StockLocatorResponse.StockLocator>) {
+                    Log.e("BIN->>>", data.toString())
+                    data.forEach {
+                        stockLocatorSpinnerItems.add(SpinnerItem<StockLocatorResponse.StockLocator>(it, it.name))
+                    }
+                    val adapter: CheckableSpinnerAdapter<*> =
+                        CheckableSpinnerAdapter<StockLocatorResponse.StockLocator>(
+                            context!!,
+                            "Stock Locator",
+                            stockLocatorSpinnerItems,
+                            stockLocatorSelectedItems
+                        )
+                    stockLocatorSpinner.setAdapter(adapter)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
+
+        viewModel.getTag(1)
+        viewModel.getBrand(1, 1)
+        viewModel.getCategory(1, 1)
+        viewModel.getStockLocator(1, 1)
+        viewModel.getBin(null, null, 1, 1)
+
+        btnSaveFilters.setOnClickListener {
+            Log.e("map->>>", createMap().toString())
+        }
     }
+
+    private fun createMap() : HashMap<String, List<Int>> {
+        val map =  HashMap<String, List<Int>>()
+
+        val binIds : MutableList<Int> = ArrayList()
+        val brandIds : MutableList<Int> = ArrayList()
+        val categoryIds : MutableList<Int> = ArrayList()
+        val tagIds : MutableList<Int> = ArrayList()
+        val stockLocatorIds : MutableList<Int> = ArrayList()
+
+        stockLocatorSelectedItems.forEach {
+            stockLocatorIds += it.id
+        }
+        binSelectedItems.forEach {
+            binIds += it.id
+        }
+        brandSelectedItems.forEach {
+            brandIds += it.id
+        }
+        categorySelectedItems.forEach {
+            categoryIds += it.id
+        }
+        tagSelectedItems.forEach {
+            tagIds += it.id
+        }
+
+        map["bin_ids"] = binIds
+        map["brand_ids"] = brandIds
+        map["category_ids"] = categoryIds
+        map["stock_locator_ids"] = stockLocatorIds
+        map["tag_ids"] = tagIds
+
+        return map
+    }
+
 }
