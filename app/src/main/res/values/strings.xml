@@ -23,6 +23,20 @@
     <string name="button_void">Void</string>
     <string name="button_finish">Finish</string>
 
+    <!--  Home  -->
+    <string name="stock_count_home_title">Stock Count</string>
+    <string name="stock_count_description">Hmmmm, how many bottles of Koil Killaz Polar do we have? Let\'s find out! Navigate to the stock count page now. </string>
+    <string name="stock_count_action_1">List Stock Counts</string>
+    <string name="stock_count_action_2">New Stock Count</string>
+
+    <string name="receiving_home_title">Receiving</string>
+    <string name="receiving_description">Just received a shipment from a supplier? Navigate to the receiving page now to allocate it!</string>
+    <string name="receiving_action_1">List Receiving</string>
+    <string name="receiving_action_2">New Receiving</string>
+
+
+
+
     <!-- StockCount New -->
     <string name="bins_spinner_title">Bins-</string>
     <string name="product_filter">Stock Count Name</string>

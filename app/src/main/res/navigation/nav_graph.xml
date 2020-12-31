@@ -8,7 +8,20 @@
         android:id="@+id/nav_home"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.home.index.HomeIndexFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_receiving"
+            app:destination="@id/nav_receiving" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_stock_count"
+            app:destination="@id/nav_stock_count" />
+        <action
+            android:id="@+id/action_nav_home_to_stockCountNewFragment"
+            app:destination="@id/stockCountNewFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_receivingNewFragment"
+            app:destination="@id/receivingNewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_receiving"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragment"
@@ -67,4 +80,9 @@
             android:id="@+id/action_stockCountNewFragment_to_stockCountFormFragment"
             app:destination="@id/stockCountFormFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/receivingNewFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.new.ReceivingNewFragment"
+        android:label="fragment_receiving_new"
+        tools:layout="@layout/fragment_receiving_new" />
 </navigation>
