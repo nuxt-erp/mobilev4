@@ -3,6 +3,7 @@ package com.github.htdangkhoa.nexterp.data.repository.stockcount
 import com.github.htdangkhoa.nexterp.base.BaseRepositoryImp
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 
 import com.github.htdangkhoa.nexterp.data.service.ApiService
@@ -19,6 +20,17 @@ class StockCountRepositoryImp(
     ): Result<StockCountResponse.StockCount?> {
         return try {
             val res = apiService.updateStockCount(id, stockCountRequest)
+            Result.map(res)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun newStockCount(
+        stockCountRequest: NewStockCountRequest
+    ): Result<StockCountResponse.StockCount?> {
+        return try {
+            val res = apiService.newStockCount(stockCountRequest)
             Result.map(res)
         } catch (e: Exception) {
             Result.failure(e)

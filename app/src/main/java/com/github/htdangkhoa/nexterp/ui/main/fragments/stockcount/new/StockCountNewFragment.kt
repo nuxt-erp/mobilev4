@@ -4,21 +4,23 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.navigation.findNavController
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
 import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter
 import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter.SpinnerItem
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.fragment_stockcount_list.progressCircular
 import kotlinx.android.synthetic.main.fragment_stockcount_new.*
 
@@ -50,7 +52,6 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<TagResponse.Tag>>() {
                 override fun onSuccess(data: Array<TagResponse.Tag>) {
-                    Log.e("Tag->>>", data.toString())
                     data.forEach {
                         tagSpinnerItems.add(SpinnerItem<TagResponse.Tag>(it, it.name))
                     }
@@ -83,7 +84,6 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<BrandResponse.Brand>>() {
                 override fun onSuccess(data: Array<BrandResponse.Brand>) {
-                    Log.e("Brand->>>", data.toString())
                     data.forEach {
                         brandSpinnerItems.add(SpinnerItem<BrandResponse.Brand>(it, it.name))
                     }
@@ -116,8 +116,6 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<CategoryResponse.Category>>() {
                 override fun onSuccess(data: Array<CategoryResponse.Category>) {
-                    Log.e("Category->>>", data.toString())
-
                     data.forEach {
                         categorySpinnerItems.add(SpinnerItem<CategoryResponse.Category>(it, it.name))
                     }
@@ -149,7 +147,6 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<BinResponse.Bin>>() {
                 override fun onSuccess(data: Array<BinResponse.Bin>) {
-                    Log.e("BIN->>>", data.toString())
                     data.forEach {
                         binSpinnerItems.add(SpinnerItem<BinResponse.Bin>(it, it.name))
                     }
@@ -181,7 +178,6 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockLocatorResponse.StockLocator>>() {
                 override fun onSuccess(data: Array<StockLocatorResponse.StockLocator>) {
-                    Log.e("BIN->>>", data.toString())
                     data.forEach {
                         stockLocatorSpinnerItems.add(SpinnerItem<StockLocatorResponse.StockLocator>(it, it.name))
                     }
@@ -209,6 +205,26 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
                 }
             })
 
+        viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
+            override fun onSuccess(data: StockCountResponse.StockCount) {
+//                val action = StockCount.actionNavStockCountToStockCountNewFragment()
+//                view.findNavController().navigate(action)
+
+            }
+            override fun onError(throwable: Throwable?) {
+                handleError(throwable) {
+                    it?.message?.let { toast(it) }
+                    handleHttpError(it)
+                }
+            }
+
+            override fun onLoading(isShow: Boolean) {
+                progressCircular.apply {
+                    if (isShow) show() else hide(true)
+                }
+            }
+        })
+
         viewModel.getTag(1)
         viewModel.getBrand(1, 1)
         viewModel.getCategory(1, 1)
@@ -216,7 +232,12 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
         viewModel.getBin(null, null, 1, 1)
 
         btnSaveFilters.setOnClickListener {
-            Log.e("map->>>", createMap().toString())
+            val myName = nameInput.text.toString()
+            if(myName.isNotEmpty()) {
+                viewModel.newStockCount(createMap(), myName)
+            } else {
+                showDialog("Error", "You must enter a name for the Stock Count.")
+            }
         }
     }
 

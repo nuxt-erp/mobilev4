@@ -10,6 +10,7 @@ class StockCountUseCase(
             StockCountParam.Type.GET_STOCK_COUNT -> repository.getStockCount()
             StockCountParam.Type.GET_STOCK_COUNT_DETAILS -> repository.getStockCountDetails(params.id)
             StockCountParam.Type.UPDATE_STOCK_COUNT -> repository.updateStockCount(params.id, params.stockCountRequest)
+            StockCountParam.Type.NEW_STOCK_COUNT -> repository.newStockCount(params.newStockCountRequest)
             StockCountParam.Type.VOID_STOCK_COUNT -> repository.deleteStockCount(params.id)
             StockCountParam.Type.FINISH_STOCK_COUNT -> repository.finishStockCount(params.id)
 

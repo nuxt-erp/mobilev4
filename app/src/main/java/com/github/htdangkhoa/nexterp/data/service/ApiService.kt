@@ -16,6 +16,7 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.Rec
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
@@ -144,6 +145,9 @@ interface ApiService {
 
     @PUT("inventory/stock_count/{id}")
     suspend fun updateStockCount(@Path("id") id: Int, @Body updateStockCountRequest: UpdateStockCountRequest) : StockCountObjectResponse
+
+    @POST("inventory/stock_count")
+    suspend fun newStockCount(@Body request: NewStockCountRequest): StockCountObjectResponse
 
     @DELETE("inventory/stock_count/{id}")
     suspend fun deleteStockCount(@Path("id") id: Int) : StockCountResponse

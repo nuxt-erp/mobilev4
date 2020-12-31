@@ -7,11 +7,9 @@ import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilit
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
 import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
@@ -25,7 +23,6 @@ import com.github.htdangkhoa.nexterp.domain.brand.BrandParam
 import com.github.htdangkhoa.nexterp.domain.brand.BrandUseCase
 import com.github.htdangkhoa.nexterp.domain.category.CategoryParam
 import com.github.htdangkhoa.nexterp.domain.category.CategoryUseCase
-import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase
 import com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorParam
@@ -34,7 +31,6 @@ import com.github.htdangkhoa.nexterp.domain.tag.TagParam
 import com.github.htdangkhoa.nexterp.domain.tag.TagUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections
 
 class StockCountViewModel(
@@ -253,6 +249,27 @@ class StockCountViewModel(
         resourceStockCountObject.postValue(Resource.loading())
 
         stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.UPDATE_STOCK_COUNT, id, request)) {
+            onComplete {
+                resourceStockCountObject.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceStockCountObject.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceStockCountObject.postValue(Resource.error(it))
+            }
+        }
+    }
+
+
+    fun newStockCount(stockCountFilters:  HashMap<String, List<Int>>, name: String) {
+        val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name)
+
+        resourceStockCountObject.postValue(Resource.loading())
+
+        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.NEW_STOCK_COUNT, request)) {
             onComplete {
                 resourceStockCountObject.postValue(Resource.success(it))
             }
