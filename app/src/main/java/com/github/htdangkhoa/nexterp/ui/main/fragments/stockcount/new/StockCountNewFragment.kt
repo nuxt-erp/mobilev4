@@ -207,8 +207,8 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
         viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
             override fun onSuccess(data: StockCountResponse.StockCount) {
-//                val action = StockCount.actionNavStockCountToStockCountNewFragment()
-//                view.findNavController().navigate(action)
+                val action = StockCountNewFragmentDirections.actionStockCountNewFragmentToStockCountFormFragment(data)
+                view.findNavController().navigate(action)
 
             }
             override fun onError(throwable: Throwable?) {

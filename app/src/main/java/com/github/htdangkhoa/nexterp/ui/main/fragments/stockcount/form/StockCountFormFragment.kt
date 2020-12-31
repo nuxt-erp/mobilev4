@@ -162,6 +162,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
         viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
             override fun onSuccess(data: StockCountResponse.StockCount) {
+                viewModel.getStockCountDetails(data.id)
 
                 Log.e("UPDATE->>>", data.toString())
 

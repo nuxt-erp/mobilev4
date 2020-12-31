@@ -60,9 +60,9 @@
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new.StockCountNewFragment"
         android:label="New Stock Count"
         tools:layout="@layout/fragment_stockcount_new" >
-        <argument
-            android:name="stockCount"
-            app:argType="com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse$StockCount" />
+<!--        <argument-->
+<!--            android:name="stockCount"-->
+<!--            app:argType="com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse$StockCount" />-->
         <action
             android:id="@+id/action_stockCountNewFragment_to_stockCountFormFragment"
             app:destination="@id/stockCountFormFragment" />
