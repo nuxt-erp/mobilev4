@@ -10,6 +10,7 @@ import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.NewReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
@@ -67,11 +68,34 @@ interface ApiService {
     @PUT("inventory/receiving/{id}")
     suspend fun updateReceiving(@Path("id") id: Int, @Body updateReceivingRequest: UpdateReceivingRequest) : ReceivingObjectResponse
 
+    @POST("inventory/receiving")
+    suspend fun newReceiving(@Body request: NewReceivingRequest): ReceivingObjectResponse
+
     @DELETE("inventory/receiving/{id}")
     suspend fun deleteReceiving(@Path("id") id: Int) : ReceivingResponse
 
     @GET("inventory/receiving/finish/{id}")
     suspend fun finishReceiving(@Path("id") id: Int) : ReceivingObjectResponse
+
+    // Stock Count
+
+    @GET("inventory/stock_count")
+    suspend fun getStockCount(): StockCountResponse
+
+    @GET("inventory/stock_count_details")
+    suspend fun getStockCountDetails(@Query("stockcount_id") stockcount_id: Int) : StockCountDetailResponse
+
+    @PUT("inventory/stock_count/{id}")
+    suspend fun updateStockCount(@Path("id") id: Int, @Body updateStockCountRequest: UpdateStockCountRequest) : StockCountObjectResponse
+
+    @POST("inventory/stock_count")
+    suspend fun newStockCount(@Body request: NewStockCountRequest): StockCountObjectResponse
+
+    @DELETE("inventory/stock_count/{id}")
+    suspend fun deleteStockCount(@Path("id") id: Int) : StockCountResponse
+
+    @GET("inventory/stock_count/finish/{id}")
+    suspend fun finishStockCount(@Path("id") id: Int) : StockCountObjectResponse
 
     // Bin
 
@@ -135,24 +159,6 @@ interface ApiService {
         @Query("location_id") location_id: Int,
     ):ProductResponse
 
-    // Stock Count
 
-    @GET("inventory/stock_count")
-    suspend fun getStockCount(): StockCountResponse
-
-    @GET("inventory/stock_count_details")
-    suspend fun getStockCountDetails(@Query("stockcount_id") stockcount_id: Int) : StockCountDetailResponse
-
-    @PUT("inventory/stock_count/{id}")
-    suspend fun updateStockCount(@Path("id") id: Int, @Body updateStockCountRequest: UpdateStockCountRequest) : StockCountObjectResponse
-
-    @POST("inventory/stock_count")
-    suspend fun newStockCount(@Body request: NewStockCountRequest): StockCountObjectResponse
-
-    @DELETE("inventory/stock_count/{id}")
-    suspend fun deleteStockCount(@Path("id") id: Int) : StockCountResponse
-
-    @GET("inventory/stock_count/finish/{id}")
-    suspend fun finishStockCount(@Path("id") id: Int) : StockCountObjectResponse
 
 }

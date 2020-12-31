@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:hint="@string/product_filter"
+        android:hint="@string/stock_count_name"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -36,7 +36,7 @@
             android:layout_marginVertical="20dp"
             android:maxLines="1"
             android:inputType="text"
-            android:autofillHints="Product Name"/>
+            android:autofillHints="Stock Count Name"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>

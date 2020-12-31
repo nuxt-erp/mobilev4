@@ -1,9 +1,12 @@
 package com.github.htdangkhoa.nexterp.data.repository.receiving
 
 import com.github.htdangkhoa.nexterp.base.BaseRepositoryImp
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.NewReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.service.ApiService
 import com.github.htdangkhoa.nexterp.extension.map
 import retrofit2.HttpException
@@ -23,7 +26,16 @@ class ReceivingRepositoryImp(
             Result.failure(e)
         }
     }
-
+    override suspend fun newReceiving(
+        receivingRequest: NewReceivingRequest
+    ): Result<ReceivingResponse.Receiving?> {
+        return try {
+            val res = apiService.newReceiving(receivingRequest)
+            Result.map(res)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
     override suspend fun getReceiving(): Result<Array<ReceivingResponse.Receiving?>> {
         return try {
             val res = apiService.getReceiving()

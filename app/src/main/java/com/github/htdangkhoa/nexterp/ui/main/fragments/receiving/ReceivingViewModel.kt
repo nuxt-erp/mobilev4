@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.NewReceivingRequest
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
@@ -82,6 +83,29 @@ class ReceivingViewModel(
         resourceReceivingObject.postValue(Resource.loading())
 
         receivingUseCase.execute<ReceivingResponse.Receiving>(ReceivingParam(ReceivingParam.Type.UPDATE_RECEIVING, id, request)) {
+            onComplete {
+                resourceReceivingObject.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceReceivingObject.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceReceivingObject.postValue(Resource.error(it))
+            }
+        }
+    }
+
+    fun newReceiving(locationId: Int, name: String) {
+        val request = NewReceivingRequest(
+            location_id = locationId,
+            name = name
+        )
+
+        resourceReceivingObject.postValue(Resource.loading())
+
+        receivingUseCase.execute<ReceivingResponse.Receiving>(ReceivingParam(ReceivingParam.Type.NEW_RECEIVING, request)) {
             onComplete {
                 resourceReceivingObject.postValue(Resource.success(it))
             }

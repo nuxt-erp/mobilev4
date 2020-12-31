@@ -2,13 +2,12 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingListAdapter
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
@@ -58,5 +57,9 @@ class ReceivingListFragment() : BaseFragment<ReceivingViewModel>(
         })
         viewModel.getReceiving()
 
+        newButton.setOnClickListener {
+            val action = ReceivingListFragmentDirections.actionNavReceivingToReceivingNewFragment()
+            view.findNavController().navigate(action)
+        }
     }
 }

@@ -28,7 +28,6 @@ import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
 import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
-import kotlinx.android.synthetic.main.fragment_receiving_list.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 

@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_nav_receiving_to_receivingFormFragment"
             app:destination="@id/receivingFormFragment" />
+        <action
+            android:id="@+id/action_nav_receiving_to_receivingNewFragment"
+            app:destination="@id/receivingNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/receivingFormFragment"
@@ -46,7 +49,7 @@
     <fragment
         android:id="@+id/nav_stock_count"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragment"
-        android:label="Stock Count"
+        android:label="@string/menu_stock_count"
         tools:layout="@layout/fragment_stockcount_list">
       <action
             android:id="@+id/action_nav_stock_count_to_stockCountFormFragment"
@@ -58,7 +61,7 @@
     <fragment
         android:id="@+id/stockCountFormFragment"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.form.StockCountFormFragment"
-        android:label="Stock Count Detail"
+        android:label="@string/menu_stock_count_details"
         tools:layout="@layout/fragment_stockcount_form" >
         <argument
             android:name="stockCount"
@@ -71,7 +74,7 @@
     <fragment
         android:id="@+id/stockCountNewFragment"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new.StockCountNewFragment"
-        android:label="New Stock Count"
+        android:label="@string/menu_stock_count_new"
         tools:layout="@layout/fragment_stockcount_new" >
 <!--        <argument-->
 <!--            android:name="stockCount"-->
@@ -83,6 +86,10 @@
     <fragment
         android:id="@+id/receivingNewFragment"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.new.ReceivingNewFragment"
-        android:label="fragment_receiving_new"
-        tools:layout="@layout/fragment_receiving_new" />
+        android:label="@string/menu_receiving_new"
+        tools:layout="@layout/fragment_receiving_new" >
+        <action
+            android:id="@+id/action_receivingNewFragment_to_nav_receiving"
+            app:destination="@id/nav_receiving" />
+    </fragment>
 </navigation>
