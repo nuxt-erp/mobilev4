@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.domain.stockcount
 import com.github.htdangkhoa.nexterp.base.BaseUseCase
 import com.github.htdangkhoa.nexterp.data.repository.stockcount.StockCountRepository
+import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 
 class StockCountUseCase(
     repository: StockCountRepository
@@ -13,6 +14,7 @@ class StockCountUseCase(
             StockCountParam.Type.NEW_STOCK_COUNT -> repository.newStockCount(params.newStockCountRequest)
             StockCountParam.Type.VOID_STOCK_COUNT -> repository.deleteStockCount(params.id)
             StockCountParam.Type.FINISH_STOCK_COUNT -> repository.finishStockCount(params.id)
+            StockCountParam.Type.DELETE_STOCK_COUNT_DETAIL -> repository.deleteStockCountDetail(params.id)
 
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }

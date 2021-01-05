@@ -8,5 +8,5 @@ data class UpdateReceivingRequest(
     var location_id: Int,
 
     @SerializedName("list_products")
-    var list_products: List<ReceivingDetailsResponse.ReceivingDetails>
+    var list_products: List<ReceivingDetailsResponse.ReceivingDetails?>
 )

@@ -1,19 +1,22 @@
 package com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details
 
+import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ReceivingDetailsResponse(
     @SerializedName("status")
     var status: Boolean,
 
     @SerializedName("data")
-    override val data: Array<ReceivingDetails>,
+    override val data: Array<ReceivingDetails?>,
 
     @SerializedName("message")
     var message: String
 
-) : ResponseModel<Array<ReceivingDetailsResponse.ReceivingDetails>>() {
+) : ResponseModel<Array<ReceivingDetailsResponse.ReceivingDetails?>>() {
+    @Parcelize
     data class ReceivingDetails(
         @SerializedName("id")
         var id: Int?,
@@ -32,7 +35,7 @@ data class ReceivingDetailsResponse(
 
         @SerializedName("qty_received")
         var qty_received: Int
-    )
+    ) :Parcelable
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

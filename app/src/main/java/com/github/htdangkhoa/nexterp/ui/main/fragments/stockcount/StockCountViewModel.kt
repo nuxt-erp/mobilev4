@@ -7,6 +7,7 @@ import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilit
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
@@ -23,6 +24,7 @@ import com.github.htdangkhoa.nexterp.domain.brand.BrandParam
 import com.github.htdangkhoa.nexterp.domain.brand.BrandUseCase
 import com.github.htdangkhoa.nexterp.domain.category.CategoryParam
 import com.github.htdangkhoa.nexterp.domain.category.CategoryUseCase
+import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase
 import com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorParam
@@ -56,6 +58,7 @@ class StockCountViewModel(
     val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()
     val resourceTags = liveDataOf<Resource<Array<TagResponse.Tag>>>()
     val resourceStockLocators = liveDataOf<Resource<Array<StockLocatorResponse.StockLocator>>>()
+    val resourceDeleteStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail?>>>()
 
     fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
@@ -320,6 +323,26 @@ class StockCountViewModel(
         }
     }
 
+    fun deleteStockCountDetail(id: Int) {
+        resourceDeleteStockCountDetails.postValue(Resource.loading())
+
+        stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail?>>(
+            StockCountParam(
+                StockCountParam.Type.DELETE_STOCK_COUNT_DETAIL, id)
+        ) {
+            onComplete {
+                resourceDeleteStockCountDetails.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceDeleteStockCountDetails.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceDeleteStockCountDetails.postValue(Resource.error(it))
+            }
+        }
+    }
     fun logout() {
         resourceLogout.postValue(Resource.loading())
 

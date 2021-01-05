@@ -27,7 +27,8 @@ class ReceivingViewModel(
     val resourceProduct = liveDataOf<Resource<Array<ProductResponse.Product>>>()
     val resourceReceiving = liveDataOf<Resource<Array<ReceivingResponse.Receiving>>>()
     val resourceReceivingObject = liveDataOf<Resource<ReceivingResponse.Receiving>>()
-    val resourceReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails>>>()
+    val resourceReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails?>>>()
+    val resourceDeleteReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails?>>>()
     val resourceFinish = liveDataOf<Resource<ReceivingResponse.Receiving>>()
     val resourceVoid =  liveDataOf<Resource<Array<ReceivingResponse.Receiving?>>>()
     val resourceLogout = liveDataOf<Resource<String>>()
@@ -74,7 +75,7 @@ class ReceivingViewModel(
         }
     }
 
-    fun updateReceiving(id: Int, locationId: Int, list_products: List<ReceivingDetailsResponse.ReceivingDetails>) {
+    fun updateReceiving(id: Int, locationId: Int, list_products: List<ReceivingDetailsResponse.ReceivingDetails?>) {
         val request = UpdateReceivingRequest(
             location_id = locationId,
             list_products = list_products
@@ -138,6 +139,24 @@ class ReceivingViewModel(
         }
     }
 
+    fun deleteReceivingDetail(id: Int) {
+        resourceDeleteReceivingDetails.postValue(Resource.loading())
+
+        receivingUseCase.execute<Array<ReceivingDetailsResponse.ReceivingDetails?>>(ReceivingParam(ReceivingParam.Type.DELETE_RECEIVING_DETAIL, id)) {
+            onComplete {
+                resourceDeleteReceivingDetails.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceDeleteReceivingDetails.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceDeleteReceivingDetails.postValue(Resource.error(it))
+            }
+        }
+    }
+
     fun finishReceiving(id: Int) {
         resourceFinish.postValue(Resource.loading())
 
@@ -158,7 +177,7 @@ class ReceivingViewModel(
 
     fun getReceivingDetails(id: Int) {
         resourceReceivingDetails.postValue(Resource.loading())
-        receivingUseCase.execute<Array<ReceivingDetailsResponse.ReceivingDetails>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING_DETAILS, id)) {
+        receivingUseCase.execute<Array<ReceivingDetailsResponse.ReceivingDetails?>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING_DETAILS, id)) {
             onComplete {
                 resourceReceivingDetails.postValue(Resource.success(it))
             }

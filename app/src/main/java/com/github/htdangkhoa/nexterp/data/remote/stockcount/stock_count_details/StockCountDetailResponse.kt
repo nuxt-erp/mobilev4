@@ -8,12 +8,12 @@ data class StockCountDetailResponse(
     var status: Boolean,
 
     @SerializedName("data")
-    override val data: Array<StockCountDetail>,
+    override val data: Array<StockCountDetail?>,
 
     @SerializedName("message")
     var message: String
 
-) : ResponseModel<Array<StockCountDetailResponse.StockCountDetail>>() {
+) : ResponseModel<Array<StockCountDetailResponse.StockCountDetail?>>() {
     data class StockCountDetail(
         @SerializedName("id")
         var id: Int?,

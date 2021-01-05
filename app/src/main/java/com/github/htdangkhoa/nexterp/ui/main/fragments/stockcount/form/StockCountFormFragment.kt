@@ -11,7 +11,9 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
@@ -20,6 +22,7 @@ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
+import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form.ReceivingFormFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
@@ -75,6 +78,19 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     qtyField.setText(it.qty.toString())
                     stockCountDetailsAdapter.notifyDataSetChanged()
                 }
+
+                val swipeHandler = object : SwipeToDeleteCallback(context!!) {
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        Log.e("SWIPED->>>", viewHolder.adapterPosition.toString())
+                        val id = stockCountDetailsAdapter.removeAt(viewHolder.adapterPosition)
+                        if (id != null) {
+                            viewModel.deleteStockCountDetail(id)
+                        }
+                    }
+                }
+
+                val itemTouchHelper = ItemTouchHelper(swipeHandler)
+                itemTouchHelper.attachToRecyclerView(stockCountDetails)
 
                 stockCountDetails.apply {
                     layoutManager = LinearLayoutManager(activity)

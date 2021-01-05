@@ -74,6 +74,9 @@ interface ApiService {
     @DELETE("inventory/receiving/{id}")
     suspend fun deleteReceiving(@Path("id") id: Int) : ReceivingResponse
 
+    @DELETE("inventory/receiving_details/{id}")
+    suspend fun deleteReceivingDetail(@Path("id") id: Int) : ReceivingDetailsResponse
+
     @GET("inventory/receiving/finish/{id}")
     suspend fun finishReceiving(@Path("id") id: Int) : ReceivingObjectResponse
 
@@ -93,6 +96,10 @@ interface ApiService {
 
     @DELETE("inventory/stock_count/{id}")
     suspend fun deleteStockCount(@Path("id") id: Int) : StockCountResponse
+
+    @DELETE("inventory/stock_count_details/{id}")
+    suspend fun deleteStockCountDetail(@Path("id") id: Int) : StockCountDetailResponse
+
 
     @GET("inventory/stock_count/finish/{id}")
     suspend fun finishStockCount(@Path("id") id: Int) : StockCountObjectResponse

@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.receiving_details_item.view.*
 import java.util.*
 
 
-class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.ReceivingDetails>, val callback: (ReceivingDetailsResponse.ReceivingDetails) -> Unit) : RecyclerView.Adapter<ReceivingRecyclerAdapter.ListHolder>() {
-    private var updateList : MutableList<ReceivingDetailsResponse.ReceivingDetails> = list as MutableList<ReceivingDetailsResponse.ReceivingDetails>
+class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.ReceivingDetails?>, val callback: (ReceivingDetailsResponse.ReceivingDetails) -> Unit) : RecyclerView.Adapter<ReceivingRecyclerAdapter.ListHolder>() {
+    private var updateList : MutableList<ReceivingDetailsResponse.ReceivingDetails?> = list as MutableList<ReceivingDetailsResponse.ReceivingDetails?>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val inflatedView = parent.inflate(R.layout.receiving_details_item, false)
@@ -30,7 +30,7 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
             holder.bindHeader()
         } else {
             val item = list[position - 1]
-            holder.bindItem(item)
+            holder.bindItem(item!!)
             holder.itemView.setOnClickListener { callback(item) }
         }
 
@@ -40,13 +40,13 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         return list.size + 1
     }
 
-    fun getUpdateList(): List<ReceivingDetailsResponse.ReceivingDetails> {
+    fun getUpdateList(): List<ReceivingDetailsResponse.ReceivingDetails?> {
         return updateList.toList()
     }
 
     fun updateQty(productId : Int, text: String) {
         updateList.forEach {
-            if(it.product_id == productId) {
+            if(it!!.product_id == productId) {
                 val previousQty = it.qty_received
                 it.qty_received = try {
                     text.toInt()
@@ -60,8 +60,9 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
     fun checkProductAndUpdate(searchable : String): ReceivingDetailsResponse.ReceivingDetails? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
+                if(it!!.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
                     it.qty_received = it.qty_received + 1
+                    notifyDataSetChanged()
                     return it
                 }
             }
@@ -69,13 +70,20 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         return null
     }
 
+    fun removeAt(position: Int): Int? {
+        val id : Int? = updateList.elementAt((position - 1))!!.id
+        updateList.removeAt(position - 1)
+        notifyItemRemoved(position)
+        return id
+    }
+
     fun updateList(result: Array<ProductResponse.Product>) {
         for (item in result) {
             var found = false
             for (detail in updateList) {
-                if (item.id == detail.product_id) {
+                if (item.id == detail!!.product_id) {
                     found = true
-                    detail.qty_received += 1
+                    detail!!.qty_received += 1
                 }
             }
             if (!found) {
@@ -115,20 +123,14 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         }
 
         fun bindHeader() {
-            setHeaderBg(view.detailId)
             setHeaderBg(view.productName)
-            setHeaderBg(view.receivingQty)
             setHeaderBg(view.receivingQtyReceived)
             setDisable(view.receivingQtyReceived)
 
-            view.detailId.text = getString(R.string.receiving_header_id)
             view.productName.text =  getString(R.string.receiving_header_product)
-            view.receivingQty.text =  getString(R.string.receiving_header_qty)
             view.receivingQtyReceived.text = getString(R.string.receiving_header_qty_received)
 
-            view.detailId.setTypeface(null, Typeface.BOLD)
             view.productName.setTypeface(null, Typeface.BOLD)
-            view.receivingQty.setTypeface(null, Typeface.BOLD)
             view.receivingQtyReceived.setTypeface(null, Typeface.BOLD)
 
         }
@@ -136,20 +138,16 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         fun bindItem(item: ReceivingDetailsResponse.ReceivingDetails) {
             this.item = item
 
-            setContentBg(view.detailId)
             setContentBg(view.productName)
-            setContentBg(view.receivingQty)
             setContentBg(view.receivingQtyReceived)
 
-            view.detailId.text = item.id.toString()
             view.productName.text = item.product_name
-            view.receivingQty.text = item.qty_allocated.toString()
             view.receivingQtyReceived.text = item.qty_received.toString()
 
         }
 
         override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+            Log.e("TEST", "TEST")
         }
 
     }

@@ -14,6 +14,8 @@ class StockCountParam constructor(val type: Int) {
             const val VOID_STOCK_COUNT  = 4
             const val FINISH_STOCK_COUNT  = 5
             const val NEW_STOCK_COUNT = 6
+            const val DELETE_STOCK_COUNT_DETAIL = 7
+
 
         }
     }

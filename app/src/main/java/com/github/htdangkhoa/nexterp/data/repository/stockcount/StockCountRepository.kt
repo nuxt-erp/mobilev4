@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.data.repository.stockcount
 
 import com.github.htdangkhoa.nexterp.base.BaseRepository
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
@@ -17,7 +18,9 @@ interface StockCountRepository : BaseRepository {
         stockCountRequest: NewStockCountRequest
     ): Result<StockCountResponse.StockCount?>
 
-    suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail>>
+    suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
     suspend fun finishStockCount(id: Int): Result<StockCountResponse.StockCount?>
     suspend fun deleteStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>
+    suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
+
 }

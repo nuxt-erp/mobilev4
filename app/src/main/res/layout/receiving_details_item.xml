@@ -6,23 +6,11 @@
     android:layout_height="40dp">
 
     <TextView
-        android:id="@+id/detailId"
-        android:layout_width="45dp"
+        android:id="@+id/productName"
+        android:layout_width="260dp"
         android:layout_height="40dp"
         android:fontFamily="sans-serif"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:lineSpacingExtra="24sp"
-        android:gravity="center"
-        tools:text="ID"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/productName"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:fontFamily="sans-serif"
-        app:layout_constraintStart_toEndOf="@+id/detailId"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"
         android:gravity="center"
@@ -30,27 +18,14 @@
         android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/receivingQty"
-        android:layout_width="110dp"
+        android:id="@+id/receivingQtyReceived"
         android:fontFamily="sans-serif"
+        android:layout_width="110dp"
         android:layout_height="40dp"
         app:layout_constraintStart_toEndOf="@+id/productName"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"
         android:gravity="center"
-        tools:text="Qty"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/receivingQtyReceived"
-        android:fontFamily="sans-serif"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        app:layout_constraintStart_toEndOf="@+id/receivingQty"
-        app:layout_constraintTop_toTopOf="parent"
-        android:lineSpacingExtra="24sp"
-        android:gravity="center"
         tools:text="Received Qty"
         android:textSize="16sp"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

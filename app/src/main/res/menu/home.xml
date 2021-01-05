@@ -8,12 +8,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item android:id="@+id/action_search"
-        android:title="@string/action_search"
-        android:icon="@drawable/ic_baseline_search_24"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.widget.SearchView"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search Here"
-        />
+<!--    <item android:id="@+id/action_search"-->
+<!--        android:title="@string/action_search"-->
+<!--        android:icon="@drawable/ic_baseline_search_24"-->
+<!--        app:showAsAction="collapseActionView|ifRoom"-->
+<!--        app:actionViewClass="android.widget.SearchView"-->
+<!--        android:iconifiedByDefault="false"-->
+<!--        android:queryHint="Search Here"-->
+<!--        />-->
 </menu>

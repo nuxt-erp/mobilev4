@@ -15,7 +15,6 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.Rec
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
 import kotlinx.android.synthetic.main.receiving_details_item.view.*
-import kotlinx.android.synthetic.main.receiving_details_item.view.detailId
 import kotlinx.android.synthetic.main.receiving_details_item.view.productName
 import kotlinx.android.synthetic.main.stockcount_details_item.view.*
 import java.util.*
@@ -63,13 +62,23 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         notifyDataSetChanged()
     }
 
+    fun removeAt(position: Int): Int? {
+        val id : Int? = updateList.elementAt((position - 1))!!.id
+        updateList.removeAt(position - 1)
+        notifyItemRemoved(position)
+        return id
+    }
     fun checkProductAndUpdate(searchable : String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) && it.bin_id == binId) {
-                    it.qty = it.qty + 1
-                    notifyDataSetChanged()
-                    return it
+                if(it.searchable.isNullOrEmpty().not()) {
+                    if (it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
+                            .toLowerCase(Locale.ROOT) && it.bin_id == binId
+                    ) {
+                        it.qty = it.qty + 1
+                        notifyDataSetChanged()
+                        return it
+                    }
                 }
             }
         }

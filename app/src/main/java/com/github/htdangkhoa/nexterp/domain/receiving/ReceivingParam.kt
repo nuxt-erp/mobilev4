@@ -20,7 +20,7 @@ class ReceivingParam constructor(val type: Int) {
             const val VOID_RECEIVING = 4
             const val FINISH_RECEIVING = 5
             const val NEW_RECEIVING = 6
-
+            const val DELETE_RECEIVING_DETAIL = 7
         }
     }
 

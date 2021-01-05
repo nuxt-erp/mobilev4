@@ -14,6 +14,7 @@ class ReceivingUseCase(
             ReceivingParam.Type.NEW_RECEIVING -> repository.newReceiving(params.newReceivingRequest)
             ReceivingParam.Type.VOID_RECEIVING -> repository.deleteReceiving(params.id)
             ReceivingParam.Type.FINISH_RECEIVING -> repository.finishReceiving(params.id)
+            ReceivingParam.Type.DELETE_RECEIVING_DETAIL -> repository.deleteReceivingDetail(params.id)
 
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
