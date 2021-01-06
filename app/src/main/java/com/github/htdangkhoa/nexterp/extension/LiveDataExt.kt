@@ -2,13 +2,12 @@ package com.github.htdangkhoa.nexterp.extension
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 
 /**
  * Created by khoahuynh on 2020-01-06.
  */
-fun <T> liveDataOf(default: T? = null) = MutableLiveData<T>().apply { default?.let { value = it } }
+fun <T> liveDataOf(default: T? = null) = SingleLiveData<T>().apply { default?.let { value = it } }
 
 fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
     return Transformations.map(this, body)

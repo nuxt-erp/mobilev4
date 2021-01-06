@@ -77,6 +77,15 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
         return id
     }
 
+    fun findById(id: Int): ReceivingDetailsResponse.ReceivingDetails? {
+        updateList.forEach {
+            if(it!!.product_id == id) {
+                return it
+            }
+        }
+        return null
+    }
+
     fun updateList(result: Array<ProductResponse.Product>) {
         for (item in result) {
             var found = false

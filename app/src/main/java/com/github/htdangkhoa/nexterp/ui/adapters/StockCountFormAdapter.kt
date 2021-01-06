@@ -43,6 +43,15 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         return list.size + 1
     }
 
+    fun findById(id: Int, binId: Int?): StockCountDetailResponse.StockCountDetail? {
+        updateList.forEach {
+            if(it!!.product_id == id && it!!.bin_id == binId) {
+                return it
+            }
+        }
+        return null
+    }
+
     fun getUpdateList(): List<StockCountDetailResponse.StockCountDetail> {
         return updateList.toList()
     }
@@ -70,8 +79,17 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
     }
     fun checkProductAndUpdate(searchable : String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
+            Log.e("NOT EMPTY->>>", searchable)
+
             updateList.forEach {
+                Log.e("IT SEARCHABLE->>>", it.toString())
+                Log.e("SEARCHABLE->>>", searchable.trim().toLowerCase(Locale.ROOT))
+
+
+                Log.e("IT BIN ID->>>", it.bin_id.toString())
+                Log.e("BIN ID->>>", binId.toString())
                 if(it.searchable.isNullOrEmpty().not()) {
+
                     if (it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
                             .toLowerCase(Locale.ROOT) && it.bin_id == binId
                     ) {
@@ -84,23 +102,17 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         }
         return null
     }
-
     fun updateList(result: Array<ProductAvailabilityResponse.ProductAvailability>, binId: Int?) {
         for (item in result) {
-            Log.e("ITEM->>>", item.toString())
             var found = false
 
             for (detail in updateList) {
                 if (item.product_id == detail.product_id && item.bin_id == detail.bin_id) {
-                    Log.e("item bin->>>", item.bin_id.toString())
-                    Log.e("binId->>>", binId.toString())
                     found = true
                     if(item.bin_id == binId) {
                         detail.qty += 1
                     }
                 }
-
-
             }
 
             if (!found) {

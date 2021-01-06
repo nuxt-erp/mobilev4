@@ -1,7 +1,9 @@
 package com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details
 
+import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class StockCountDetailResponse(
     @SerializedName("status")
@@ -14,6 +16,7 @@ data class StockCountDetailResponse(
     var message: String
 
 ) : ResponseModel<Array<StockCountDetailResponse.StockCountDetail?>>() {
+    @Parcelize
     data class StockCountDetail(
         @SerializedName("id")
         var id: Int?,
@@ -41,7 +44,7 @@ data class StockCountDetailResponse(
 
         @SerializedName("qty")
         var qty: Int
-    )
+    ) : Parcelable
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

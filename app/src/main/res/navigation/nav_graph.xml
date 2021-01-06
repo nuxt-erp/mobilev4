@@ -46,8 +46,8 @@
             android:id="@+id/action_receivingFormFragment_to_nav_receiving"
             app:destination="@id/nav_receiving" />
         <action
-            android:id="@+id/action_receivingFormFragment_to_receivingDetailsFragment"
-            app:destination="@id/receivingDetailsFragment" />
+            android:id="@+id/action_receivingFormFragment_to_receivingNewFragment"
+            app:destination="@id/receivingNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_stock_count"
@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_stockCountFormFragment_to_nav_stock_count"
             app:destination="@id/nav_stock_count" />
+        <action
+            android:id="@+id/action_stockCountFormFragment_to_stockCountNewFragment"
+            app:destination="@id/stockCountNewFragment" />
 
     </fragment>
     <fragment
@@ -94,14 +97,5 @@
         <action
             android:id="@+id/action_receivingNewFragment_to_nav_receiving"
             app:destination="@id/nav_receiving" />
-    </fragment>
-    <fragment
-        android:id="@+id/receivingDetailsFragment"
-        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment"
-        android:label="Receiving Item Details"
-        tools:layout="@layout/custom_popup" >
-        <argument
-            android:name="receivingDetail"
-            app:argType="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse$ReceivingDetails" />
     </fragment>
 </navigation>

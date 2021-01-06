@@ -1,9 +1,6 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form
 
-import android.app.Dialog
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -29,13 +27,11 @@ import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
-import kotlinx.android.synthetic.main.custom_popup.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -47,8 +43,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     private val args: ReceivingFormFragmentArgs by navArgs()
     private lateinit var receivingDetailsAdapter: ReceivingRecyclerAdapter
     private lateinit var sharedPreferences: SharedPreferences
-    private var productId by Delegates.notNull<Int>()
-    private var myDialog by Delegates.notNull<Dialog>()
+    private var productId : Int? = null
     private var locationId by Delegates.notNull<Int>()
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(
@@ -75,7 +70,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         initialize(view)
-        myDialog = Dialog(requireContext())
         //resources (data) from view model
         viewModel.resourceReceivingDetails.observe(
             viewLifecycleOwner,
@@ -261,7 +255,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             .subscribe {
             if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                 if (itemField.hasFocus()) {
-
                     val receivingDetails: ReceivingDetailsResponse.ReceivingDetails? =
                         receivingDetailsAdapter.checkProductAndUpdate(it)
                     if (receivingDetails == null) {
@@ -280,7 +273,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            receivingDetailsAdapter.updateQty(productId, text.toString())
+            receivingDetailsAdapter.updateQty(productId!!, text.toString())
             receivingDetailsAdapter.notifyDataSetChanged()
         }
     }
@@ -330,13 +323,25 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             viewModel.voidReceiving(args.receiving.id)
         }
         btnLinkToDetails.setOnClickListener {
-//            showPopup(view)
-        }
-    }
+            if(productId != null) {
+                val receivingDetail : ReceivingDetailsResponse.ReceivingDetails? = receivingDetailsAdapter.findById(
+                    productId!!
+                )
 
-    private fun showPopup(receivingDetail: ReceivingDetailsResponse.ReceivingDetails, v: View?) {
-        val action = ReceivingFormFragmentDirections.actionReceivingFormFragmentToReceivingDetailsFragment(receivingDetail)
-        v!!.findNavController().navigate(action)
+                if(receivingDetail != null) {
+                    val fm: FragmentManager = childFragmentManager
+                    val bundle = Bundle()
+                    val detailsFragment = ReceivingDetailsFragment()
+
+                    bundle.putParcelable("receivingDetails", receivingDetail)
+                    detailsFragment.arguments = bundle
+
+                    fm.beginTransaction()
+                        .replace(R.id.outer_frame, detailsFragment)
+                        .commit()
+                }
+            }
+        }
     }
     //return fancy colours depending on status
     private fun checkStatus(status: String): Int {

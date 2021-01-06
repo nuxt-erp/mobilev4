@@ -24,7 +24,6 @@ import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorRespon
 import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.GetMeResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.UsersResponse
-import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
