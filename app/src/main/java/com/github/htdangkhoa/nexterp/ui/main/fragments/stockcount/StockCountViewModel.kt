@@ -37,13 +37,12 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCoun
 
 class StockCountViewModel(
     private val stockCountUseCase: StockCountUseCase,
-    private val authUseCase: AuthUseCase,
     private val binUseCase: BinUseCase,
     private val availabilityUseCase: ProductAvailabilityUseCase,
     private val brandUseCase: BrandUseCase,
     private val categoryUseCase: CategoryUseCase,
     private val tagUseCase: TagUseCase,
-    private val stockLocatorUseCase: StockLocatorUseCase,
+    private val stockLocatorUseCase: StockLocatorUseCase
 
 ) : ViewModel() {
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
@@ -53,7 +52,6 @@ class StockCountViewModel(
     val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
-    val resourceLogout = liveDataOf<Resource<String>>()
     val resourceBrands = liveDataOf<Resource<Array<BrandResponse.Brand>>>()
     val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()
     val resourceTags = liveDataOf<Resource<Array<TagResponse.Tag>>>()
@@ -340,23 +338,6 @@ class StockCountViewModel(
 
             onCancel {
                 resourceDeleteStockCountDetails.postValue(Resource.error(it))
-            }
-        }
-    }
-    fun logout() {
-        resourceLogout.postValue(Resource.loading())
-
-        authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
-            onComplete {
-                resourceLogout.postValue(Resource.success(it))
-            }
-
-            onError {
-                resourceLogout.postValue(Resource.error(it))
-            }
-
-            onCancel {
-                resourceLogout.postValue(Resource.error(it))
             }
         }
     }

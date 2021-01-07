@@ -32,7 +32,7 @@ class AuthRepositoryImp(
         }
     }
 
-    override suspend fun logout(): Result<String?> {
+    override suspend fun logout(): Result<Array<String?>> {
         return try {
             val res = apiService.logout()
 

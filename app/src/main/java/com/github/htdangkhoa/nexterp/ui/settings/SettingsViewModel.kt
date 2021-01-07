@@ -15,13 +15,11 @@ import com.github.htdangkhoa.nexterp.resource.Resource
 
 class SettingsViewModel(
     private val userUseCase: UserUseCase,
-    private val locationUseCase: LocationUseCase,
-    private val authUseCase: AuthUseCase
+    private val locationUseCase: LocationUseCase
 ) : ViewModel() {
     val resourceUser = liveDataOf<Resource<GetMeResponse.User>>()
     val resourceUsers = liveDataOf<Resource<Array<UsersResponse.User>>>()
     val resourceLocations = liveDataOf<Resource<Array<LocationResponse.Location>>>()
-    val resourceLogout = liveDataOf<Resource<String>>()
 
     fun getMe() {
         resourceUser.postValue(Resource.loading())
@@ -76,23 +74,6 @@ class SettingsViewModel(
 
             onCancel {
                 resourceLocations.postValue(Resource.error(it))
-            }
-        }
-    }
-    fun logout() {
-        resourceLogout.postValue(Resource.loading())
-
-        authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
-            onComplete {
-                resourceLogout.postValue(Resource.success(it))
-            }
-
-            onError {
-                resourceLogout.postValue(Resource.error(it))
-            }
-
-            onCancel {
-                resourceLogout.postValue(Resource.error(it))
             }
         }
     }

@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseActivity
+import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.settings.SettingsActivity
 import com.google.android.material.navigation.NavigationView
@@ -52,7 +53,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     /* Populating the hamburger menu will all items from the 'menu_home_drawer' XML file */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_home_drawer, menu)
+        menuInflater.inflate(R.menu.home, menu)
         return true
     }
 
@@ -67,22 +68,26 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             startActivity<SettingsActivity>()
             return true
+        } else if(id == R.id.action_logout) {
+            viewModel.logout()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
     /* TODO make use of the logout in the settings section of the menu */
     override fun render(savedInstanceState: Bundle?) {
 
-        viewModel.resourceLogout.observe(this, object : ObserverResource<String>() {
-            override fun onSuccess(data: String) {
+        viewModel.resourceLogout.observe(this, object : ObserverResource<Array<String?>>() {
+            override fun onSuccess(data: Array<String?>) {
                 logout(401)
             }
 
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
-                    it?.message?.let {
-                        showDialog("Error", it)
-                    }
+//                    it?.message?.let {
+//                        showDialog("Error", it)
+//                    }
+                    throw it!!
                 }
             }
         })

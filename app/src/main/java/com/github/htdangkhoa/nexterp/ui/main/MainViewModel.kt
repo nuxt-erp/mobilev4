@@ -21,7 +21,7 @@ class MainViewModel(
     val resourceUser = liveDataOf<Resource<GetMeResponse.User>>()
     val resourceUsers = liveDataOf<Resource<Array<UsersResponse.User>>>()
     val resourceLocations = liveDataOf<Resource<Array<LocationResponse.Location>>>()
-    val resourceLogout = liveDataOf<Resource<String>>()
+    val resourceLogout = liveDataOf<Resource<Array<String?>>>()
 
     fun getMe() {
         resourceUser.postValue(Resource.loading())
@@ -82,7 +82,7 @@ class MainViewModel(
     fun logout() {
         resourceLogout.postValue(Resource.loading())
 
-        authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
+        authUseCase.execute<Array<String?>>(AuthParam(AuthParam.Type.LOGOUT)) {
             onComplete {
                 resourceLogout.postValue(Resource.success(it))
             }

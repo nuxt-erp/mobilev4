@@ -10,13 +10,13 @@ class HomeViewModel(
     private val authUseCase: AuthUseCase
 
 ) : ViewModel() {
-    val resourceLogout = liveDataOf<Resource<String>>()
+    val resourceLogout = liveDataOf<Resource<Array<String?>>>()
 
 
     fun logout() {
         resourceLogout.postValue(Resource.loading())
 
-        authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
+        authUseCase.execute<Array<String?>>(AuthParam(AuthParam.Type.LOGOUT)) {
             onComplete {
                 resourceLogout.postValue(Resource.success(it))
             }

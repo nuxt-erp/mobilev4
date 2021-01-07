@@ -1,7 +1,5 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount
 
-import com.github.htdangkhoa.nexterp.data.repository.auth.AuthRepository
-import com.github.htdangkhoa.nexterp.data.repository.auth.AuthRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.availability.ProductAvailabilityRepository
 import com.github.htdangkhoa.nexterp.data.repository.availability.ProductAvailabilityRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.bin.BinRepository
@@ -34,10 +32,6 @@ object StockCountModule {
 
         single(override = true) { provideStockCountUseCase(get()) }
 
-        single(override = true) { provideAuthRepository(get()) }
-
-        single(override = true) { provideAuthUseCase(get()) }
-
         single(override = true) { provideBinRepository(get()) }
 
         single(override = true) { provideBinUseCase(get()) }
@@ -62,7 +56,7 @@ object StockCountModule {
 
         single(override = true) { provideStockLocatorUseCase(get()) }
 
-        viewModel { StockCountViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { StockCountViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
     private fun provideAvailabilityRepository(apiService: ApiService): ProductAvailabilityRepository =
         ProductAvailabilityRepositoryImp(apiService)
@@ -73,11 +67,6 @@ object StockCountModule {
         StockCountRepositoryImp(apiService)
 
     private fun provideStockCountUseCase(stockCountRepository: StockCountRepository) = StockCountUseCase(stockCountRepository)
-
-    private fun provideAuthRepository(apiService: ApiService): AuthRepository =
-        AuthRepositoryImp(apiService)
-
-    private fun provideAuthUseCase(authRepository: AuthRepository) = AuthUseCase(authRepository)
 
     private fun provideBinRepository(apiService: ApiService): BinRepository =
         BinRepositoryImp(apiService)

@@ -19,15 +19,11 @@ object SettingsModule {
 
         single(override = true) { provideUserUseCase(get()) }
 
-        single(override = true) { provideAuthRepository(get()) }
-
-        single(override = true) { provideAuthUseCase(get()) }
-
         single(override = true) { provideLocationRepository(get()) }
 
         single(override = true) { provideLocationUseCase(get()) }
 
-        viewModel { SettingsViewModel(get(), get(), get()) }
+        viewModel { SettingsViewModel(get(), get()) }
     }
 
     private fun provideUserRepository(apiService: ApiService): UserRepository =
@@ -35,10 +31,6 @@ object SettingsModule {
 
     private fun provideUserUseCase(userRepository: UserRepository) = UserUseCase(userRepository)
 
-    private fun provideAuthRepository(apiService: ApiService): AuthRepository =
-        AuthRepositoryImp(apiService)
-
-    private fun provideAuthUseCase(authRepository: AuthRepository) = AuthUseCase(authRepository)
 
     private fun provideLocationRepository(apiService: ApiService): LocationRepository =
         LocationRepositoryImp(apiService)

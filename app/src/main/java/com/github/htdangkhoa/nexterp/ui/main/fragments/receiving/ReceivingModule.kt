@@ -19,16 +19,12 @@ object ReceivingModule {
 
         single(override = true) { provideReceivingUseCase(get()) }
 
-        single(override = true) { provideAuthRepository(get()) }
-
-        single(override = true) { provideAuthUseCase(get()) }
-
         single(override = true) { provideProductRepository(get()) }
 
         single(override = true) { provideProductUseCase(get()) }
 
 
-        viewModel { ReceivingViewModel(get(), get(), get()) }
+        viewModel { ReceivingViewModel(get(), get()) }
     }
 
     private fun provideReceivingRepository(apiService: ApiService): ReceivingRepository =
@@ -42,11 +38,5 @@ object ReceivingModule {
 
     private fun provideProductUseCase(productRepository: ProductRepository) =
         ProductUseCase(productRepository)
-
-    private fun provideAuthRepository(apiService: ApiService): AuthRepository =
-        AuthRepositoryImp(apiService)
-
-    private fun provideAuthUseCase(authRepository: AuthRepository) =
-        AuthUseCase(authRepository)
 
 }

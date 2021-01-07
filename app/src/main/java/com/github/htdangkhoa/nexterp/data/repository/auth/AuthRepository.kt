@@ -14,5 +14,5 @@ interface AuthRepository : BaseRepository {
         renewTokenRequest: RenewTokenRequest
     ): Result<AuthResponse.Token?>
 
-    suspend fun logout(): Result<String?>
+    suspend fun logout(): Result<Array<String?>>
 }

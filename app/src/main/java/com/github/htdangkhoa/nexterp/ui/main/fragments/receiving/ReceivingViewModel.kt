@@ -20,8 +20,7 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingL
 
 class ReceivingViewModel(
     private val receivingUseCase: ReceivingUseCase,
-    private val productUseCase: ProductUseCase,
-    private val authUseCase: AuthUseCase
+    private val productUseCase: ProductUseCase
 
 ) : ViewModel() {
     val resourceProduct = liveDataOf<Resource<Array<ProductResponse.Product>>>()
@@ -31,7 +30,6 @@ class ReceivingViewModel(
     val resourceDeleteReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails?>>>()
     val resourceFinish = liveDataOf<Resource<ReceivingResponse.Receiving>>()
     val resourceVoid =  liveDataOf<Resource<Array<ReceivingResponse.Receiving?>>>()
-    val resourceLogout = liveDataOf<Resource<String>>()
 
     fun onReceivingClick(view : View, receiving: ReceivingResponse.Receiving) {
         val action = ReceivingListFragmentDirections.actionNavReceivingToReceivingFormFragment(receiving)
@@ -189,23 +187,6 @@ class ReceivingViewModel(
 
             onCancel {
                 resourceReceivingDetails.postValue(Resource.error(it))
-            }
-        }
-    }
-
-    fun logout() {
-        resourceLogout.postValue(Resource.loading())
-        authUseCase.execute<String>(AuthParam(AuthParam.Type.LOGOUT)) {
-            onComplete {
-                resourceLogout.postValue(Resource.success(it))
-            }
-
-            onError {
-                resourceLogout.postValue(Resource.error(it))
-            }
-
-            onCancel {
-                resourceLogout.postValue(Resource.error(it))
             }
         }
     }
