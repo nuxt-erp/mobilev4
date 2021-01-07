@@ -24,8 +24,6 @@ class UserRepositoryImp(
     override suspend fun getUsers(): Result<Array<UsersResponse.User>> {
         return try {
             val res = apiService.getUsers()
-
-            Log.e("res->>>", res.toString())
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

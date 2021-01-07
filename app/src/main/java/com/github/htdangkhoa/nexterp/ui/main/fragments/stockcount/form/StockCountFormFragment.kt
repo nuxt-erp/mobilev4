@@ -82,7 +82,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
                 val swipeHandler = object : SwipeToDeleteCallback(context!!) {
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        Log.e("SWIPED->>>", viewHolder.adapterPosition.toString())
                         val id = stockCountDetailsAdapter.removeAt(viewHolder.adapterPosition)
                         if (id != null) {
                             viewModel.deleteStockCountDetail(id)
@@ -118,7 +117,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     binName.text = data[0].name
                     binId = data[0].id
                     itemField.requestFocus()
-                    Log.e("BIN->>>", data.toString())
                 }
 
             }
@@ -139,8 +137,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
 
                 findNavController().popBackStack()
-                Log.e("FINISH->>>", data.toString())
-
             }
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
@@ -160,7 +156,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
 
                 findNavController().popBackStack()
-                Log.e("VOID->>>", data.toString())
             }
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
@@ -179,9 +174,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
             override fun onSuccess(data: StockCountResponse.StockCount) {
                 viewModel.getStockCountDetails(data.id)
-
-                Log.e("UPDATE->>>", data.toString())
-
             }
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
@@ -221,7 +213,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                     stockCountDetailsAdapter.updateList(data, binId)
                     stockCountDetailsAdapter.notifyDataSetChanged()
-                    Log.e("AVAIL->>>", data.toString())
                 }
             }
 
@@ -318,7 +309,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            Log.e("TEXT->>>", text.toString())
             stockCountDetailsAdapter.updateQty(productId!!, binId, text.toString())
         }
     }
@@ -335,7 +325,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                         val stockCountDetails: StockCountDetailResponse.StockCountDetail? =
                             stockCountDetailsAdapter.checkProductAndUpdate(it, binId)
-                        Log.e("QTY ->>>", stockCountDetails.toString())
 
                         if (stockCountDetails == null) {
                             viewModel.getProductAvailability(
@@ -350,7 +339,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         } else {
                             productId = stockCountDetails.product_id
                             itemName.text = stockCountDetails.product_name
-                            Log.e("QTY ->>>", stockCountDetails.qty.toString())
                             qtyField.setText(stockCountDetails.qty.toString())
                             itemField.selectAll()
                         }

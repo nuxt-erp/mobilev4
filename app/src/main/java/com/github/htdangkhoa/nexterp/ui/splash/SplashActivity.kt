@@ -26,7 +26,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     AuthModel.accessToken = access_token
                     AuthModel.refreshToken = refresh_token
                 }
-                Log.e("SUCCESS->>>", "SUCCESS")
 
                 startActivity<SettingsActivity>()
 
@@ -47,8 +46,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }
 
             override fun onLoading(isShow: Boolean) {
-                Log.e("LOADING->>>", "LOADING")
-
                 progressCircular.apply {
                     if (isShow) show() else hide(true)
                 }
@@ -61,8 +58,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
         } else {
             startActivity<LoginActivity>()
-            Log.e("startActivity->>>", "Start")
-
             finishAfterTransition()
         }
     }

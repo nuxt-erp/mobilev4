@@ -29,7 +29,6 @@ class SettingsFragment() : BasePreferenceFragment<SettingsViewModel, SettingsAct
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
-                        Log.e("ERROR->>>", it.toString())
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }

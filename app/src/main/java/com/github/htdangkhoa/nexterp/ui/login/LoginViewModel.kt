@@ -28,7 +28,6 @@ class LoginViewModel(
 
         authUseCase.execute<AuthResponse.Token>(AuthParam(request)) {
             onComplete {
-                Log.e("it->>>", "$it")
                 resourceToken.postValue(Resource.success(it))
             }
 

@@ -92,7 +92,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
 
                     val swipeHandler = object : SwipeToDeleteCallback(context!!) {
                         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                            Log.e("SWIPED->>>", viewHolder.adapterPosition.toString())
                             val id = receivingDetailsAdapter.removeAt(viewHolder.adapterPosition)
                             if (id != null) {
                                 viewModel.deleteReceivingDetail(id)
@@ -122,7 +121,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<ReceivingResponse.Receiving>() {
                 override fun onSuccess(data: ReceivingResponse.Receiving) {
-                    Log.e("FINISH->>>", data.toString())
                     findNavController().popBackStack()
 
                 }
@@ -203,7 +201,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<ProductResponse.Product>>() {
                 override fun onSuccess(data: Array<ProductResponse.Product>) {
-                    Log.e("TEST->>>", data.toString())
                     if (data.isNullOrEmpty().not()) {
                         receivingDetailsAdapter.updateList(data)
                         receivingDetailsAdapter.notifyDataSetChanged()

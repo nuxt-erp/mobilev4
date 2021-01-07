@@ -79,15 +79,8 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
     }
     fun checkProductAndUpdate(searchable : String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
-            Log.e("NOT EMPTY->>>", searchable)
 
             updateList.forEach {
-                Log.e("IT SEARCHABLE->>>", it.toString())
-                Log.e("SEARCHABLE->>>", searchable.trim().toLowerCase(Locale.ROOT))
-
-
-                Log.e("IT BIN ID->>>", it.bin_id.toString())
-                Log.e("BIN ID->>>", binId.toString())
                 if(it.searchable.isNullOrEmpty().not()) {
 
                     if (it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()

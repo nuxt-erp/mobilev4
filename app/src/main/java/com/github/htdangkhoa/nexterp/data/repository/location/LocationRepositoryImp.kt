@@ -14,8 +14,6 @@ class LocationRepositoryImp(
     override suspend fun getLocations(): Result<Array<LocationResponse.Location>> {
         return try {
             val res = apiService.getLocations()
-
-            Log.e("res->>>", res.toString())
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)
