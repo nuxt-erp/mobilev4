@@ -11,13 +11,18 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:tag="StockCountFilterFragment"
     tools:context=".ui.main.fragments.stockcount.new.StockCountNewFragment">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="86dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            >
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -25,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:hint="@string/stock_count_name"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -107,11 +112,12 @@
         android:layout_marginBottom="28dp"
         android:text="@string/save"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.material.button.MaterialButton>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"

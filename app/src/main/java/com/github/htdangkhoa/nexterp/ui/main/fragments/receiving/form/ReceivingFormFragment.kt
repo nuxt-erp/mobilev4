@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -122,9 +123,8 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             object : ObserverResource<ReceivingResponse.Receiving>() {
                 override fun onSuccess(data: ReceivingResponse.Receiving) {
                     Log.e("FINISH->>>", data.toString())
-                    val action =
-                        ReceivingFormFragmentDirections.actionReceivingFormFragmentToNavReceiving()
-                    view.findNavController().navigate(action)
+                    findNavController().popBackStack()
+
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -165,10 +165,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             this,
             object : ObserverResource<Array<ReceivingResponse.Receiving?>>() {
                 override fun onSuccess(data: Array<ReceivingResponse.Receiving?>) {
-                    Log.e("VOID->>>", data.toString())
-                    val action =
-                        ReceivingFormFragmentDirections.actionReceivingFormFragmentToNavReceiving()
-                    view.findNavController().navigate(action)
+                    findNavController().popBackStack()
                 }
 
                 override fun onError(throwable: Throwable?) {

@@ -31,16 +31,9 @@ class StockCountDetailsFragment() : BaseFragment<StockCountViewModel>(
             binDetailBarcode.text = "No bin found."
         }
 
-
         txtClose.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
             fm.beginTransaction().remove(this).commit()
         }
-
-        popupBackground.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.beginTransaction().remove(this).commit()
-        }
-
     }
 }

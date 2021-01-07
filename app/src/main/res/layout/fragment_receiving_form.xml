@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ui.main.fragments.receiving.form.ReceivingFormFragment">
+        <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -190,7 +197,7 @@
             android:src="@drawable/ic_baseline_add_24"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </ScrollView>
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/outer_frame"

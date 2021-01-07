@@ -49,7 +49,7 @@ class StockCountViewModel(
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
     val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()
     val resourceStockCountObject = liveDataOf<Resource<StockCountResponse.StockCount>>()
-    val resourceFinish = liveDataOf<Resource<StockCountResponse.StockCount>>()
+    val resourceFinish = liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
@@ -308,7 +308,7 @@ class StockCountViewModel(
     fun finishStockCount(id: Int) {
         resourceFinish.postValue(Resource.loading())
 
-        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.FINISH_STOCK_COUNT, id)) {
+        stockCountUseCase.execute<Array<StockCountResponse.StockCount?>>(StockCountParam(StockCountParam.Type.FINISH_STOCK_COUNT, id)) {
             onComplete {
                 resourceFinish.postValue(Resource.success(it))
             }

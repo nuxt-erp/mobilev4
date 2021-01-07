@@ -3,26 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
-
-    <TextView
-        android:id="@+id/detailId"
-        android:layout_width="45dp"
-        android:layout_height="40dp"
-        android:fontFamily="sans-serif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:lineSpacingExtra="24sp"
-        android:gravity="center"
-        tools:text="ID"
-        android:textSize="16sp"/>
+    android:layout_height="80dp">
 
     <TextView
         android:id="@+id/productName"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
         android:fontFamily="sans-serif"
-        app:layout_constraintStart_toEndOf="@+id/detailId"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"
         android:gravity="center"
@@ -32,7 +20,7 @@
     <TextView
         android:id="@+id/binName"
         android:fontFamily="sans-serif"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/productName"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"
@@ -43,9 +31,9 @@
         tools:text="Bin Name" />
     <TextView
         android:id="@+id/stockQty"
-        android:layout_width="80dp"
+        android:layout_width="50dp"
         android:fontFamily="sans-serif"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/binName"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"

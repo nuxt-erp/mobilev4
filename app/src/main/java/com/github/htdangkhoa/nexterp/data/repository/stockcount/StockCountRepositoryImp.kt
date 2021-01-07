@@ -56,7 +56,7 @@ class StockCountRepositoryImp(
         }
     }
 
-    override suspend fun finishStockCount(id: Int): Result<StockCountResponse.StockCount?> {
+    override suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>> {
         return try {
             val res = apiService.finishStockCount(id)
             Result.map(res)

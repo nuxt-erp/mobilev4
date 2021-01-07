@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ui.main.fragments.stockcount.form.StockCountFormFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,18 +79,16 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:fontFamily="sans-serif-light"
-        android:gravity="right"
         android:textFontWeight="800"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="@string/no_bin_selected"
-        app:layout_constraintStart_toEndOf="@+id/itemName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockCountNumberLabel" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemName" />
 
     <com.google.android.material.button.MaterialButton
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemName"
+        app:layout_constraintTop_toBottomOf="@+id/binName"
         android:id="@+id/btnLinkToStockDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -149,11 +154,11 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stockCountDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:nestedScrollingEnabled="false"
             android:background="@drawable/table_parent_bg"
             tools:listitem="@layout/stockcount_details_item"
@@ -221,7 +226,7 @@
         android:focusable="true"
         android:src="@drawable/ic_baseline_add_24"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </ScrollView>
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/outer_frame_sc"

@@ -1,5 +1,4 @@
 package com.github.htdangkhoa.nexterp.data.service
-
 import com.github.htdangkhoa.nexterp.data.remote.SuccessResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
@@ -58,7 +57,7 @@ interface ApiService {
 
     // Receiving
 
-    @GET("inventory/receiving")
+    @GET("inventory/receiving" + "?not_received=1")
     suspend fun getReceiving(): ReceivingResponse
 
     @GET("inventory/receiving_details")
@@ -81,7 +80,7 @@ interface ApiService {
 
     // Stock Count
 
-    @GET("inventory/stock_count")
+    @GET("inventory/stock_count"+ "?status=0")
     suspend fun getStockCount(): StockCountResponse
 
     @GET("inventory/stock_count_details")
@@ -99,9 +98,8 @@ interface ApiService {
     @DELETE("inventory/stock_count_details/{id}")
     suspend fun deleteStockCountDetail(@Path("id") id: Int) : StockCountDetailResponse
 
-
     @GET("inventory/stock_count/finish/{id}")
-    suspend fun finishStockCount(@Path("id") id: Int) : StockCountObjectResponse
+    suspend fun finishStockCount(@Path("id") id: Int) : StockCountResponse
 
     // Bin
 

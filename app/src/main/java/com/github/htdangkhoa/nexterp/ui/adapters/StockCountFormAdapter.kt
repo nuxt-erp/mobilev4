@@ -155,17 +155,17 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         }
 
         fun bindHeader() {
-            setHeaderBg(view.detailId)
+//            setHeaderBg(view.detailId)
             setHeaderBg(view.productName)
             setHeaderBg(view.binName)
             setHeaderBg(view.stockQty)
 
-            view.detailId.text = getString(R.string.receiving_header_id)
+//            view.detailId.text = getString(R.string.receiving_header_id)
             view.productName.text =  getString(R.string.receiving_header_product)
             view.binName.text =  getString(R.string.stockcount_header_bin)
             view.stockQty.text =  getString(R.string.receiving_header_qty)
 
-            view.detailId.setTypeface(null, Typeface.BOLD)
+//            view.detailId.setTypeface(null, Typeface.BOLD)
             view.productName.setTypeface(null, Typeface.BOLD)
             view.binName.setTypeface(null, Typeface.BOLD)
             view.stockQty.setTypeface(null, Typeface.BOLD)
@@ -175,12 +175,12 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         fun bindItem(item: StockCountDetailResponse.StockCountDetail) {
             this.item = item
 
-            setContentBg(view.detailId)
+//            setContentBg(view.detailId)
             setContentBg(view.productName)
             setContentBg(view.binName)
             setContentBg(view.stockQty)
 
-            view.detailId.text = item.id.toString()
+//            view.detailId.text = item.id.toString()
             view.productName.text = item.product_name
             view.stockQty.text = item.qty.toString()
             view.binName.text = item.bin_name

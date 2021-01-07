@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,22 +20,18 @@ import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form.ReceivingFormFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.details.StockCountDetailsFragment
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_receiving_form.*
 import kotlinx.android.synthetic.main.fragment_stockcount_form.*
 import kotlinx.android.synthetic.main.fragment_stockcount_form.expandButton
 import kotlinx.android.synthetic.main.fragment_stockcount_form.finishButton
@@ -138,10 +135,10 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                 }
             }
         })
-        viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
-            override fun onSuccess(data: StockCountResponse.StockCount) {
-                val action = StockCountFormFragmentDirections.actionStockCountFormFragmentToNavStockCount()
-                view.findNavController().navigate(action)
+        viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+            override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
+
+                findNavController().popBackStack()
                 Log.e("FINISH->>>", data.toString())
 
             }
@@ -161,8 +158,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
         viewModel.resourceVoid.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
             override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
-                val action = StockCountFormFragmentDirections.actionStockCountFormFragmentToNavStockCount()
-                view.findNavController().navigate(action)
+
+                findNavController().popBackStack()
                 Log.e("VOID->>>", data.toString())
             }
             override fun onError(throwable: Throwable?) {

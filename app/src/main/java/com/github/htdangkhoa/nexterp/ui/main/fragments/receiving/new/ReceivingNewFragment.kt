@@ -3,26 +3,14 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.new
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
-import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
-import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
-import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
-import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
-import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
-import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
-import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter
-import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter.SpinnerItem
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
-import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
-import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections
-import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new.StockCountNewFragmentDirections
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
@@ -46,6 +34,7 @@ class ReceivingNewFragment() : BaseFragment<ReceivingViewModel>(
 
         viewModel.resourceReceivingObject.observe(viewLifecycleOwner, object : ObserverResource<ReceivingResponse.Receiving>() {
             override fun onSuccess(data: ReceivingResponse.Receiving) {
+
                 val action = ReceivingNewFragmentDirections.actionReceivingNewFragmentToNavReceiving()
                 view.findNavController().navigate(action)
 

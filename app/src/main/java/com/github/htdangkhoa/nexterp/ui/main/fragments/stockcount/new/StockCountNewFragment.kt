@@ -2,7 +2,6 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
 import com.github.htdangkhoa.nexterp.R
@@ -17,7 +16,6 @@ import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter
 import com.github.htdangkhoa.nexterp.ui.adapters.CheckableSpinnerAdapter.SpinnerItem
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
-import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast

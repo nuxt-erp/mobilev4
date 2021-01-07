@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="80dp">
 
     <TextView
         android:id="@+id/productName"
-        android:layout_width="260dp"
-        android:layout_height="40dp"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
         android:fontFamily="sans-serif"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,8 +20,8 @@
     <TextView
         android:id="@+id/receivingQtyReceived"
         android:fontFamily="sans-serif"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/productName"
         app:layout_constraintTop_toTopOf="parent"
         android:lineSpacingExtra="24sp"
