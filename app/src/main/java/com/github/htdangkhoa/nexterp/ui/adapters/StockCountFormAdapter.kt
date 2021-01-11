@@ -83,8 +83,9 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
             updateList.forEach {
                 if(it.searchable.isNullOrEmpty().not()) {
 
-                    if (it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
-                            .toLowerCase(Locale.ROOT) && it.bin_id == binId
+                    if ((it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
+                            .toLowerCase(Locale.ROOT) || it.product_sku!!.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(
+                            Locale.ROOT) ) && it.bin_id == binId
                     ) {
                         it.qty = it.qty + 1
                         notifyDataSetChanged()
@@ -113,6 +114,7 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
                     id = null,
                     product_id = item.product_id,
                     product_name = item.product_name,
+                    product_sku = item.product_sku,
                     searchable = item.searchable,
                     location_id = item.location_id,
                     bin_name = item.bin_name,

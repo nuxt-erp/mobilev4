@@ -24,6 +24,9 @@ data class StockCountDetailResponse(
         @SerializedName("product_name")
         var product_name: String,
 
+        @SerializedName("product_sku")
+        var product_sku: String?,
+
         @SerializedName("product_id")
         var product_id: Int,
 

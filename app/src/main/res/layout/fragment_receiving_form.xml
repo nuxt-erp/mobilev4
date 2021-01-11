@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".ui.main.fragments.receiving.form.ReceivingFormFragment">
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,7 +15,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -138,66 +136,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/finishButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="8dp"
-            app:backgroundTint="@color/colorPrimary"
-            android:textColor="#FFF"
-            android:contentDescription="@string/button_finish"
-            android:text="@string/button_finish"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@id/saveButton"
-            app:layout_constraintEnd_toEndOf="@id/expandButton" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/saveButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:backgroundTint="@color/colorPrimaryDark"
-            android:textColor="#FFF"
-            android:gravity="center"
-            android:contentDescription="@string/save"
-            android:text="@string/save"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@id/voidButton"
-            app:layout_constraintEnd_toEndOf="@id/expandButton" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/voidButton"
-            android:theme="@style/SecondaryButton"
-            app:backgroundTint="@color/colorAccent"
-            android:textColor="#FFF"
-            android:gravity="center"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/button_void"
-            android:visibility="invisible"
-            android:singleLine="true"
-            android:text="@string/button_void"
-            app:layout_constraintBottom_toTopOf="@id/expandButton"
-            app:layout_constraintEnd_toEndOf="@id/expandButton" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/expandButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-
-            app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:tint="@color/colorWhite"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_add_24"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/outer_frame"
@@ -206,6 +147,63 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/finishButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:contentDescription="@string/button_finish"
+        android:text="@string/button_finish"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/saveButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:textColor="#FFF"
+        android:gravity="center"
+        android:contentDescription="@string/save"
+        android:text="@string/save"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/voidButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/voidButton"
+        android:theme="@style/SecondaryButton"
+        app:backgroundTint="@color/colorAccent"
+        android:textColor="#FFF"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/button_void"
+        android:visibility="invisible"
+        android:singleLine="true"
+        android:text="@string/button_void"
+        app:layout_constraintBottom_toTopOf="@id/expandButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/expandButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/colorWhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_add_24"/>
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"

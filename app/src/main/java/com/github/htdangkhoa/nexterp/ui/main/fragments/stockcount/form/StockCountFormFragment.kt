@@ -192,25 +192,40 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         viewModel.resourceProductAvailability.observe(viewLifecycleOwner, object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
             override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
                 if(data.isNotEmpty()) {
-                    data.forEach {
-                        if(binField.text.toString().isNullOrEmpty()) {
-                            if(it.bin_id == null && it.searchable == itemField.text.toString()) {
-                                productId = it.product_id
-                                binId = null
+                    if(data.size == 1) {
+                        itemName.text = data[0].product_name
+                        productId = data[0].product_id
+                        binId = data[0].bin_id
+                        if (binId != null) binName.text = data[0].bin_name else  binName.text = "No bin selected"
+                        qtyField.setText(data[0].qty.toString())
+                    } else {
+                        data.forEach {
+                            Log.e("HERE->>>", "No bin")
+                            if(it.searchable == itemField.text.toString() || it.product_sku == itemField.text.toString()) {
+                                Log.e("HERE->>>", it.toString())
                                 itemName.text = it.product_name
-                                qtyField.setText(it.qty.toString())
-                                itemField.selectAll()
+                                productId = it.product_id
                             }
-                        } else {
-                            if(it.bin_searchable == binField.text.toString() && it.searchable == itemField.text.toString()) {
-                                productId = it.product_id
-                                binId = it.bin_id
-                                itemName.text = it.product_name
+
+                            if(binField.text.toString().isEmpty() && it.bin_id == null) {
+                                binId = null
                                 qtyField.setText(it.qty.toString())
-                                itemField.selectAll()
+                                itemName.text = it.product_name
+                            } else if(binField.text.toString().isNotEmpty() && it.bin_searchable == binField.text.toString()) {
+                                binId = it.bin_id
+                                qtyField.setText(it.qty.toString())
+                                itemName.text = it.product_name
                             }
                         }
+                        if(binField.toString().isEmpty() && binId == null) {
+                            binId = data[0].bin_id
+                            binName.text = data[0].bin_name
+                            binField.setText(data[0].bin_searchable)
+                            qtyField.setText(data[0].qty.toString())
+                        }
                     }
+
+                    itemField.selectAll()
                     stockCountDetailsAdapter.updateList(data, binId)
                     stockCountDetailsAdapter.notifyDataSetChanged()
                 }
@@ -321,7 +336,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (itemField.hasFocus()) {
-
                     if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                         val stockCountDetails: StockCountDetailResponse.StockCountDetail? =
                             stockCountDetailsAdapter.checkProductAndUpdate(it, binId)
@@ -339,12 +353,13 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         } else {
                             productId = stockCountDetails.product_id
                             itemName.text = stockCountDetails.product_name
+                            Log.e("DETAIL->>>", stockCountDetails.qty.toString())
                             qtyField.setText(stockCountDetails.qty.toString())
                             itemField.selectAll()
                         }
                     } else {
                         productId = null
-                        itemName.text = "No item selected"
+                        itemName.text = "Product not on count"
                     }
                 }
             }
