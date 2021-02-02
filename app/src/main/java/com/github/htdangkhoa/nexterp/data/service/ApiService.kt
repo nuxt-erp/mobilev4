@@ -4,7 +4,7 @@ import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
-import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse

@@ -2,8 +2,8 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount
 
 import com.github.htdangkhoa.nexterp.data.repository.availability.ProductAvailabilityRepository
 import com.github.htdangkhoa.nexterp.data.repository.availability.ProductAvailabilityRepositoryImp
-import com.github.htdangkhoa.nexterp.data.repository.bin.BinRepository
-import com.github.htdangkhoa.nexterp.data.repository.bin.BinRepositoryImp
+import com.github.htdangkhoa.nexterp.data.repository.locationbin.BinRepository
+import com.github.htdangkhoa.nexterp.data.repository.locationbin.BinRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.brand.BrandRepository
 import com.github.htdangkhoa.nexterp.data.repository.brand.BrandRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.category.CategoryRepository
@@ -15,9 +15,8 @@ import com.github.htdangkhoa.nexterp.data.repository.stocklocator.StockLocatorRe
 import com.github.htdangkhoa.nexterp.data.repository.tag.TagRepository
 import com.github.htdangkhoa.nexterp.data.repository.tag.TagRepositoryImp
 import com.github.htdangkhoa.nexterp.data.service.ApiService
-import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.availability.ProductAvailabilityUseCase
-import com.github.htdangkhoa.nexterp.domain.bin.BinUseCase
+import com.github.htdangkhoa.nexterp.domain.locationbin.BinUseCase
 import com.github.htdangkhoa.nexterp.domain.brand.BrandUseCase
 import com.github.htdangkhoa.nexterp.domain.category.CategoryUseCase
 import com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase

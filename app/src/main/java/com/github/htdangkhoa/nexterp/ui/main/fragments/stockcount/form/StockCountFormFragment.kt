@@ -4,11 +4,9 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
@@ -20,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
-import com.github.htdangkhoa.nexterp.data.remote.bin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
