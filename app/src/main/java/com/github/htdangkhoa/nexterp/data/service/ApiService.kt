@@ -160,7 +160,7 @@ interface ApiService {
     @GET("inventory/products")
     suspend fun getProduct(
         @Query("searchable") searchable: String,
-        @Query("location_id") location_id: Int,
+        @Query("location_id") location_id: Int? = null,
     ):ProductResponse
 
 

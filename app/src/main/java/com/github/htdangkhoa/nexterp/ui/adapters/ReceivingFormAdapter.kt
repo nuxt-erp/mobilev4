@@ -28,6 +28,8 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
 
         if (position == 0) {
             holder.bindHeader()
+            holder.itemView.setOnClickListener {  }
+
         } else {
             val item = list[position - 1]
             holder.bindItem(item!!)
@@ -55,12 +57,13 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
                 }
             }
         }
+        notifyDataSetChanged()
     }
 
     fun checkProductAndUpdate(searchable : String): ReceivingDetailsResponse.ReceivingDetails? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it!!.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
+                if(it!!.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) || it.product_sku.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
                     it.qty_received = it.qty_received + 1
                     notifyDataSetChanged()
                     return it
@@ -92,7 +95,7 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
             for (detail in updateList) {
                 if (item.id == detail!!.product_id) {
                     found = true
-                    detail!!.qty_received += 1
+                    detail.qty_received += 1
                 }
             }
             if (!found) {
@@ -100,6 +103,8 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
                     id = null,
                     product_id = item.id,
                     product_name = item.name,
+                    product_full_name = item.product_full_name,
+                    product_sku = item.sku,
                     qty_allocated = 0,
                     qty_received = 0,
                     searchable = item.searchable
@@ -150,7 +155,7 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
             setContentBg(view.productName)
             setContentBg(view.receivingQtyReceived)
 
-            view.productName.text = item.product_name
+            view.productName.text = item.product_full_name
             view.receivingQtyReceived.text = item.qty_received.toString()
 
         }

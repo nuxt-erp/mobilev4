@@ -33,6 +33,15 @@ import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
+import kotlinx.android.synthetic.main.fragment_receiving_form.expandButton
+import kotlinx.android.synthetic.main.fragment_receiving_form.finishButton
+import kotlinx.android.synthetic.main.fragment_receiving_form.itemField
+import kotlinx.android.synthetic.main.fragment_receiving_form.itemName
+import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
+import kotlinx.android.synthetic.main.fragment_receiving_form.qtyField
+import kotlinx.android.synthetic.main.fragment_receiving_form.saveButton
+import kotlinx.android.synthetic.main.fragment_receiving_form.voidButton
+import kotlinx.android.synthetic.main.fragment_stockcount_form.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -230,7 +239,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     //item text watcher
     private fun itemHandle() {
         itemField.addRxTextWatcher()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -239,7 +248,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                     val receivingDetails: ReceivingDetailsResponse.ReceivingDetails? =
                         receivingDetailsAdapter.checkProductAndUpdate(it)
                     if (receivingDetails == null) {
-                        viewModel.getProduct(locationId, it.toString())
+                        viewModel.getProduct(null, it.toString())
                     } else {
                         productId = receivingDetails.product_id
                         itemName.text = receivingDetails.product_name
@@ -254,8 +263,10 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            receivingDetailsAdapter.updateQty(productId!!, text.toString())
-            receivingDetailsAdapter.notifyDataSetChanged()
+            if(itemField.text.toString().isEmpty().not()) {
+                receivingDetailsAdapter.updateQty(productId!!, text.toString())
+                receivingDetailsAdapter.notifyDataSetChanged()
+            }
         }
     }
 

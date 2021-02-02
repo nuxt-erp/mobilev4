@@ -36,7 +36,7 @@ class ReceivingViewModel(
         view.findNavController().navigate(action)
     }
 
-    fun getProduct(locationId: Int, searchable: String) {
+    fun getProduct(locationId: Int?, searchable: String) {
         resourceProduct.postValue(Resource.loading())
         productUseCase.execute<Array<ProductResponse.Product>> (ProductParam(ProductParam.Type.GET_PRODUCT, locationId, searchable)) {
             onComplete {

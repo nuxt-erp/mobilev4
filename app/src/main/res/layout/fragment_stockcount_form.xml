@@ -110,6 +110,7 @@
             android:id="@+id/binField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="text"
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -129,6 +130,7 @@
             android:id="@+id/itemField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="text"
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,6 +151,7 @@
             android:id="@+id/qtyField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="text"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 

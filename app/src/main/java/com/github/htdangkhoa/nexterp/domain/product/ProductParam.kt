@@ -9,10 +9,10 @@ class ProductParam constructor(val type: Int) {
         }
     }
 
-    var location_id: Int = 0
+    var location_id: Int? = null
     var searchable: String = ""
 
-    constructor(type: Int, location_id: Int, searchable: String) : this(ProductParam.Type.GET_PRODUCT) {
+    constructor(type: Int, location_id: Int?, searchable: String) : this(ProductParam.Type.GET_PRODUCT) {
         this.location_id = location_id
         this.searchable = searchable
     }
