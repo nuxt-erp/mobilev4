@@ -41,7 +41,7 @@ android {
 
         def TYPE = "\"" +  "password" + "\""
 
-        def DEV = "\"" + "http://192.168.0.84:8000/" + "\""
+        def DEV = "\"" + "http://192.168.0.84/api/public/" + "\""
 
         def PROD = "\"" + "<ENTER_YOUR_HOST>" + "\""
 
