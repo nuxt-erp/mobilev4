@@ -4,12 +4,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -33,31 +34,36 @@ import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_stockcount_form.*
-import kotlinx.android.synthetic.main.fragment_stockcount_form.expandButton
-import kotlinx.android.synthetic.main.fragment_stockcount_form.finishButton
-import kotlinx.android.synthetic.main.fragment_stockcount_form.itemField
-import kotlinx.android.synthetic.main.fragment_stockcount_form.itemName
-import kotlinx.android.synthetic.main.fragment_stockcount_form.progressCircular
-import kotlinx.android.synthetic.main.fragment_stockcount_form.qtyField
-import kotlinx.android.synthetic.main.fragment_stockcount_form.saveButton
-import kotlinx.android.synthetic.main.fragment_stockcount_form.voidButton
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
+
 class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
-    StockCountViewModel::class) {
+    StockCountViewModel::class
+) {
     private lateinit var stockCountDetailsAdapter: StockCountRecyclerAdapter
     private val args: StockCountFormFragmentArgs by navArgs()
     private lateinit var sharedPreferences: SharedPreferences
     private var productId: Int? = null
     private var binId: Int? = null
-    private var selectedQty: Int? = null
     private var locationId by Delegates.notNull<Int>()
 
-    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this.context, R.anim.rotate_open_anim )}
-    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this.context, R.anim.rotate_close_anim )}
-    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this.context, R.anim.from_bottom_anim )}
-    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this.context, R.anim.to_bottom_anim )}
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(
+        this.context,
+        R.anim.rotate_open_anim
+    )}
+    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(
+        this.context,
+        R.anim.rotate_close_anim
+    )}
+    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(
+        this.context,
+        R.anim.from_bottom_anim
+    )}
+    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(
+        this.context,
+        R.anim.to_bottom_anim
+    )}
 
     private var clicked : Boolean = false
 
@@ -66,184 +72,204 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         initialize(view)
-        viewModel.resourceStockCountDetails.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
-            override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
-                stockCountDetailsAdapter = StockCountRecyclerAdapter(data.toMutableList()) {
-                    productId = it.product_id
-                    binId = it.bin_id
-                    itemField.clearFocus()
-                    itemName.text = it.product_name
-                    binName.text = it.bin_name
-                    binField.setText(it.bin_searchable)
-                    itemField.setText(it.searchable)
-                    qtyField.setText(it.qty.toString())
-                    stockCountDetailsAdapter.notifyDataSetChanged()
-                }
+        viewModel.resourceStockCountDetails.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
+                override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
+                    stockCountDetailsAdapter = StockCountRecyclerAdapter(data.toMutableList()) {
+                        productId = it.product_id
+                        binId = it.bin_id
+                        itemField.clearFocus()
+                        itemName.text = it.product_name
+                        binName.text = it.bin_name
+                        binField.setText(it.bin_searchable)
+                        itemField.setText(it.searchable)
+                        qtyField.setText(it.qty.toString())
+                        stockCountDetailsAdapter.notifyDataSetChanged()
+                    }
 
-                val swipeHandler = object : SwipeToDeleteCallback(context!!) {
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        val id = stockCountDetailsAdapter.removeAt(viewHolder.adapterPosition)
-                        if (id != null) {
-                            viewModel.deleteStockCountDetail(id)
+                    val swipeHandler = object : SwipeToDeleteCallback(context!!) {
+                        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                            val id = stockCountDetailsAdapter.removeAt(viewHolder.adapterPosition)
+                            if (id != null) {
+                                viewModel.deleteStockCountDetail(id)
+                            }
                         }
+                    }
+
+                    val itemTouchHelper = ItemTouchHelper(swipeHandler)
+                    itemTouchHelper.attachToRecyclerView(stockCountDetails)
+
+                    stockCountDetails.apply {
+                        layoutManager = LinearLayoutManager(activity)
+                        adapter = stockCountDetailsAdapter
                     }
                 }
 
-                val itemTouchHelper = ItemTouchHelper(swipeHandler)
-                itemTouchHelper.attachToRecyclerView(stockCountDetails)
-
-                stockCountDetails.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    adapter = stockCountDetailsAdapter
-                }
-            }
-
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
-                }
-            }
-
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
-                }
-            }
-        })
-        viewModel.resourceBins.observe(viewLifecycleOwner, object : ObserverResource<Array<BinResponse.Bin>>() {
-            override fun onSuccess(data: Array<BinResponse.Bin>) {
-                if(data.isNotEmpty()) {
-                    binName.text = data[0].name
-                    binId = data[0].id
-                    itemField.requestFocus()
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
                 }
 
-            }
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
                 }
-            }
+            })
+        viewModel.resourceBins.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<BinResponse.Bin>>() {
+                override fun onSuccess(data: Array<BinResponse.Bin>) {
+                    if (data.isNotEmpty()) {
+                        binName.text = data[0].name
+                        binId = data[0].id
+                        itemField.requestFocus()
+                    }
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
                 }
-            }
-        })
-        viewModel.resourceFinish.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
-            override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
 
-                findNavController().popBackStack()
-            }
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
                 }
-            }
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
                 }
-            }
-        })
+            })
+        viewModel.resourceFinish.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
 
-        viewModel.resourceVoid.observe(viewLifecycleOwner, object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
-            override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
-
-                findNavController().popBackStack()
-            }
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
+                    findNavController().popBackStack()
                 }
-            }
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
                 }
-            }
-        })
 
-        viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
-            override fun onSuccess(data: StockCountResponse.StockCount) {
-                viewModel.getStockCountDetails(data.id)
-            }
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
                 }
-            }
+            })
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
+        viewModel.resourceVoid.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
+
+                    findNavController().popBackStack()
                 }
-            }
-        })
 
-        viewModel.resourceProductAvailability.observe(viewLifecycleOwner, object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
-            override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
-                if(data.isNotEmpty()) {
-                    if(data.size == 1) {
-                        itemName.text = data[0].product_name
-                        productId = data[0].product_id
-                        binId = data[0].bin_id
-                        if (binId != null) binName.text = data[0].bin_name else  binName.text = "No bin selected"
-                        qtyField.setText(data[0].qty.toString())
-                    } else {
-                        data.forEach {
-                            Log.e("HERE->>>", "No bin")
-                            if(it.searchable == itemField.text.toString() || it.product_sku == itemField.text.toString()) {
-                                Log.e("HERE->>>", it.toString())
-                                itemName.text = it.product_name
-                                productId = it.product_id
-                            }
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
 
-                            if(binField.text.toString().isEmpty() && it.bin_id == null) {
-                                binId = null
-                                qtyField.setText(it.qty.toString())
-                                itemName.text = it.product_name
-                            } else if(binField.text.toString().isNotEmpty() && it.bin_searchable == binField.text.toString()) {
-                                binId = it.bin_id
-                                qtyField.setText(it.qty.toString())
-                                itemName.text = it.product_name
-                            }
-                        }
-                        if(binField.toString().isEmpty() && binId == null) {
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
+
+        viewModel.resourceStockCountObject.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<StockCountResponse.StockCount>() {
+                override fun onSuccess(data: StockCountResponse.StockCount) {
+                    viewModel.getStockCountDetails(data.id)
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
+
+        viewModel.resourceProductAvailability.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
+                override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
+                    if (data.isNotEmpty()) {
+                        if (data.size == 1) {
+                            itemName.text = data[0].product_name
+                            productId = data[0].product_id
                             binId = data[0].bin_id
-                            binName.text = data[0].bin_name
-                            binField.setText(data[0].bin_searchable)
+                            if (binId != null) binName.text = data[0].bin_name else binName.text =
+                                "No bin selected"
                             qtyField.setText(data[0].qty.toString())
+                        } else {
+                            val previousProductId: Int? = productId
+
+                            data.forEach {
+                                Log.e("HERE->>>", "No bin")
+                                if (it.searchable == itemField.text.toString() || it.product_sku == itemField.text.toString()) {
+                                    Log.e("HERE->>>", it.toString())
+                                    itemName.text = it.product_name
+                                    productId = it.product_id
+
+                                    if (previousProductId != productId && previousProductId != null) {
+                                        binId = null
+                                        binName.text = "Select a bin"
+                                    }
+                                }
+
+                                if (binField.text.toString().isEmpty() && it.bin_id == null) {
+                                    binId = null
+                                    qtyField.setText(it.qty.toString())
+                                    itemName.text = it.product_name
+                                } else if (binField.text.toString()
+                                        .isNotEmpty() && it.bin_searchable == binField.text.toString()
+                                ) {
+                                    binId = it.bin_id
+                                    qtyField.setText(it.qty.toString())
+                                    itemName.text = it.product_name
+                                }
+                            }
                         }
+
+                        itemField.selectAll()
+                        stockCountDetailsAdapter.updateList(data, binId)
+                        stockCountDetailsAdapter.notifyDataSetChanged()
                     }
-
-                    itemField.selectAll()
-                    stockCountDetailsAdapter.updateList(data, binId)
-                    stockCountDetailsAdapter.notifyDataSetChanged()
                 }
-            }
 
-            override fun onError(throwable: Throwable?) {
-                handleError(throwable) {
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
                 }
-            }
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
                 }
-            }
-        })
+            })
         viewModel.getStockCountDetails(args.stockCount.id)
     }
 
@@ -271,7 +297,11 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
 
         saveButton.setOnClickListener {
-            viewModel.updateStockCount(args.stockCount.id, locationId,  stockCountDetailsAdapter.getUpdateList())
+            viewModel.updateStockCount(
+                args.stockCount.id,
+                locationId,
+                stockCountDetailsAdapter.getUpdateList()
+            )
         }
 
         finishButton.setOnClickListener {
@@ -305,7 +335,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
     private fun binHandle(){
         binField.addRxTextWatcher()
-        .debounce(500, TimeUnit.MILLISECONDS)
+        .debounce(300, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(AndroidSchedulers.mainThread())
         .subscribe {
@@ -324,14 +354,16 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            stockCountDetailsAdapter.updateQty(productId!!, binId, text.toString())
+            if(itemField.text.toString().isEmpty().not()) {
+                stockCountDetailsAdapter.updateQty(productId!!, binId, text.toString())
+            }
         }
     }
 
     //item text watcher
     private fun itemHandle() {
         itemField.addRxTextWatcher()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -366,7 +398,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     }
 
     //return fancy colours depending on status
-    private fun checkStatus(status : String): Int {
+    private fun checkStatus(status: String): Int {
         var color by Delegates.notNull<Int>()
 
         when (status) {
@@ -381,7 +413,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     }
 
     //animation and visibility for button expand
-    private fun setVisibility(clicked : Boolean) {
+    private fun setVisibility(clicked: Boolean) {
         if(!clicked) {
             saveButton.visibility = View.VISIBLE
             voidButton.visibility = View.VISIBLE
@@ -393,7 +425,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
     }
 
-    private fun setAnimation(clicked : Boolean) {
+    private fun setAnimation(clicked: Boolean) {
         if(!clicked) {
             saveButton.startAnimation(fromBottom)
             voidButton.startAnimation(fromBottom)

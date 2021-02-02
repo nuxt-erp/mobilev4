@@ -30,6 +30,9 @@ data class ProductAvailabilityResponse(
         @SerializedName("product_brand")
         var product_brand: String,
 
+        @SerializedName("product_full_name")
+        var product_full_name: String?,
+
         @SerializedName("searchable")
         var searchable: String,
 

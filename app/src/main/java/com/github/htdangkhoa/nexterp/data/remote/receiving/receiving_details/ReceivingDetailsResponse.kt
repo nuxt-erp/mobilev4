@@ -25,7 +25,13 @@ data class ReceivingDetailsResponse(
         var product_id: Int,
 
         @SerializedName("product_name")
-        var product_name: String,
+        var product_name: String?,
+
+        @SerializedName("product_full_name")
+        var product_full_name: String?,
+
+        @SerializedName("product_sku")
+        var product_sku: String,
 
         @SerializedName("searchable")
         var searchable: String,

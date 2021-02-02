@@ -22,7 +22,10 @@ data class ProductResponse(
         var id: Int,
 
         @SerializedName("name")
-        var name: String,
+        var name: String?,
+
+        @SerializedName("name_full")
+        var product_full_name: String?,
 
         @SerializedName("sku")
         var sku: String,

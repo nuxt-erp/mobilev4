@@ -12,7 +12,7 @@ class ProductRepositoryImp(
     apiService: ApiService
 ) : BaseRepositoryImp(apiService), ProductRepository {
 
-    override suspend fun getProduct(searchable: String, location_id: Int): Result<Array<ProductResponse.Product>> {
+    override suspend fun getProduct(searchable: String, location_id: Int?): Result<Array<ProductResponse.Product>> {
         return try {
             val res = apiService.getProduct(searchable, location_id)
             Result.map(res)

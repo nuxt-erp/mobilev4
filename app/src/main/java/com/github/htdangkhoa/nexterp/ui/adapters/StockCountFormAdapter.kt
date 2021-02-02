@@ -1,26 +1,26 @@
 package com.github.htdangkhoa.nexterp.ui.adapters
 
+import android.R.attr.data
 import android.graphics.Typeface
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.res.stringResource
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.StringUtils.getString
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
-import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
-import kotlinx.android.synthetic.main.receiving_details_item.view.*
 import kotlinx.android.synthetic.main.receiving_details_item.view.productName
 import kotlinx.android.synthetic.main.stockcount_details_item.view.*
 import java.util.*
 
 
-class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.StockCountDetail>, val callback: (StockCountDetailResponse.StockCountDetail) -> Unit) : RecyclerView.Adapter<StockCountRecyclerAdapter.ListHolder>() {
+class StockCountRecyclerAdapter(
+    private val list: List<StockCountDetailResponse.StockCountDetail>,
+    val callback: (StockCountDetailResponse.StockCountDetail) -> Unit
+) : RecyclerView.Adapter<StockCountRecyclerAdapter.ListHolder>() {
     private var updateList : MutableList<StockCountDetailResponse.StockCountDetail> = list as MutableList<StockCountDetailResponse.StockCountDetail>
     private var selectedQty : Int? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
@@ -56,12 +56,11 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         return updateList.toList()
     }
 
-    fun updateQty(productId : Int, binId: Int?, text: String) {
+    fun updateQty(productId: Int, binId: Int?, text: String) {
         updateList.forEach {
             if(it.product_id == productId && it.bin_id == binId) {
                 val previousQty = it.qty
                 it.qty = try {
-
                     text.toInt()
                 } catch (e: NumberFormatException) {
                     previousQty
@@ -77,15 +76,14 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
         notifyItemRemoved(position)
         return id
     }
-    fun checkProductAndUpdate(searchable : String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
+    fun checkProductAndUpdate(searchable: String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
-
             updateList.forEach {
                 if(it.searchable.isNullOrEmpty().not()) {
-
                     if ((it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
                             .toLowerCase(Locale.ROOT) || it.product_sku!!.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(
-                            Locale.ROOT) ) && it.bin_id == binId
+                            Locale.ROOT
+                        ) ) && it.bin_id == binId
                     ) {
                         it.qty = it.qty + 1
                         notifyDataSetChanged()
@@ -114,6 +112,7 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
                     id = null,
                     product_id = item.product_id,
                     product_name = item.product_name,
+                    product_full_name = item.product_full_name,
                     product_sku = item.product_sku,
                     searchable = item.searchable,
                     location_id = item.location_id,
@@ -176,14 +175,14 @@ class StockCountRecyclerAdapter(private val list: List<StockCountDetailResponse.
             setContentBg(view.stockQty)
 
 //            view.detailId.text = item.id.toString()
-            view.productName.text = item.product_name
+            view.productName.text = item.product_full_name
             view.stockQty.text = item.qty.toString()
             view.binName.text = item.bin_name
 
         }
 
         override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+            Log.e("Test->>>", "TEST")
         }
 
     }
