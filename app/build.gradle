@@ -35,13 +35,13 @@ android {
 
         def GRANT_TYPE = "GRANT_TYPE"
 
-        def SECRET = "\"" + "1NUa7GX5u966B45krVC7hM6rNfkbP3RRwUhadCd7"  + "\""
+        def SECRET = "\"" + "o7BN8OaEkzL02gFQzDseooyishzoSYoOJ3cyPd9L"  + "\""
 
-        def ID = "2"
+        def ID = "4"
 
         def TYPE = "\"" +  "password" + "\""
 
-        def DEV = "\"" + "http://dev.nexterp.ca/nexterp/api/public/" + "\""
+        def DEV = "\"" + "http://192.168.0.84:8000/" + "\""
 
         def PROD = "\"" + "<ENTER_YOUR_HOST>" + "\""
 
