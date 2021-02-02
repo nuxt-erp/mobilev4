@@ -65,6 +65,8 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
+                        throw it!!
+
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -97,6 +99,8 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
+                        throw it!!
+
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -129,6 +133,8 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
+                        throw it!!
+
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -160,6 +166,8 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
+                        throw it!!
+
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -190,7 +198,10 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
                 }
 
                 override fun onError(throwable: Throwable?) {
+
                     handleError(throwable) {
+                        throw it!!
+
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -210,7 +221,10 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
 
             }
             override fun onError(throwable: Throwable?) {
+
                 handleError(throwable) {
+                    throw it!!
+
                     it?.message?.let { toast(it) }
                     handleHttpError(it)
                 }
