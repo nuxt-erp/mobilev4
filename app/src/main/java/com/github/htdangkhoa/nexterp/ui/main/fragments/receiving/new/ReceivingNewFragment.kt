@@ -29,6 +29,7 @@ class ReceivingNewFragment() : BaseFragment<ReceivingViewModel>(
         get() = R.layout.fragment_receiving_new
 
     override fun render(view: View, savedInstanceState: Bundle?) {
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
 
