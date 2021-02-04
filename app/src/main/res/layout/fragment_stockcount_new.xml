@@ -44,63 +44,61 @@
 
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.dev.materialspinner.MaterialSpinner
+
+    <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
         android:id="@+id/binSpinner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:prompt="@string/bins_spinner_title"
+        android:layout_margin="10dp"
+        app:hintText="Select Bins"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameLayout"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/nameLayout"/>
 
-
-    <com.dev.materialspinner.MaterialSpinner
+    <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
         android:id="@+id/brandSpinner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:prompt="@string/bins_spinner_title"
+        android:layout_margin="10dp"
+        app:hintText="Select Brands"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binSpinner"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/binSpinner"/>
 
-    <com.dev.materialspinner.MaterialSpinner
+
+
+    <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
         android:id="@+id/categorySpinner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:prompt="@string/bins_spinner_title"
+        android:layout_margin="10dp"
+        app:hintText="Select Categories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/brandSpinner"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/brandSpinner"/>
 
-    <com.dev.materialspinner.MaterialSpinner
+
+    <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
         android:id="@+id/stockLocatorSpinner"
-        android:layout_width="fill_parent"
-        android:layout_marginHorizontal="10dp"
-
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/bins_spinner_title"
+        android:layout_margin="10dp"
+        app:hintText="Select Stock Locators"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categorySpinner"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/categorySpinner"/>
 
-    <com.dev.materialspinner.MaterialSpinner
+
+    <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
         android:id="@+id/tagSpinner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:prompt="@string/bins_spinner_title"
+        android:layout_margin="10dp"
+        app:hintText="Select Tags"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockLocatorSpinner"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/stockLocatorSpinner"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveFilters"
