@@ -1,5 +1,6 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.form
 
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
@@ -62,6 +64,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         this.context,
         R.anim.to_bottom_anim
     )}
+
 
     private var clicked : Boolean = false
 
@@ -287,6 +290,45 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         itemHandle()
         qtyHandle()
 
+        val finishDialog: AlertDialog? = requireActivity().let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle(R.string.are_you_sure_finish_title)
+                setMessage(R.string.are_you_sure_finish)
+                setPositiveButton(R.string.proceed,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        viewModel.finishStockCount(args.stockCount.id)
+                        dialog.dismiss()
+
+                    })
+                setNegativeButton(R.string.abort,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.cancel()
+                    })
+            }
+
+            builder.create()
+        }
+        val voidDialog: AlertDialog? = requireActivity().let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle(R.string.are_you_sure_void_title)
+                setMessage(R.string.are_you_sure_void)
+                setPositiveButton(R.string.proceed,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        viewModel.voidStockCount(args.stockCount.id)
+                        dialog.dismiss()
+
+                    })
+                setNegativeButton(R.string.abort,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.cancel()
+                    })
+            }
+
+            builder.create()
+        }
+
         //listeners
         expandButton.setOnClickListener {
             setVisibility(clicked)
@@ -303,11 +345,14 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
 
         finishButton.setOnClickListener {
-            viewModel.finishStockCount(args.stockCount.id)
+
+            // handle are you sure popup?
+            finishDialog!!.show()
         }
 
         voidButton.setOnClickListener {
-            viewModel.voidStockCount(args.stockCount.id)
+            // handle are you sure popup?
+            voidDialog!!.show()
         }
         btnLinkToStockDetails.setOnClickListener {
             if(productId != null) {

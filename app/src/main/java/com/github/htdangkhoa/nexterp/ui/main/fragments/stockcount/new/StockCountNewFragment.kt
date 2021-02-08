@@ -316,22 +316,20 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             val myName = nameInput.text.toString()
             if(myName.isNotEmpty()) {
                 createMap()
-//                viewModel.newStockCount(createMap(), myName)
+                viewModel.newStockCount(createMap(), myName)
             } else {
                 showDialog("Error", "You must enter a name for the Stock Count.")
             }
         }
     }
 
-    private fun createMap() : HashMap<String, List<Int>> {
-        val map =  HashMap<String, List<Int>>()
-//
-//        map["bin_ids"] = binSpinner.selectedIds
-//        map["brand_ids"] = brandSpinner.selectedIds
-//        map["category_ids"] = categorySpinner.selectedIds
-//        map["stock_locator_ids"] = stockLocatorSpinner.selectedIds
-//        map["tag_ids"] = tagSpinner.selectedIds
-
+    private fun createMap() : HashMap<String, List<Long>> {
+        val map =  HashMap<String, List<Long>>()
+        map["bin_ids"] = binSpinner.selectedIds
+        map["brand_ids"] = brandSpinner.selectedIds
+        map["category_ids"] = categorySpinner.selectedIds
+        map["stock_locator_ids"] = stockLocatorSpinner.selectedIds
+        map["tag_ids"] = tagSpinner.selectedIds
         return map
     }
 
