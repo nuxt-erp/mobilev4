@@ -96,10 +96,13 @@ class ReceivingViewModel(
         }
     }
 
-    fun newReceiving(locationId: Int, name: String) {
+    fun newReceiving(locationId: Int, name: String, poNumber: String?, invoiceNumber: String?, trackingNumber: String?) {
         val request = NewReceivingRequest(
             location_id = locationId,
-            name = name
+            name = name,
+            poNumber = poNumber,
+            invoiceNumber = invoiceNumber,
+            trackingNumber = trackingNumber
         )
 
         resourceReceivingObject.postValue(Resource.loading())

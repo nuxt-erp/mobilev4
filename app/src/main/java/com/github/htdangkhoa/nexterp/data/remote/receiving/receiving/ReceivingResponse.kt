@@ -30,6 +30,9 @@ data class ReceivingResponse(
         @SerializedName("invoice_number")
         var invoice_number: String,
 
+        @SerializedName("tracking_number")
+        var tracking_number: String,
+
         @SerializedName("supplier_name")
         var supplier_name: String,
 

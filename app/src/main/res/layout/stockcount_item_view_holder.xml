@@ -49,6 +49,7 @@
             android:layout_marginStart="4dp"
             android:text="@{stockitem.status_name}"
             android:fontFamily="sans-serif-light"
+            android:textAllCaps="true"
             android:textFontWeight="800"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
