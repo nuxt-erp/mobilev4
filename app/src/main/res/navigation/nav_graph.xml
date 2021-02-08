@@ -95,7 +95,7 @@
         android:label="@string/menu_receiving_new"
         tools:layout="@layout/fragment_receiving_new" >
         <action
-            android:id="@+id/action_receivingNewFragment_to_nav_receiving"
-            app:destination="@id/nav_receiving" />
+            android:id="@+id/action_receivingNewFragment_to_receivingFormFragment"
+            app:destination="@id/receivingFormFragment" />
     </fragment>
 </navigation>

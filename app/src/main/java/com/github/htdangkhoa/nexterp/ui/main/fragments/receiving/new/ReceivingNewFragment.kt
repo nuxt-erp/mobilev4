@@ -14,8 +14,8 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewMo
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_stockcount_list.progressCircular
-import kotlinx.android.synthetic.main.fragment_stockcount_new.*
+import kotlinx.android.synthetic.main.fragment_receiving_new.*
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 
@@ -35,8 +35,8 @@ class ReceivingNewFragment() : BaseFragment<ReceivingViewModel>(
 
         viewModel.resourceReceivingObject.observe(viewLifecycleOwner, object : ObserverResource<ReceivingResponse.Receiving>() {
             override fun onSuccess(data: ReceivingResponse.Receiving) {
-
-                val action = ReceivingNewFragmentDirections.actionReceivingNewFragmentToNavReceiving()
+                Timber.d(data.toString())
+                val action = ReceivingNewFragmentDirections.actionReceivingNewFragmentToReceivingFormFragment(data)
                 view.findNavController().navigate(action)
 
             }
@@ -55,8 +55,11 @@ class ReceivingNewFragment() : BaseFragment<ReceivingViewModel>(
         })
         btnSaveFilters.setOnClickListener {
             val myName = nameInput.text.toString()
+            val myPO = poInput.text.toString()
+            val myInvoice = invoiceInput.text.toString()
+            val myTracking = trackingInput.text.toString()
             if(myName.isNotEmpty()) {
-                viewModel.newReceiving(locationId, myName)
+                viewModel.newReceiving(locationId, myName, myPO, myInvoice, myTracking)
             } else {
                 showDialog("Error", "You must enter a name for the Receiving.")
             }
