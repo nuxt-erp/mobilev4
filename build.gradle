@@ -16,7 +16,7 @@ buildscript {
         ]
 
         versions = [
-                kotlin: "1.4.10",
+                kotlin: '1.4.30',
 
                 timber: "4.7.1",
 
@@ -28,11 +28,11 @@ buildscript {
 
                 koin: "2.0.1",
 
-                kapt: "2.3.1",
+                kapt: '3.1.4',
 
-                okhttp: "4.4.1",
+                okhttp: '5.0.0-alpha.2',
 
-                retrofit: "2.8.1",
+                retrofit: '2.9.0',
 
                 kandroid: "0.8.7@aar",
 
@@ -44,7 +44,7 @@ buildscript {
 
                 recycler: "1.1.0",
 
-                nav_version : "2.3.2",
+                nav_version : '2.3.3',
 
                 preference_version: "1.1.1",
 
@@ -58,7 +58,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:9.2.1"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.nav_version"
@@ -72,10 +72,12 @@ allprojects {
     repositories {
         google()
         jcenter()
-
-        maven { url "https://jitpack.io" }
-
-        maven { url "https://plugins.gradle.org/m2" }
+        maven {
+            url "https://plugins.gradle.org/m2"
+        }
+            maven {
+                url "https://jitpack.io"
+            }
     }
 }
 

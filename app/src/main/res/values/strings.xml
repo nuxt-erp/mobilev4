@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">NextErp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="proceed">Proceed</string>
+    <string name="abort">ABORT</string>
+
+    <!-- Stock Count Alerts -->
+    <string name="are_you_sure_finish_title">WARNING</string>
+    <string name="are_you_sure_finish">Are you sure you want to finish this stock count?</string>
+    <string name="are_you_sure_void_title">WARNING</string>
+    <string name="are_you_sure_void">Are you sure you want to void this stock count?</string>
 
     <!-- Login -->
     <string name="sign_in">Sign-In</string>

@@ -2,13 +2,15 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
+import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
-import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse
 import com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse
@@ -21,25 +23,18 @@ import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.fragment_stockcount_list.progressCircular
 import kotlinx.android.synthetic.main.fragment_stockcount_new.*
+import timber.log.Timber
+import timber.log.Timber.log
 
 
 class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
     StockCountViewModel::class
 ) {
-    private val categorySpinnerItems: MutableList<SpinnerItem<CategoryResponse.Category>> = ArrayList()
-    private val categorySelectedItems: MutableSet<CategoryResponse.Category> = HashSet()
-
-    private val binSpinnerItems: MutableList<SpinnerItem<BinResponse.Bin>> = ArrayList()
-    private val binSelectedItems: MutableSet<BinResponse.Bin> = HashSet()
-
-    private val brandSpinnerItems: MutableList<SpinnerItem<BrandResponse.Brand>> = ArrayList()
-    private val brandSelectedItems: MutableSet<BrandResponse.Brand> = HashSet()
-
-    private val stockLocatorSpinnerItems: MutableList<SpinnerItem<StockLocatorResponse.StockLocator>> = ArrayList()
-    private val stockLocatorSelectedItems: MutableSet<StockLocatorResponse.StockLocator> = HashSet()
-
-    private val tagSpinnerItems: MutableList<SpinnerItem<TagResponse.Tag>> = ArrayList()
-    private val tagSelectedItems: MutableSet<TagResponse.Tag> = HashSet()
+    private val categorySpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
+    private val binSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
+    private val brandSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
+    private val stockLocatorSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
+    private val tagSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
 
     override val layoutResID: Int
         get() = R.layout.fragment_stockcount_new
@@ -50,17 +45,30 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<TagResponse.Tag>>() {
                 override fun onSuccess(data: Array<TagResponse.Tag>) {
+                    tagSpinner.isSearchEnabled = true
+                    tagSpinner.setSearchHint("Select bins")
+                    tagSpinner.setEmptyTitle("Not Data Found!")
+                    tagSpinner.isShowSelectAllButton = true
+                    tagSpinner.setClearText("Cancel")
                     data.forEach {
-                        tagSpinnerItems.add(SpinnerItem<TagResponse.Tag>(it, it.name))
+                        val h = KeyPairBoolData()
+                        h.id = it.id.toLong()
+                        h.name = it.name
+                        h.isSelected = false;
+                        tagSpinnerItems.add(h)
                     }
-                    val adapter: CheckableSpinnerAdapter<*> =
-                        CheckableSpinnerAdapter<TagResponse.Tag>(
-                            context!!,
-                            "Tag",
-                            tagSpinnerItems,
-                            tagSelectedItems
-                        )
-                    tagSpinner.setAdapter(adapter)
+                    tagSpinner.setItems(
+                        tagSpinnerItems.toList()
+                    ) { items ->
+                        for (i in items.indices) {
+                            if (items[i].isSelected) {
+                                Log.i(
+                                    "Category",
+                                    i.toString() + " : " + items[i].name + " : " + items[i].isSelected
+                                )
+                            }
+                        }
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -84,17 +92,30 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<BrandResponse.Brand>>() {
                 override fun onSuccess(data: Array<BrandResponse.Brand>) {
+                    brandSpinner.isSearchEnabled = true
+                    brandSpinner.setSearchHint("Select bins")
+                    brandSpinner.setEmptyTitle("Not Data Found!")
+                    brandSpinner.isShowSelectAllButton = true
+                    brandSpinner.setClearText("Cancel")
                     data.forEach {
-                        brandSpinnerItems.add(SpinnerItem<BrandResponse.Brand>(it, it.name))
+                        val h = KeyPairBoolData()
+                        h.id = it.id.toLong()
+                        h.name = it.name
+                        h.isSelected = false;
+                        brandSpinnerItems.add(h)
                     }
-                    val adapter: CheckableSpinnerAdapter<*> =
-                        CheckableSpinnerAdapter<BrandResponse.Brand>(
-                            context!!,
-                            "Brand",
-                            brandSpinnerItems,
-                            brandSelectedItems
-                        )
-                    brandSpinner.setAdapter(adapter)
+                    brandSpinner.setItems(
+                        brandSpinnerItems.toList()
+                    ) { items ->
+                        for (i in items.indices) {
+                            if (items[i].isSelected) {
+                                Log.i(
+                                    "Category",
+                                    i.toString() + " : " + items[i].name + " : " + items[i].isSelected
+                                )
+                            }
+                        }
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -118,17 +139,30 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<CategoryResponse.Category>>() {
                 override fun onSuccess(data: Array<CategoryResponse.Category>) {
+                    categorySpinner.isSearchEnabled = true
+                    categorySpinner.setSearchHint("Select bins")
+                    categorySpinner.setEmptyTitle("Not Data Found!")
+                    categorySpinner.isShowSelectAllButton = true
+                    categorySpinner.setClearText("Cancel")
                     data.forEach {
-                        categorySpinnerItems.add(SpinnerItem<CategoryResponse.Category>(it, it.name))
+                        val h = KeyPairBoolData()
+                        h.id = it.id.toLong()
+                        h.name = it.name
+                        h.isSelected = false;
+                        categorySpinnerItems.add(h)
                     }
-                    val adapter: CheckableSpinnerAdapter<*> =
-                        CheckableSpinnerAdapter<CategoryResponse.Category>(
-                            context!!,
-                            "Category",
-                            categorySpinnerItems,
-                            categorySelectedItems
-                        )
-                    categorySpinner.setAdapter(adapter)
+                    categorySpinner.setItems(
+                        categorySpinnerItems.toList()
+                    ) { items ->
+                        for (i in items.indices) {
+                            if (items[i].isSelected) {
+                                Log.i(
+                                    "Category",
+                                    i.toString() + " : " + items[i].name + " : " + items[i].isSelected
+                                )
+                            }
+                        }
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -151,18 +185,32 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<BinResponse.Bin>>() {
                 override fun onSuccess(data: Array<BinResponse.Bin>) {
+                    binSpinner.isSearchEnabled = true
+                    binSpinner.setSearchHint("Select bins")
+                    binSpinner.setEmptyTitle("Not Data Found!")
+                    binSpinner.isShowSelectAllButton = true
+                    binSpinner.setClearText("Cancel")
                     data.forEach {
-                        binSpinnerItems.add(SpinnerItem<BinResponse.Bin>(it, it.name))
+                        val h = KeyPairBoolData()
+                        h.id = it.id.toLong()
+                        h.name = it.name
+                        h.isSelected = false;
+                        binSpinnerItems.add(h)
                     }
-                    val adapter: CheckableSpinnerAdapter<*> =
-                        CheckableSpinnerAdapter<BinResponse.Bin>(
-                            context!!,
-                            "Bin",
-                            binSpinnerItems,
-                            binSelectedItems
-                        )
-                    binSpinner.setAdapter(adapter)
+                    binSpinner.setItems(
+                        binSpinnerItems.toList()
+                    ) { items ->
+                        for (i in items.indices) {
+                            if (items[i].isSelected) {
+                                Log.i(
+                                    "BIN",
+                                    i.toString() + " : " + items[i].name + " : " + items[i].isSelected
+                                )
+                            }
+                        }
+                    }
                 }
+
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
@@ -185,16 +233,31 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             object : ObserverResource<Array<StockLocatorResponse.StockLocator>>() {
                 override fun onSuccess(data: Array<StockLocatorResponse.StockLocator>) {
                     data.forEach {
-                        stockLocatorSpinnerItems.add(SpinnerItem<StockLocatorResponse.StockLocator>(it, it.name))
+                        stockLocatorSpinner.isSearchEnabled = true
+                        stockLocatorSpinner.setSearchHint("Select bins")
+                        stockLocatorSpinner.setEmptyTitle("Not Data Found!")
+                        stockLocatorSpinner.isShowSelectAllButton = true
+                        stockLocatorSpinner.setClearText("Cancel")
+                        data.forEach {
+                            val h = KeyPairBoolData()
+                            h.id = it.id.toLong()
+                            h.name = it.name
+                            h.isSelected = false;
+                            stockLocatorSpinnerItems.add(h)
+                        }
+                        stockLocatorSpinner.setItems(
+                            stockLocatorSpinnerItems.toList()
+                        ) { items ->
+                            for (i in items.indices) {
+                                if (items[i].isSelected) {
+                                    Log.i(
+                                        "Stock Locator",
+                                        i.toString() + " : " + items[i].name + " : " + items[i].isSelected
+                                    )
+                                }
+                            }
+                        }
                     }
-                    val adapter: CheckableSpinnerAdapter<*> =
-                        CheckableSpinnerAdapter<StockLocatorResponse.StockLocator>(
-                            context!!,
-                            "Stock Locator",
-                            stockLocatorSpinnerItems,
-                            stockLocatorSelectedItems
-                        )
-                    stockLocatorSpinner.setAdapter(adapter)
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -214,28 +277,34 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
                 }
             })
 
-        viewModel.resourceStockCountObject.observe(viewLifecycleOwner, object : ObserverResource<StockCountResponse.StockCount>() {
-            override fun onSuccess(data: StockCountResponse.StockCount) {
-                val action = StockCountNewFragmentDirections.actionStockCountNewFragmentToStockCountFormFragment(data)
-                view.findNavController().navigate(action)
+        viewModel.resourceStockCountObject.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<StockCountResponse.StockCount>() {
+                override fun onSuccess(data: StockCountResponse.StockCount) {
+                    val action =
+                        StockCountNewFragmentDirections.actionStockCountNewFragmentToStockCountFormFragment(
+                            data
+                        )
+                    view.findNavController().navigate(action)
 
-            }
-            override fun onError(throwable: Throwable?) {
-
-                handleError(throwable) {
-                    throw it!!
-
-                    it?.message?.let { toast(it) }
-                    handleHttpError(it)
                 }
-            }
 
-            override fun onLoading(isShow: Boolean) {
-                progressCircular.apply {
-                    if (isShow) show() else hide(true)
+                override fun onError(throwable: Throwable?) {
+
+                    handleError(throwable) {
+                        throw it!!
+
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
                 }
-            }
-        })
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
 
         viewModel.getTag(1)
         viewModel.getBrand(1, 1)
@@ -246,6 +315,7 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
         btnSaveFilters.setOnClickListener {
             val myName = nameInput.text.toString()
             if(myName.isNotEmpty()) {
+                createMap()
                 viewModel.newStockCount(createMap(), myName)
             } else {
                 showDialog("Error", "You must enter a name for the Stock Count.")
@@ -253,37 +323,13 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
         }
     }
 
-    private fun createMap() : HashMap<String, List<Int>> {
-        val map =  HashMap<String, List<Int>>()
-
-        val binIds : MutableList<Int> = ArrayList()
-        val brandIds : MutableList<Int> = ArrayList()
-        val categoryIds : MutableList<Int> = ArrayList()
-        val tagIds : MutableList<Int> = ArrayList()
-        val stockLocatorIds : MutableList<Int> = ArrayList()
-
-        stockLocatorSelectedItems.forEach {
-            stockLocatorIds += it.id
-        }
-        binSelectedItems.forEach {
-            binIds += it.id
-        }
-        brandSelectedItems.forEach {
-            brandIds += it.id
-        }
-        categorySelectedItems.forEach {
-            categoryIds += it.id
-        }
-        tagSelectedItems.forEach {
-            tagIds += it.id
-        }
-
-        map["bin_ids"] = binIds
-        map["brand_ids"] = brandIds
-        map["category_ids"] = categoryIds
-        map["stock_locator_ids"] = stockLocatorIds
-        map["tag_ids"] = tagIds
-
+    private fun createMap() : HashMap<String, List<Long>> {
+        val map =  HashMap<String, List<Long>>()
+        map["bin_ids"] = binSpinner.selectedIds
+        map["brand_ids"] = brandSpinner.selectedIds
+        map["category_ids"] = categorySpinner.selectedIds
+        map["stock_locator_ids"] = stockLocatorSpinner.selectedIds
+        map["tag_ids"] = tagSpinner.selectedIds
         return map
     }
 

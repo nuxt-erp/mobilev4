@@ -6,6 +6,6 @@ data class NewStockCountRequest(
     @SerializedName("name")
     var name: String,
     @SerializedName("stock_count_filters")
-    var stock_count_filters: HashMap<String, List<Int>>
+    var stock_count_filters: HashMap<String, List<Long>>
 
 )

@@ -240,7 +240,8 @@ class StockCountViewModel(
     }
     fun updateStockCount(id: Int, locationId: Int, list_products: List<StockCountDetailResponse.StockCountDetail>) {
         val request = UpdateStockCountRequest(
-            list_products = list_products
+            list_products = list_products,
+            location_id = locationId
         )
 
         resourceStockCountObject.postValue(Resource.loading())
@@ -261,7 +262,7 @@ class StockCountViewModel(
     }
 
 
-    fun newStockCount(stockCountFilters:  HashMap<String, List<Int>>, name: String) {
+    fun newStockCount(stockCountFilters:  HashMap<String, List<Long>>, name: String) {
         val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name)
 
         resourceStockCountObject.postValue(Resource.loading())
