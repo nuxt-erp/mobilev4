@@ -129,14 +129,18 @@
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/receivingDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:nestedScrollingEnabled="false"
             android:background="@drawable/table_parent_bg"
             tools:listitem="@layout/receiving_details_item"
-            app:layout_constraintTop_toBottomOf="@id/btnLinkToDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/btnLinkToDetails"
+            app:layout_constraintVertical_bias="1.0"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

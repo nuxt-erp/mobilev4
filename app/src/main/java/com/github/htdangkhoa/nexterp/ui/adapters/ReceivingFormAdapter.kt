@@ -13,10 +13,17 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingRe
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
 import kotlinx.android.synthetic.main.receiving_details_item.view.*
+import kotlinx.android.synthetic.main.receiving_details_item.view.btnDeleteDetail
+import kotlinx.android.synthetic.main.receiving_details_item.view.header
+import kotlinx.android.synthetic.main.receiving_details_item.view.productName
+import kotlinx.android.synthetic.main.stockcount_details_item.view.*
 import java.util.*
 
 
-class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.ReceivingDetails?>, val callback: (ReceivingDetailsResponse.ReceivingDetails) -> Unit) : RecyclerView.Adapter<ReceivingRecyclerAdapter.ListHolder>() {
+class ReceivingRecyclerAdapter(
+    private val list: List<ReceivingDetailsResponse.ReceivingDetails?>,
+    val callback: (ReceivingDetailsResponse.ReceivingDetails) -> Unit,
+    val callback2: (Int) -> Unit) : RecyclerView.Adapter<ReceivingRecyclerAdapter.ListHolder>() {
     private var updateList : MutableList<ReceivingDetailsResponse.ReceivingDetails?> = list as MutableList<ReceivingDetailsResponse.ReceivingDetails?>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
@@ -28,12 +35,11 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
 
         if (position == 0) {
             holder.bindHeader()
-            holder.itemView.setOnClickListener {  }
-
         } else {
             val item = list[position - 1]
             holder.bindItem(item!!)
             holder.itemView.setOnClickListener { callback(item) }
+            holder.itemView.btnDeleteDetail.setOnClickListener { callback2(position) }
         }
 
     }
@@ -122,38 +128,25 @@ class ReceivingRecyclerAdapter(private val list: List<ReceivingDetailsResponse.R
             v.setOnClickListener(this)
         }
 
-        private fun setHeaderBg(view: View) {
-            view.setBackgroundResource(R.drawable.table_header_bg)
-        }
-
-        private fun setContentBg(view: View) {
-            view.setBackgroundResource(R.drawable.table_content_bg)
-        }
 
         private fun setDisable(view: View) {
             view.isActivated = false
             view.isFocusable = false
             view.isClickable = false
         }
-
         fun bindHeader() {
-            setHeaderBg(view.productName)
-            setHeaderBg(view.receivingQtyReceived)
-            setDisable(view.receivingQtyReceived)
-
-            view.productName.text =  getString(R.string.receiving_header_product)
-            view.receivingQtyReceived.text = getString(R.string.receiving_header_qty_received)
-
-            view.productName.setTypeface(null, Typeface.BOLD)
-            view.receivingQtyReceived.setTypeface(null, Typeface.BOLD)
-
+            view.productName.visibility = View.GONE
+            view.receivingQtyReceived.visibility = View.GONE
+            view.receivingQtyReceivedLabel.visibility = View.GONE
+            view.btnDeleteDetail.visibility = View.GONE
+            view.header.visibility = View.VISIBLE
+            view.header.text = "Receiving Details"
         }
 
         fun bindItem(item: ReceivingDetailsResponse.ReceivingDetails) {
             this.item = item
 
-            setContentBg(view.productName)
-            setContentBg(view.receivingQtyReceived)
+            view.receivingQtyReceivedLabel.text = " ITEM(S)"
 
             view.productName.text = item.product_full_name
             view.receivingQtyReceived.text = item.qty_received.toString()

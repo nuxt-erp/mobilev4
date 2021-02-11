@@ -23,25 +23,29 @@
     <TextView
         android:id="@+id/productName"
         android:fontFamily="sans-serif"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         tools:text="Product Name"
         android:textFontWeight="800"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteDetail"
+
         app:layout_constraintStart_toStartOf="parent"
         />
     <TextView
         android:id="@+id/binName"
         android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:textSize="18sp"
+        android:gravity="left"
+        android:textSize="17sp"
+        app:layout_constraintHorizontal_weight="1"
 
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/productName"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteDetail"
         tools:text="Bin Name" />
 
     <TextView
@@ -71,6 +75,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDeleteDetail"
+        app:layout_constraintHorizontal_weight="2"
 
         android:layout_width="40dp"
         android:layout_height="40dp"

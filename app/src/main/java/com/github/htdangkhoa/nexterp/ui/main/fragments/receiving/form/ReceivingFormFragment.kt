@@ -85,31 +85,28 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<ReceivingDetailsResponse.ReceivingDetails?>>() {
                 override fun onSuccess(data: Array<ReceivingDetailsResponse.ReceivingDetails?>) {
-                    receivingDetailsAdapter = ReceivingRecyclerAdapter(data.toMutableList()) {
+                    receivingDetailsAdapter = ReceivingRecyclerAdapter(data.toMutableList(),
+                    callback = {
                         productId = it.product_id
                         itemField.setText(it.searchable)
                         itemField.clearFocus()
                         itemName.text = it.product_name
                         qtyField.setText(it.qty_received.toString())
                         receivingDetailsAdapter.notifyDataSetChanged()
-                    }
+                    },
+                    callback2 = {
+                        Log.e("INDEX->>>", it.toString())
+
+                        val id = receivingDetailsAdapter.removeAt(it)
+                        if (id != null) {
+                            viewModel.deleteReceivingDetail(id)
+                        }
+                    })
 
                     receivingDetails.apply {
                         layoutManager = LinearLayoutManager(activity)
                         adapter = receivingDetailsAdapter
                     }
-
-                    val swipeHandler = object : SwipeToDeleteCallback(context!!) {
-                        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                            val id = receivingDetailsAdapter.removeAt(viewHolder.adapterPosition)
-                            if (id != null) {
-                                viewModel.deleteReceivingDetail(id)
-                            }
-                        }
-                    }
-
-                    val itemTouchHelper = ItemTouchHelper(swipeHandler)
-                    itemTouchHelper.attachToRecyclerView(receivingDetails)
 
                 }
 
