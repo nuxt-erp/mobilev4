@@ -41,7 +41,7 @@
 
     <!--  Home  -->
     <string name="stock_count_home_title">Stock Count</string>
-    <string name="stock_count_description">Hmmmm, how many bottles of Koil Killaz Polar do we have? Let\'s find out! Navigate to the stock count page now. </string>
+    <string name="stock_count_description">Hmmmm, how much inventory stock do we have?\nLet\'s find out! Navigate to the stock count page now. </string>
     <string name="stock_count_action_1">List Stock Counts</string>
     <string name="stock_count_action_2">New Stock Count</string>
 

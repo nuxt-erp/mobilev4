@@ -57,7 +57,7 @@ interface ApiService {
 
     // Receiving
 
-    @GET("inventory/receiving" + "?not_received=1")
+    @GET("inventory/receiving")
     suspend fun getReceiving(): ReceivingResponse
 
     @GET("inventory/receiving_details")
