@@ -77,29 +77,29 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
                 override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
-                    stockCountDetailsAdapter = StockCountRecyclerAdapter(data.toMutableList()) {
-                        productId = it.product_id
-                        binId = it.bin_id
-                        itemField.clearFocus()
-                        itemName.text = it.product_name
-                        binName.text = it.bin_name
-                        binField.setText(it.bin_searchable)
-                        itemField.setText(it.searchable)
-                        qtyField.setText(it.qty.toString())
-                        stockCountDetailsAdapter.notifyDataSetChanged()
-                    }
+                    stockCountDetailsAdapter = StockCountRecyclerAdapter(
+                        data.toMutableList(),
+                        callback = {
+                            productId = it.product_id
+                            binId = it.bin_id
+                            itemField.clearFocus()
+                            itemName.text = it.product_name
+                            binName.text = it.bin_name
+                            binField.setText(it.bin_searchable)
+                            itemField.setText(it.searchable)
+                            qtyField.setText(it.qty.toString())
+                            stockCountDetailsAdapter.notifyDataSetChanged()
+                        },
+                        callback2 = {
+                            Log.e("INDEX->>>", it.toString())
 
-                    val swipeHandler = object : SwipeToDeleteCallback(context!!) {
-                        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                            val id = stockCountDetailsAdapter.removeAt(viewHolder.adapterPosition)
+                            val id = stockCountDetailsAdapter.removeAt(it)
                             if (id != null) {
                                 viewModel.deleteStockCountDetail(id)
                             }
-                        }
-                    }
+                        },
+                    )
 
-                    val itemTouchHelper = ItemTouchHelper(swipeHandler)
-                    itemTouchHelper.attachToRecyclerView(stockCountDetails)
 
                     stockCountDetails.apply {
                         layoutManager = LinearLayoutManager(activity)
@@ -120,6 +120,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                 }
             })
+
         viewModel.resourceBins.observe(
             viewLifecycleOwner,
             object : ObserverResource<Array<BinResponse.Bin>>() {
@@ -149,7 +150,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
                 override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
-
                     findNavController().popBackStack()
                 }
 
@@ -171,7 +171,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
                 override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
-
                     findNavController().popBackStack()
                 }
 

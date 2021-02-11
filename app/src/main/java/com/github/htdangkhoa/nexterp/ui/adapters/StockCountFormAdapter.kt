@@ -19,7 +19,8 @@ import java.util.*
 
 class StockCountRecyclerAdapter(
     private val list: List<StockCountDetailResponse.StockCountDetail>,
-    val callback: (StockCountDetailResponse.StockCountDetail) -> Unit
+    val callback: (StockCountDetailResponse.StockCountDetail) -> Unit,
+    val callback2: (Int) -> Unit
 ) : RecyclerView.Adapter<StockCountRecyclerAdapter.ListHolder>() {
     private var updateList : MutableList<StockCountDetailResponse.StockCountDetail> = list as MutableList<StockCountDetailResponse.StockCountDetail>
     private var selectedQty : Int? = null
@@ -30,12 +31,15 @@ class StockCountRecyclerAdapter(
 
     override fun onBindViewHolder(holder: StockCountRecyclerAdapter.ListHolder, position: Int) {
 
-        if (position == 0) {
-            holder.bindHeader()
-        } else {
-            val item = list[position - 1]
+        if (position > 0) {
+            val myPosition = position - 1
+            val item = list[myPosition]
+            Log.e("ITEM->>>", item.toString())
             holder.bindItem(item)
             holder.itemView.setOnClickListener { callback(item) }
+            holder.itemView.btnDeleteDetail.setOnClickListener { callback2(position) }
+        } else {
+            holder.bindHeader()
         }
     }
 
@@ -134,14 +138,6 @@ class StockCountRecyclerAdapter(
             v.setOnClickListener(this)
         }
 
-        private fun setHeaderBg(view: View) {
-            view.setBackgroundResource(R.drawable.table_header_bg)
-        }
-
-        private fun setContentBg(view: View) {
-            view.setBackgroundResource(R.drawable.table_content_bg)
-        }
-
         private fun setDisable(view: View) {
             view.isActivated = false
             view.isFocusable = false
@@ -149,35 +145,24 @@ class StockCountRecyclerAdapter(
         }
 
         fun bindHeader() {
-//            setHeaderBg(view.detailId)
-            setHeaderBg(view.productName)
-            setHeaderBg(view.binName)
-            setHeaderBg(view.stockQty)
-
-//            view.detailId.text = getString(R.string.receiving_header_id)
-            view.productName.text =  getString(R.string.receiving_header_product)
-            view.binName.text =  getString(R.string.stockcount_header_bin)
-            view.stockQty.text =  getString(R.string.receiving_header_qty)
-
-//            view.detailId.setTypeface(null, Typeface.BOLD)
-            view.productName.setTypeface(null, Typeface.BOLD)
-            view.binName.setTypeface(null, Typeface.BOLD)
-            view.stockQty.setTypeface(null, Typeface.BOLD)
-
+            view.productName.visibility = View.GONE
+            view.stockQty.visibility = View.GONE
+            view.stockQtyLabel.visibility = View.GONE
+            view.btnDeleteDetail.visibility = View.GONE
+            view.header.visibility = View.VISIBLE
+            view.header.text = "Stock Count Details"
         }
 
         fun bindItem(item: StockCountDetailResponse.StockCountDetail) {
             this.item = item
-
-//            setContentBg(view.detailId)
-            setContentBg(view.productName)
-            setContentBg(view.binName)
-            setContentBg(view.stockQty)
-
-//            view.detailId.text = item.id.toString()
             view.productName.text = item.product_full_name
             view.stockQty.text = item.qty.toString()
-            view.binName.text = item.bin_name
+            view.stockQtyLabel.text = " ITEM(S)"
+            if(item.bin_name != null) {
+                view.binName.text = item.bin_name
+            } else {
+                view.binName.text = "NO BIN"
+            }
 
         }
 

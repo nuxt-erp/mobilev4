@@ -15,7 +15,7 @@ import com.github.htdangkhoa.nexterp.R
 
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_24)
+    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_black_24dp)
     private val intrinsicWidth = deleteIcon!!.intrinsicWidth
     private val intrinsicHeight = deleteIcon!!.intrinsicHeight
     private val background = ColorDrawable()
