@@ -27,6 +27,15 @@ data class ProductAvailabilityResponse(
         @SerializedName("product_sku")
         var product_sku: String,
 
+        @SerializedName("product_barcode")
+        var product_barcode: String?,
+
+        @SerializedName("product_carton_barcode")
+        var product_carton_barcode: String?,
+
+        @SerializedName("product_carton_qty")
+        var product_carton_qty: Int?,
+
         @SerializedName("product_brand")
         var product_brand: String,
 

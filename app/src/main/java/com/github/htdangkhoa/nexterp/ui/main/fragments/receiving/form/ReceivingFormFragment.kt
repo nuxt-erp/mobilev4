@@ -208,7 +208,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             object : ObserverResource<Array<ProductResponse.Product>>() {
                 override fun onSuccess(data: Array<ProductResponse.Product>) {
                     if (data.isNullOrEmpty().not()) {
-                        receivingDetailsAdapter.updateList(data)
+                        receivingDetailsAdapter.updateList(data, itemField.text.toString())
                         receivingDetailsAdapter.notifyDataSetChanged()
 
                         productId = data[0].id

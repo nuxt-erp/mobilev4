@@ -69,10 +69,22 @@ class ReceivingRecyclerAdapter(
     fun checkProductAndUpdate(searchable : String): ReceivingDetailsResponse.ReceivingDetails? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it!!.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) || it.product_sku.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) {
-                    it.qty_received = it.qty_received + 1
-                    notifyDataSetChanged()
-                    return it
+                when {
+                    it!!.product_sku.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
+                        it.qty_received = it.qty_received + 1
+                        notifyDataSetChanged()
+                        return it
+                    }
+                    it.product_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
+                        it.qty_received = it.qty_received + 1
+                        notifyDataSetChanged()
+                        return it
+                    }
+                    it.product_carton_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
+                        it.qty_received = it.qty_received + it.product_carton_qty!!
+                        notifyDataSetChanged()
+                        return it
+                    }
                 }
             }
         }
@@ -95,13 +107,25 @@ class ReceivingRecyclerAdapter(
         return null
     }
 
-    fun updateList(result: Array<ProductResponse.Product>) {
+    fun updateList(result: Array<ProductResponse.Product>, searchable: String) {
         for (item in result) {
             var found = false
             for (detail in updateList) {
-                if (item.id == detail!!.product_id) {
-                    found = true
-                    detail.qty_received += 1
+                if (detail != null) {
+                    when {
+                        item.barcode == detail.product_barcode && item.barcode == searchable -> {
+                            found = true
+                            detail.qty_received += 1
+                        }
+                        item.sku == detail.product_sku && item.sku == searchable -> {
+                            found = true
+                            detail.qty_received += 1
+                        }
+                        item.carton_barcode == detail.product_carton_barcode && item.carton_barcode == searchable -> {
+                            found = true
+                            detail.qty_received += item.carton_qty!!
+                        }
+                    }
                 }
             }
             if (!found) {
@@ -110,7 +134,10 @@ class ReceivingRecyclerAdapter(
                     product_id = item.id,
                     product_name = item.name,
                     product_full_name = item.product_full_name,
+                    product_carton_barcode = item.carton_barcode,
+                    product_carton_qty = item.carton_qty,
                     product_sku = item.sku,
+                    product_barcode = item.barcode,
                     qty_allocated = 0,
                     qty_received = 0,
                     searchable = item.searchable

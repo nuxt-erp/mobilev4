@@ -33,8 +33,17 @@ data class ProductResponse(
         @SerializedName("brand")
         var brand: String,
 
+        @SerializedName("barcode")
+        var barcode: String?,
+
         @SerializedName("searchable")
         var searchable: String,
+
+        @SerializedName("carton_barcode")
+        var carton_barcode: String?,
+
+        @SerializedName("carton_qty")
+        var carton_qty: Int?,
 
         @SerializedName("category")
         var category: String,

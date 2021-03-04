@@ -226,8 +226,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
                             data.forEach {
                                 Log.e("HERE->>>", "No bin")
-                                if (it.searchable == itemField.text.toString() || it.product_sku == itemField.text.toString()) {
-                                    Log.e("HERE->>>", it.toString())
+                                if (it.product_barcode == itemField.text.toString() || it.product_sku == itemField.text.toString() || it.product_carton_barcode == itemField.text.toString()) {
+//                                    Log.Timber.e(it.toString())
                                     itemName.text = it.product_name
                                     productId = it.product_id
 
@@ -252,7 +252,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         }
 
                         itemField.selectAll()
-                        stockCountDetailsAdapter.updateList(data, binId)
+                        stockCountDetailsAdapter.updateList(data, itemField.text.toString(), binId)
                         stockCountDetailsAdapter.notifyDataSetChanged()
                     }
                 }

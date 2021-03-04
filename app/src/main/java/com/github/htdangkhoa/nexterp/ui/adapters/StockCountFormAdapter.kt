@@ -84,12 +84,16 @@ class StockCountRecyclerAdapter(
         if(searchable.isEmpty().not()) {
             updateList.forEach {
                 if(it.searchable.isNullOrEmpty().not()) {
-                    if ((it.searchable.trim().toLowerCase(Locale.ROOT) == searchable.trim()
-                            .toLowerCase(Locale.ROOT) || it.product_sku!!.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(
-                            Locale.ROOT
-                        ) ) && it.bin_id == binId
-                    ) {
+                    if ((it.product_barcode!!.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
                         it.qty = it.qty + 1
+                        notifyDataSetChanged()
+                        return it
+                    } else if ((it.product_sku?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
+                        it.qty = it.qty + 1
+                        notifyDataSetChanged()
+                        return it
+                    } else if((it.product_carton_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT))  && it.bin_id == binId){
+                        it.qty = it.qty + it.product_carton_qty!!
                         notifyDataSetChanged()
                         return it
                     }
@@ -98,15 +102,25 @@ class StockCountRecyclerAdapter(
         }
         return null
     }
-    fun updateList(result: Array<ProductAvailabilityResponse.ProductAvailability>, binId: Int?) {
+    fun updateList(result: Array<ProductAvailabilityResponse.ProductAvailability>, searchable: String, binId: Int?) {
         for (item in result) {
             var found = false
 
             for (detail in updateList) {
-                if (item.product_id == detail.product_id && item.bin_id == detail.bin_id) {
+                if (item.product_sku == detail.product_sku && item.bin_id == detail.bin_id) {
                     found = true
-                    if(item.bin_id == binId) {
+                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                         detail.qty += 1
+                    }
+                } else if (item.product_barcode == detail.product_barcode && item.bin_id == detail.bin_id) {
+                    found = true
+                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                        detail.qty += 1
+                    }
+                } else if (item.product_carton_barcode == detail.product_carton_barcode && item.bin_id == detail.bin_id) {
+                    found = true
+                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                        detail.qty += item.product_carton_qty!!
                     }
                 }
             }
@@ -118,6 +132,9 @@ class StockCountRecyclerAdapter(
                     product_name = item.product_name,
                     product_full_name = item.product_full_name,
                     product_sku = item.product_sku,
+                    product_barcode = item.product_barcode,
+                    product_carton_barcode = item.product_carton_barcode,
+                    product_carton_qty = item.product_carton_qty,
                     searchable = item.searchable,
                     location_id = item.location_id,
                     bin_name = item.bin_name,
@@ -148,7 +165,9 @@ class StockCountRecyclerAdapter(
             view.productName.visibility = View.GONE
             view.stockQty.visibility = View.GONE
             view.stockQtyLabel.visibility = View.GONE
+            view.binName.visibility = View.GONE
             view.btnDeleteDetail.visibility = View.GONE
+
             view.header.visibility = View.VISIBLE
             view.header.text = "Stock Count Details"
         }
