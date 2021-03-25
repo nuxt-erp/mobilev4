@@ -95,8 +95,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                         receivingDetailsAdapter.notifyDataSetChanged()
                     },
                     callback2 = {
-                        Log.e("INDEX->>>", it.toString())
-
                         val id = receivingDetailsAdapter.removeAt(it)
                         if (id != null) {
                             viewModel.deleteReceivingDetail(id)

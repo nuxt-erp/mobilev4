@@ -3,6 +3,7 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.form
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -47,6 +48,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     private var productId: Int? = null
     private var binId: Int? = null
     private var locationId by Delegates.notNull<Int>()
+    private var binsMandatory by Delegates.notNull<Boolean>()
+    private val currentList :  MutableList<ProductAvailabilityResponse.ProductAvailability> = ArrayList()
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(
         this.context,
@@ -73,6 +76,41 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         initialize(view)
+
+        val binNoMatchDialog: AlertDialog? = requireActivity().let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle(R.string.are_you_sure_no_bin_match_title)
+                setMessage(R.string.are_you_sure_no_bin_match)
+                setPositiveButton(R.string.update,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        val noMatch = currentList.find { availability ->
+                            availability.bin_matches == false
+                        }
+//                      send api request
+                        if(noMatch !== null) {
+                            viewModel.newAvailability(binField.text.toString(), noMatch.product_id, noMatch.location_id)
+                        }
+                        dialog.dismiss()
+
+                    })
+                setNegativeButton(R.string.abort,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        productId = null
+                        binId = null
+                        binName.text = "Select a bin"
+                        itemName.text = "Select a bin"
+                        itemField.setText("")
+                        binField.setText("")
+                        qtyField.setText("")
+                        binField.requestFocus()
+                        dialog.cancel()
+                    })
+            }
+
+            builder.create()
+        }
+
         viewModel.resourceStockCountDetails.observe(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
@@ -91,8 +129,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                             stockCountDetailsAdapter.notifyDataSetChanged()
                         },
                         callback2 = {
-                            Log.e("INDEX->>>", it.toString())
-
                             val id = stockCountDetailsAdapter.removeAt(it)
                             if (id != null) {
                                 viewModel.deleteStockCountDetail(id)
@@ -129,8 +165,12 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         binName.text = data[0].name
                         binId = data[0].id
                         itemField.requestFocus()
-                    }
+                    } else {
+                        binName.text = binField.text.toString()
+                        binId = null
 
+                    }
+                    enableItems()
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -187,7 +227,34 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                 }
             })
+        viewModel.resourceNewAvailabilityObject.observe(
+            viewLifecycleOwner,
+            object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
+                override fun onSuccess(data: ProductAvailabilityResponse.ProductAvailability) {
+                    itemName.text = data.product_name
+                    binName.text = data.bin_name
+                    qtyField.setText("0")
+                    productId = data.product_id
+                    binId = data.bin_id
 
+                    stockCountDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)
+                    itemField.selectAll()
+                    stockCountDetailsAdapter.notifyDataSetChanged()
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    handleError(throwable) {
+                        it?.message?.let { toast(it) }
+                        handleHttpError(it)
+                    }
+                }
+
+                override fun onLoading(isShow: Boolean) {
+                    progressCircular.apply {
+                        if (isShow) show() else hide(true)
+                    }
+                }
+            })
         viewModel.resourceStockCountObject.observe(
             viewLifecycleOwner,
             object : ObserverResource<StockCountResponse.StockCount>() {
@@ -223,14 +290,10 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                             qtyField.setText(data[0].qty.toString())
                         } else {
                             val previousProductId: Int? = productId
-
                             data.forEach {
-                                Log.e("HERE->>>", "No bin")
                                 if (it.product_barcode == itemField.text.toString() || it.product_sku == itemField.text.toString() || it.product_carton_barcode == itemField.text.toString()) {
-//                                    Log.Timber.e(it.toString())
                                     itemName.text = it.product_name
                                     productId = it.product_id
-
                                     if (previousProductId != productId && previousProductId != null) {
                                         binId = null
                                         binName.text = "Select a bin"
@@ -250,10 +313,17 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                                 }
                             }
                         }
+                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }
 
-                        itemField.selectAll()
-                        stockCountDetailsAdapter.updateList(data, itemField.text.toString(), binId)
-                        stockCountDetailsAdapter.notifyDataSetChanged()
+                        if(binNoMatches) {
+                            currentList.clear()
+                            currentList.addAll(data)
+                            binNoMatchDialog!!.show()
+                        } else {
+                            stockCountDetailsAdapter.updateList(data, itemField.text.toString(), binId)
+                            itemField.selectAll()
+                            stockCountDetailsAdapter.notifyDataSetChanged()
+                        }
                     }
                 }
 
@@ -277,6 +347,9 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         //variables
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
+        binsMandatory = sharedPreferences.getString("binsMandatory", null)?.toBoolean()!!
+        disableItems()
+
 
         //xml
         stockCountNumber.text = args.stockCount.id.toString()
@@ -317,16 +390,17 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     DialogInterface.OnClickListener { dialog, _ ->
                         viewModel.voidStockCount(args.stockCount.id)
                         dialog.dismiss()
-
                     })
                 setNegativeButton(R.string.abort,
                     DialogInterface.OnClickListener { dialog, _ ->
+
                         dialog.cancel()
                     })
             }
 
             builder.create()
         }
+
 
         //listeners
         expandButton.setOnClickListener {
@@ -344,7 +418,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
 
         finishButton.setOnClickListener {
-
             // handle are you sure popup?
             finishDialog!!.show()
         }
@@ -353,6 +426,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             // handle are you sure popup?
             voidDialog!!.show()
         }
+
         btnLinkToStockDetails.setOnClickListener {
             if(productId != null) {
                 val stockCountDetail : StockCountDetailResponse.StockCountDetail? = stockCountDetailsAdapter.findById(
@@ -387,6 +461,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                 } else if (TextUtils.isEmpty(it)) {
                     binId = null
                     binName.text = "No bin selected"
+                    disableItems()
                 }
             }
         }
@@ -411,12 +486,14 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             .subscribe {
                 if (itemField.hasFocus()) {
                     if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
+
                         val stockCountDetails: StockCountDetailResponse.StockCountDetail? =
                             stockCountDetailsAdapter.checkProductAndUpdate(it, binId)
 
                         if (stockCountDetails == null) {
                             viewModel.getProductAvailability(
                                 it,
+                                binField.text.toString(),
                                 locationId,
                                 args.stockCount.brand_ids,
                                 args.stockCount.tag_ids,
@@ -427,7 +504,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         } else {
                             productId = stockCountDetails.product_id
                             itemName.text = stockCountDetails.product_name
-                            Log.e("DETAIL->>>", stockCountDetails.qty.toString())
                             qtyField.setText(stockCountDetails.qty.toString())
                             itemField.selectAll()
                         }
@@ -453,7 +529,18 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
         return color
     }
-
+    private fun disableItems() {
+        itemField.isEnabled = false;
+        itemField.inputType = InputType.TYPE_NULL;
+        itemField.isFocusable = false;
+        itemField.isFocusableInTouchMode = false;
+    }
+    private fun enableItems() {
+        itemField.isEnabled = true;
+        itemField.inputType = InputType.TYPE_CLASS_TEXT;
+        itemField.isFocusable = true;
+        itemField.isFocusableInTouchMode = true;
+    }
     //animation and visibility for button expand
     private fun setVisibility(clicked: Boolean) {
         if(!clicked) {

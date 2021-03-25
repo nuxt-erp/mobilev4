@@ -3,6 +3,7 @@ package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
+import com.github.htdangkhoa.nexterp.data.remote.availability.NewAvailabilityRequest
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
@@ -44,6 +45,7 @@ class StockCountViewModel(
     val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
     val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()
     val resourceStockCountObject = liveDataOf<Resource<StockCountResponse.StockCount>>()
+    val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()
     val resourceFinish = liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
@@ -212,6 +214,7 @@ class StockCountViewModel(
 
     fun getProductAvailability(
            searchable: String,
+           bin_searchable: String,
            location_id: Int,
            brand_ids: List<Long>? = null,
            tag_ids: List<Long>? = null,
@@ -221,7 +224,7 @@ class StockCountViewModel(
         resourceProductAvailability.postValue(Resource.loading())
         availabilityUseCase.execute<Array<ProductAvailabilityResponse.ProductAvailability>> (
             ProductAvailabilityParam(
-                ProductAvailabilityParam.Type.GET_PRODUCT_AVAILABILITY, searchable, location_id, brand_ids, tag_ids, bin_ids, category_ids, stock_locator_ids)
+                ProductAvailabilityParam.Type.GET_PRODUCT_AVAILABILITY, searchable, bin_searchable, location_id, brand_ids, tag_ids, bin_ids, category_ids, stock_locator_ids)
         )
         {
             onComplete {
@@ -238,6 +241,30 @@ class StockCountViewModel(
             }
         }
     }
+    fun newAvailability(bin_barcode: String, product_id: Int, locationId: Int) {
+        val request = NewAvailabilityRequest(
+            bin_barcode = bin_barcode,
+            product_id = product_id,
+            location_id = locationId
+        )
+
+        resourceNewAvailabilityObject.postValue(Resource.loading())
+
+        availabilityUseCase.execute<ProductAvailabilityResponse.ProductAvailability>(ProductAvailabilityParam(ProductAvailabilityParam.Type.NEW_PRODUCT_AVAILABILITY, request)) {
+            onComplete {
+                resourceNewAvailabilityObject.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceNewAvailabilityObject.postValue(Resource.error(it))
+            }
+
+            onCancel {
+                resourceNewAvailabilityObject.postValue(Resource.error(it))
+            }
+        }
+    }
+
     fun updateStockCount(id: Int, locationId: Int, list_products: List<StockCountDetailResponse.StockCountDetail>) {
         val request = UpdateStockCountRequest(
             list_products = list_products,

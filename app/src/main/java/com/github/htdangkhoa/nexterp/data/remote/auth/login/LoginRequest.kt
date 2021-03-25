@@ -8,7 +8,7 @@ data class LoginRequest(
     @SerializedName("password")
     val password: String,
     @SerializedName("client_id")
-    var clientId: Int,
+    var clientId: String,
     @SerializedName("client_secret")
     var clientSecret: String,
     @SerializedName("grant_type")

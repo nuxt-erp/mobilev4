@@ -23,7 +23,6 @@ class StockCountRecyclerAdapter(
     val callback2: (Int) -> Unit
 ) : RecyclerView.Adapter<StockCountRecyclerAdapter.ListHolder>() {
     private var updateList : MutableList<StockCountDetailResponse.StockCountDetail> = list as MutableList<StockCountDetailResponse.StockCountDetail>
-    private var selectedQty : Int? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val inflatedView = parent.inflate(R.layout.stockcount_details_item, false)
         return ListHolder(inflatedView)
@@ -34,7 +33,6 @@ class StockCountRecyclerAdapter(
         if (position > 0) {
             val myPosition = position - 1
             val item = list[myPosition]
-            Log.e("ITEM->>>", item.toString())
             holder.bindItem(item)
             holder.itemView.setOnClickListener { callback(item) }
             holder.itemView.btnDeleteDetail.setOnClickListener { callback2(position) }
@@ -84,7 +82,7 @@ class StockCountRecyclerAdapter(
         if(searchable.isEmpty().not()) {
             updateList.forEach {
                 if(it.searchable.isNullOrEmpty().not()) {
-                    if ((it.product_barcode!!.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
+                    if ((it.product_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
                         it.qty = it.qty + 1
                         notifyDataSetChanged()
                         return it
@@ -102,26 +100,70 @@ class StockCountRecyclerAdapter(
         }
         return null
     }
+    fun updateListWithObj(item: ProductAvailabilityResponse.ProductAvailability, searchable: String, binId: Int?) {
+        var found = false
+
+        for (detail in updateList) {
+            if (item.product_sku != null &&
+                item.product_sku == detail.product_sku && item.bin_id == detail.bin_id &&
+                item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                found = true
+                detail.qty += 1
+            } else if (item.product_barcode != null &&
+                item.product_barcode == detail.product_barcode && item.bin_id == detail.bin_id &&
+                item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                found = true
+                detail.qty += 1
+            } else if (item.product_carton_qty != null &&
+                item.product_carton_barcode == detail.product_carton_barcode && item.bin_id == detail.bin_id &&
+                item.bin_id == binId && item.product_carton_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                found = true
+                detail.qty += item.product_carton_qty!!
+            }
+        }
+
+        if (!found) {
+            val stockCountDetail = StockCountDetailResponse.StockCountDetail(
+                id = null,
+                product_id = item.product_id,
+                product_name = item.product_name,
+                product_full_name = item.product_full_name,
+                product_sku = item.product_sku,
+                product_barcode = item.product_barcode,
+                product_carton_barcode = item.product_carton_barcode,
+                product_carton_qty = item.product_carton_qty,
+                searchable = item.searchable,
+                location_id = item.location_id,
+                bin_name = item.bin_name,
+                bin_id = item.bin_id,
+                qty = item.qty,
+                bin_searchable = item.bin_searchable
+            )
+            updateList.add(stockCountDetail)
+        }
+    }
+
     fun updateList(result: Array<ProductAvailabilityResponse.ProductAvailability>, searchable: String, binId: Int?) {
         for (item in result) {
             var found = false
 
             for (detail in updateList) {
-                if (item.product_sku == detail.product_sku && item.bin_id == detail.bin_id) {
+                if (item.product_sku != null &&
+                    item.product_sku == detail.product_sku && item.bin_id == detail.bin_id &&
+                    item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                     found = true
-                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
-                        detail.qty += 1
-                    }
-                } else if (item.product_barcode == detail.product_barcode && item.bin_id == detail.bin_id) {
+                    detail.qty += 1
+                } else if (item.product_barcode != null &&
+                            item.product_barcode == detail.product_barcode && item.bin_id == detail.bin_id &&
+                            item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                     found = true
-                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
-                        detail.qty += 1
-                    }
-                } else if (item.product_carton_barcode == detail.product_carton_barcode && item.bin_id == detail.bin_id) {
+                    detail.qty += 1
+
+                } else if (item.product_carton_qty != null &&
+                        item.product_carton_barcode == detail.product_carton_barcode && item.bin_id == detail.bin_id &&
+                        item.bin_id == binId && item.product_carton_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                     found = true
-                    if(item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
-                        detail.qty += item.product_carton_qty!!
-                    }
+                    detail.qty += item.product_carton_qty!!
                 }
             }
 
@@ -145,12 +187,10 @@ class StockCountRecyclerAdapter(
                 updateList.add(stockCountDetail)
             }
         }
-
     }
     class ListHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private var item: StockCountDetailResponse.StockCountDetail? = null
-
         init {
             v.setOnClickListener(this)
         }

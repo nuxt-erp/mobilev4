@@ -57,6 +57,9 @@ data class ProductAvailabilityResponse(
         @SerializedName("bin_id")
         var bin_id: Int?,
 
+        @SerializedName("bin_matches")
+        var bin_matches: Boolean?,
+
         @SerializedName("bin_name")
         var bin_name: String,
 

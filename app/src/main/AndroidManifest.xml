@@ -27,13 +27,6 @@
         <activity android:name="com.github.htdangkhoa.nexterp.ui.login.LoginActivity" />
         <activity android:name="com.github.htdangkhoa.nexterp.ui.main.MainActivity"/>
         <activity android:name="com.github.htdangkhoa.nexterp.ui.settings.SettingsActivity"/>
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.preference.PreferenceManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseActivity
-import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.main.MainActivity
 import com.github.htdangkhoa.nexterp.ui.settings.fragments.SettingsFragment
 import com.pawegio.kandroid.startActivity
@@ -26,9 +25,10 @@ class SettingsActivity : BaseActivity<SettingsViewModel>(SettingsViewModel::clas
     }
 
     override fun render(savedInstanceState: Bundle?) {
+
         btnSave.setOnClickListener {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-            val locationId = sharedPreferences.getString("location", null)?.toInt()
+            val locationId = sharedPreferences.getString("location", null)?.toBoolean()
             if (locationId == null) {
                 showDialog("Error", "You must select a location.")
             } else {

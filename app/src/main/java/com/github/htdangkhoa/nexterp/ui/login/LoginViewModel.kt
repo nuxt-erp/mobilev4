@@ -1,6 +1,5 @@
 package com.github.htdangkhoa.nexterp.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.github.htdangkhoa.nexterp.Constant
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse

@@ -81,9 +81,11 @@ class ReceivingRecyclerAdapter(
                         return it
                     }
                     it.product_carton_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
-                        it.qty_received = it.qty_received + it.product_carton_qty!!
-                        notifyDataSetChanged()
-                        return it
+                        if(it.product_carton_qty != null) {
+                            it.qty_received = it.qty_received + it.product_carton_qty!!
+                            notifyDataSetChanged()
+                            return it
+                        }
                     }
                 }
             }
@@ -123,7 +125,9 @@ class ReceivingRecyclerAdapter(
                         }
                         item.carton_barcode == detail.product_carton_barcode && item.carton_barcode == searchable -> {
                             found = true
-                            detail.qty_received += item.carton_qty!!
+                            if(item.carton_qty !== null) {
+                                detail.qty_received += item.carton_qty!!
+                            }
                         }
                     }
                 }

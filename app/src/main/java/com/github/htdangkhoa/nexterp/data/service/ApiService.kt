@@ -3,10 +3,13 @@ import com.github.htdangkhoa.nexterp.data.remote.SuccessResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
+import com.github.htdangkhoa.nexterp.data.remote.availability.NewAvailabilityRequest
+import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.config.ConfigResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.NewReceivingRequest
@@ -54,6 +57,9 @@ interface ApiService {
 
     @GET("general/locations?is_enabled=1&list=1")
     suspend fun getLocations(): LocationResponse
+
+    @GET("general/configs")
+    suspend fun getConfig(): ConfigResponse
 
     // Receiving
 
@@ -147,6 +153,7 @@ interface ApiService {
     @GET("inventory/start_stock_count_mobile")
     suspend fun getProductAvailabilities(
         @Query("searchable") searchable: String? = null,
+        @Query("bin_searchable") bin_searchable: String? = null,
         @Query("location_id") location_id: Int? = null,
         @Query("brand_ids[]") brand_ids: List<Long>? = null,
         @Query("tag_ids[]") tag_ids: List<Long>? = null,
@@ -154,6 +161,9 @@ interface ApiService {
         @Query("category_ids[]") category_ids: List<Long>? = null,
         @Query("stock_locator_ids[]") stock_locator_ids: List<Long>? = null
     ): ProductAvailabilityResponse
+
+    @POST("inventory/new_availability")
+    suspend fun newAvailability(@Body request: NewAvailabilityRequest): ProductAvailabilityObjectResponse
 
     // Product
 

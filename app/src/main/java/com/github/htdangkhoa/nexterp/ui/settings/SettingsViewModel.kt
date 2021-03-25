@@ -1,11 +1,14 @@
 package com.github.htdangkhoa.nexterp.ui.settings
 
 import androidx.lifecycle.ViewModel
+import com.github.htdangkhoa.nexterp.data.remote.config.ConfigResponse
 import com.github.htdangkhoa.nexterp.data.remote.location.LocationResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.GetMeResponse
 import com.github.htdangkhoa.nexterp.data.remote.user.UsersResponse
 import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
 import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
+import com.github.htdangkhoa.nexterp.domain.config.ConfigParam
+import com.github.htdangkhoa.nexterp.domain.config.ConfigUseCase
 import com.github.htdangkhoa.nexterp.domain.location.LocationParam
 import com.github.htdangkhoa.nexterp.domain.location.LocationUseCase
 import com.github.htdangkhoa.nexterp.domain.user.UserParam
@@ -15,11 +18,13 @@ import com.github.htdangkhoa.nexterp.resource.Resource
 
 class SettingsViewModel(
     private val userUseCase: UserUseCase,
-    private val locationUseCase: LocationUseCase
+    private val locationUseCase: LocationUseCase,
+    private val configUseCase: ConfigUseCase
 ) : ViewModel() {
     val resourceUser = liveDataOf<Resource<GetMeResponse.User>>()
     val resourceUsers = liveDataOf<Resource<Array<UsersResponse.User>>>()
     val resourceLocations = liveDataOf<Resource<Array<LocationResponse.Location>>>()
+    val resourceConfig = liveDataOf<Resource<Array<ConfigResponse.Config>>>()
 
     fun getMe() {
         resourceUser.postValue(Resource.loading())
@@ -74,6 +79,24 @@ class SettingsViewModel(
 
             onCancel {
                 resourceLocations.postValue(Resource.error(it))
+            }
+        }
+    }
+    fun getConfig() {
+        resourceConfig.postValue(Resource.loading())
+
+        configUseCase.execute<Array<ConfigResponse.Config>> (ConfigParam(ConfigParam.Type.GET_CONFIG)) {
+            onComplete {
+                resourceConfig.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceConfig.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceConfig.postValue(Resource.error(it))
             }
         }
     }
