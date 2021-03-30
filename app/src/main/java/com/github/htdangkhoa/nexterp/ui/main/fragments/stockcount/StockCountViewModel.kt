@@ -59,7 +59,6 @@ class StockCountViewModel(
     fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
         view.findNavController().navigate(action)
-
     }
     fun getStockCount() {
         resourceStockCount.postValue(Resource.loading())

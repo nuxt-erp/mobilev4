@@ -13,6 +13,7 @@ class ProductAvailabilityParam constructor(val type: Int) {
 
     var product_name: String = ""
     var searchable: String = ""
+    var bin_barcode: String? = null
     var bin_searchable: String = ""
     var location_id: Int = 0
     var brand_ids: List<Long>? = null
@@ -31,6 +32,15 @@ class ProductAvailabilityParam constructor(val type: Int) {
         this.product_name = product_name
     }
 
+    constructor(type: Int,
+                product_name: String,
+                bin_barcode: String,
+                location_id: Int,
+    ) : this(ProductAvailabilityParam.Type.GET_AVAILABILITY) {
+        this.location_id = location_id
+        this.product_name = product_name
+        this.bin_barcode = bin_barcode
+    }
     constructor(type: Int,
                 searchable: String,
                 bin_searchable: String,

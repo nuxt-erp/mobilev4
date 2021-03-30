@@ -68,16 +68,17 @@
 
     <!-- Product Lookup-->
     <string name="product_lookup_title">Input a barcode to search</string>
+
     <!-- StockCount New -->
     <string name="bins_spinner_title">Bins-</string>
     <string name="stock_count_name">Stock Count Name</string>
 
     <!-- StockCount List -->
-    <string name="stock_count_prefix">ST-</string>
+    <string name="stock_count_prefix">SC-</string>
 
     <!-- StockCount Form -->
     <string name="select_a_bin">Select a bin</string>
-    <string name="st_number">ST Number</string>
+    <string name="sc_number">SC Number</string>
 
     <!-- Receiving New -->
     <string name="receiving_name">Receiving Name</string>
@@ -85,6 +86,15 @@
     <!-- Receiving List -->
     <string name="receiving_prefix">RC-</string>
     <string name="invoiceLabel">&#35;</string>
+
+    <!-- StockAdjustment New -->
+    <string name="stock_adjustment_name">Stock Adjustment Name</string>
+
+    <!-- StockAdjustment List -->
+    <string name="stock_adjustment_prefix">ST-</string>
+
+    <!-- StockCount Form -->
+    <string name="st_number">ST Number</string>
 
     <!-- Receiving Form -->
     <string name="select_an_item">Select an item</string>

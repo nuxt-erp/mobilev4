@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="10sp"
+    android:background="@drawable/layout_border"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/header"
+        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Stock Count Details"
+        android:textFontWeight="800"
+        android:visibility="invisible"
+        android:textSize="22sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <TextView
+        android:id="@+id/productName"
+        android:fontFamily="sans-serif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        tools:text="Product Name"
+        android:textFontWeight="800"
+        android:textSize="17sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteDetail"
+
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/binName"
+        android:fontFamily="sans-serif"
+        android:gravity="left"
+        android:textSize="17sp"
+        app:layout_constraintHorizontal_weight="1"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/productName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteDetail"
+        tools:text="Bin Name" />
+
+    <TextView
+        android:id="@+id/stockQty"
+        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textFontWeight="800"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/binName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        tools:text="Qty"
+        android:textSize="19sp"/>
+    <TextView
+        android:id="@+id/stockQtyLabel"
+        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/binName"
+        app:layout_constraintStart_toEndOf="@+id/stockQty"
+        android:textFontWeight="800"
+        android:gravity="center"
+        tools:text=" Items"
+        android:textSize="19sp"/>
+    <TextView
+        android:id="@+id/onHandQty"
+        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textFontWeight="800"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/stockQty"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        tools:text="Qty"
+        android:textSize="19sp"/>
+    <TextView
+        android:id="@+id/onHandQtyLabel"
+        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/stockQtyLabel"
+        app:layout_constraintStart_toEndOf="@+id/onHandQty"
+        android:textFontWeight="800"
+        android:gravity="center"
+        tools:text=" On Hand"
+        android:textSize="19sp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDeleteDetail"
+        app:layout_constraintHorizontal_weight="2"
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:backgroundTint="#ED5E68"
+        android:textFontWeight="800"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:icon="@drawable/ic_delete_black_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

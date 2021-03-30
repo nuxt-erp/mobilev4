@@ -39,11 +39,13 @@ class ProductAvailabilityRepositoryImp(
 
     override suspend fun getAvailability(
         product_name: String,
+        bin_barcode: String?,
         location_id: Int
     ): Result<Array<AvailabilityResponse.Availability>> {
         return try {
             val res = apiService.getAvailabilities(
                 product_name,
+                bin_barcode,
                 location_id)
             Result.map(res)
         } catch (e: HttpException) {

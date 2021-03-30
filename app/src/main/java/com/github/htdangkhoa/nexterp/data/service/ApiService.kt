@@ -18,6 +18,11 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingOb
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustment_details.StockAdjustmentDetailResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustment_details.UpdateStockAdjustmentRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.NewStockAdjustmentRequest
+import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.StockAdjustmentObjectResponse
+import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.StockAdjustmentResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
@@ -108,6 +113,27 @@ interface ApiService {
     @GET("inventory/stock_count/finish/{id}")
     suspend fun finishStockCount(@Path("id") id: Int) : StockCountResponse
 
+    // Stock Adjustment
+
+    @GET("inventory/stock_adjustments")
+    suspend fun getStockAdjustment(): StockAdjustmentResponse
+
+    @GET("inventory/stock_adjustment_details")
+    suspend fun getStockAdjustmentDetails(@Query("stock_adjustment_id") stock_adjustment_id: Int) : StockAdjustmentDetailResponse
+
+    @PUT("inventory/stock_adjustments/{id}")
+    suspend fun updateStockAdjustment(@Path("id") id: Int, @Body updateStockAdjustmentRequest: UpdateStockAdjustmentRequest) : StockAdjustmentObjectResponse
+
+    @POST("inventory/stock_adjustments")
+    suspend fun newStockAdjustment(@Body request: NewStockAdjustmentRequest): StockAdjustmentObjectResponse
+
+    @DELETE("inventory/stock_adjustments/{id}")
+    suspend fun deleteStockAdjustment(@Path("id") id: Int) : StockAdjustmentResponse
+
+    @DELETE("inventory/stock_adjustment_details/{id}")
+    suspend fun deleteStockAdjustmentDetail(@Path("id") id: Int) : StockAdjustmentDetailResponse
+
+
     // Bin
 
     @GET("inventory/location_bins")
@@ -166,6 +192,7 @@ interface ApiService {
     @GET("inventory/availabilities_by_barcode")
     suspend fun getAvailabilities(
         @Query("product_name") product_name: String? = null,
+        @Query("bin_barcode") bin_barcode: String? = null,
         @Query("location_id") location_id: Int? = null,
     ): AvailabilityResponse
 
