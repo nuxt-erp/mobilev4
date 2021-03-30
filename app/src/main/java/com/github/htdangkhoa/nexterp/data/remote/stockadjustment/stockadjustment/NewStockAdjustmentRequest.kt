@@ -8,6 +8,9 @@ data class NewStockAdjustmentRequest (
     @SerializedName("notes")
     var notes: String,
 
+    @SerializedName("location_id")
+    var location_id: Int,
+
     @SerializedName("adjustment_type")
     var adjustment_type: String
 )

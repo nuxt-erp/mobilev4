@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameLayout"
@@ -43,6 +43,45 @@
 
 
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/noteLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:hint="@string/stock_adjustment_note"
+                app:layout_constraintTop_toBottomOf="@+id/nameLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/noteInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:autofillHints="@string/stock_adjustment_note"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <RadioGroup
+                android:id="@+id/radioAdjustmentType"
+                android:checkedButton="@+id/radio_button_add_stock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/noteLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                <RadioButton
+                    android:id="@+id/radio_button_add_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/radio_add_text"/>
+                <RadioButton
+                    android:id="@+id/radio_button_new_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/radio_new_text"/>
+            </RadioGroup>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveFilters"
@@ -53,7 +92,7 @@
                 android:layout_marginBottom="28dp"
                 android:text="@string/save"
                 android:textAllCaps="false"
-                app:layout_constraintTop_toBottomOf="@+id/nameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/radioAdjustmentType"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
             </com.google.android.material.button.MaterialButton>

@@ -37,10 +37,12 @@ import com.github.htdangkhoa.nexterp.domain.tag.TagParam
 import com.github.htdangkhoa.nexterp.domain.tag.TagUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
+import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.list.StockAdjustmentListFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections
 
 class StockAdjustmentViewModel(
     private val stockAdjustmentUseCase: StockAdjustmentUseCase,
+    private val binUseCase: BinUseCase,
     private val availabilityUseCase: ProductAvailabilityUseCase,
 ) : ViewModel() {
     val resourceStockAdjustment = liveDataOf<Resource<Array<StockAdjustmentResponse.StockAdjustment>>>()
@@ -49,8 +51,13 @@ class StockAdjustmentViewModel(
     val resourceVoid =  liveDataOf<Resource<Array<StockAdjustmentResponse.StockAdjustment?>>>()
     val resourceStockAdjustmentDetails = liveDataOf<Resource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>>>()
     val resourceDeleteStockAdjustmentDetails = liveDataOf<Resource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail?>>>()
-    val resourceAvailability = liveDataOf<Resource<Array<AvailabilityResponse.Availability>>>()
+    val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
+    val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()
 
+    fun onStockAdjustmentClick(view : View, stockAdjustment: StockAdjustmentResponse.StockAdjustment) {
+        val action = StockAdjustmentListFragmentDirections.actionNavStockAdjustmentToStockAdjustmentFormFragment(stockAdjustment)
+        view.findNavController().navigate(action)
+    }
     fun getStockAdjustment() {
         resourceStockAdjustment.postValue(Resource.loading())
 
@@ -67,6 +74,29 @@ class StockAdjustmentViewModel(
 
             onCancel {
                 resourceStockAdjustment.postValue(Resource.error(it))
+            }
+        }
+    }
+    fun getBin(barcode: String?,
+               location_id: Int?,
+               list: Int,
+               is_enabled: Int) {
+        resourceBins.postValue(Resource.loading())
+        binUseCase.execute<Array<BinResponse.Bin>> (
+            BinParam(
+                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled)
+        ) {
+            onComplete {
+                resourceBins.postValue(Resource.success(it))
+            }
+
+            onError {
+                resourceBins.postValue(Resource.error(it))
+                throw it
+            }
+
+            onCancel {
+                resourceBins.postValue(Resource.error(it))
             }
         }
     }
@@ -90,28 +120,35 @@ class StockAdjustmentViewModel(
             }
         }
     }
-
-
-    fun getAvailability(product_name: String, bin_barcode: String, locationId: Int) {
-        resourceAvailability.postValue(Resource.loading())
-        availabilityUseCase.execute<Array<AvailabilityResponse.Availability>> (
-            ProductAvailabilityParam(ProductAvailabilityParam.Type.GET_AVAILABILITY, product_name, bin_barcode, locationId)
-        ) {
+    fun getProductAvailability(
+        searchable: String,
+        bin_searchable: String,
+        location_id: Int,
+        brand_ids: List<Long>? = null,
+        tag_ids: List<Long>? = null,
+        bin_ids: List<Long>? = null,
+        category_ids: List<Long>? = null,
+        stock_locator_ids: List<Long>? = null) {
+        resourceProductAvailability.postValue(Resource.loading())
+        availabilityUseCase.execute<Array<ProductAvailabilityResponse.ProductAvailability>> (
+            ProductAvailabilityParam(
+                ProductAvailabilityParam.Type.GET_PRODUCT_AVAILABILITY, searchable, bin_searchable, location_id, brand_ids, tag_ids, bin_ids, category_ids, stock_locator_ids)
+        )
+        {
             onComplete {
-                resourceAvailability.postValue(Resource.success(it))
+                resourceProductAvailability.postValue(Resource.success(it))
             }
 
             onError {
-                resourceAvailability.postValue(Resource.error(it))
+                resourceProductAvailability.postValue(Resource.error(it))
                 throw it
             }
 
             onCancel {
-                resourceAvailability.postValue(Resource.error(it))
+                resourceProductAvailability.postValue(Resource.error(it))
             }
         }
     }
-
     fun newAvailability(bin_barcode: String, product_id: Int, locationId: Int) {
         val request = NewAvailabilityRequest(
             bin_barcode = bin_barcode,
@@ -160,8 +197,8 @@ class StockAdjustmentViewModel(
     }
 
 
-    fun newStockAdjustment (name: String,  notes: String,  adjustment_type: String) {
-        val request = NewStockAdjustmentRequest(name = name, notes = notes, adjustment_type = adjustment_type)
+    fun newStockAdjustment (name: String,  notes: String,  adjustment_type: String, location_id: Int) {
+        val request = NewStockAdjustmentRequest(name = name, notes = notes, adjustment_type = adjustment_type, location_id = location_id)
 
         resourceStockAdjustmentObject.postValue(Resource.loading())
 

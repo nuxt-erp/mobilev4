@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:padding="20sp"
         android:background="@drawable/layout_border"
-        android:onClick="@{(view) -> viewModel.onStockCountClick(view, stockitem)}"
+        android:onClick="@{(view) -> viewModel.onStockAdjustmentClick(view, stockadjustment)}"
 
         >
         <TextView

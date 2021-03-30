@@ -29,6 +29,8 @@
     <string name="menu_stock_count_details">Stock Count Detail</string>
     <string name="menu_stock_count_new">New Stock Count</string>
 
+    <string name="menu_stock_adjustment">Stock Adjustment</string>
+    <string name="menu_new_stock_adjustment">New Stock Adjustment</string>
     <string name="menu_product_lookup">Product Lookup</string>
 
     <string name="menu_receiving_details">Receiving Detail</string>
@@ -89,6 +91,9 @@
 
     <!-- StockAdjustment New -->
     <string name="stock_adjustment_name">Stock Adjustment Name</string>
+    <string name="stock_adjustment_note">Notes</string>
+    <string name="radio_add_text">Add to stock</string>
+    <string name="radio_new_text">Replace current stock</string>
 
     <!-- StockAdjustment List -->
     <string name="stock_adjustment_prefix">ST-</string>

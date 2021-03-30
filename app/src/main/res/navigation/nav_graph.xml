@@ -24,6 +24,12 @@
         <action
             android:id="@+id/action_nav_home_to_availabilityLookupFragment"
             app:destination="@id/nav_product_lookup" />
+        <action
+            android:id="@+id/action_nav_home_to_stockAdjustmentListFragment"
+            app:destination="@id/nav_stock_adjustment" />
+        <action
+            android:id="@+id/action_nav_home_to_stockAdjustmentNewFragment"
+            app:destination="@id/stockAdjustmentNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_receiving"
@@ -103,4 +109,35 @@
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.availability.lookup.AvailabilityLookupFragment"
         android:label="@string/menu_product_lookup"
         tools:layout="@layout/fragment_product_lookup" />
+    <fragment
+        android:id="@+id/nav_stock_adjustment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.list.StockAdjustmentListFragment"
+        android:label="@string/menu_stock_adjustment"
+        tools:layout="@layout/fragment_stock_adjustment_list" >
+        <action
+            android:id="@+id/action_nav_stock_adjustment_to_stockAdjustmentNewFragment"
+            app:destination="@id/stockAdjustmentNewFragment" />
+        <action
+            android:id="@+id/action_nav_stock_adjustment_to_stockAdjustmentFormFragment"
+            app:destination="@id/stockAdjustmentFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockAdjustmentNewFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.new.StockAdjustmentNewFragment"
+        android:label="@string/menu_new_stock_adjustment"
+        tools:layout="@layout/fragment_stock_adjustment_new" >
+        <action
+            android:id="@+id/action_stockAdjustmentNewFragment_to_stockAdjustmentFormFragment"
+            app:destination="@id/stockAdjustmentFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockAdjustmentFormFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.form.StockAdjustmentFormFragment"
+        android:label="fragment_stock_adjustment_form"
+        tools:layout="@layout/fragment_stock_adjustment_form" >
+        <argument
+            android:name="stockAdjustment"
+            app:argType="com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.StockAdjustmentResponse$StockAdjustment" />
+
+    </fragment>
 </navigation>

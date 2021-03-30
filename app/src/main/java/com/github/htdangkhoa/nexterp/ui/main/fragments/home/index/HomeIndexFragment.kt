@@ -32,6 +32,14 @@ class HomeIndexFragment() : BaseFragment<HomeViewModel>(
             val action = HomeIndexFragmentDirections.actionNavHomeToNavStockCount()
             view.findNavController().navigate(action)
         }
+        btnNewStockAdjustment.setOnClickListener {
+            val action = HomeIndexFragmentDirections.actionNavHomeToStockAdjustmentNewFragment()
+            view.findNavController().navigate(action)
+        }
+        btnListStockAdjustment.setOnClickListener {
+            val action = HomeIndexFragmentDirections.actionNavHomeToStockAdjustmentListFragment()
+            view.findNavController().navigate(action)
+        }
         btnNewStockCount.setOnClickListener {
             val action = HomeIndexFragmentDirections.actionNavHomeToStockCountNewFragment()
             view.findNavController().navigate(action)
