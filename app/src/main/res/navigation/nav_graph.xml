@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_nav_home_to_receivingNewFragment"
             app:destination="@id/receivingNewFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_availabilityLookupFragment"
+            app:destination="@id/nav_product_lookup" />
     </fragment>
     <fragment
         android:id="@+id/nav_receiving"
@@ -82,9 +85,6 @@
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new.StockCountNewFragment"
         android:label="@string/menu_stock_count_new"
         tools:layout="@layout/fragment_stockcount_new" >
-<!--        <argument-->
-<!--            android:name="stockCount"-->
-<!--            app:argType="com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse$StockCount" />-->
         <action
             android:id="@+id/action_stockCountNewFragment_to_stockCountFormFragment"
             app:destination="@id/stockCountFormFragment" />
@@ -98,4 +98,9 @@
             android:id="@+id/action_receivingNewFragment_to_receivingFormFragment"
             app:destination="@id/receivingFormFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_product_lookup"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.availability.lookup.AvailabilityLookupFragment"
+        android:label="@string/menu_product_lookup"
+        tools:layout="@layout/fragment_product_lookup" />
 </navigation>

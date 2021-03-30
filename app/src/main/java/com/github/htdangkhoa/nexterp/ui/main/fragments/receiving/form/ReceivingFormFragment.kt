@@ -10,13 +10,10 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
@@ -24,7 +21,6 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingRe
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingRecyclerAdapter
-import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment
@@ -126,7 +122,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             object : ObserverResource<ReceivingResponse.Receiving>() {
                 override fun onSuccess(data: ReceivingResponse.Receiving) {
                     findNavController().popBackStack()
-
                 }
 
                 override fun onError(throwable: Throwable?) {

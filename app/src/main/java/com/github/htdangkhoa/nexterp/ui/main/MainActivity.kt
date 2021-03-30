@@ -51,7 +51,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    /* Populating the hamburger menu will all items from the 'menu_home_drawer' XML file */
+    /* Populating the settings menu will all items from the 'menu_home_drawer' XML file */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.home, menu)
         return true
@@ -74,7 +74,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
         return super.onOptionsItemSelected(item)
     }
-    /* TODO make use of the logout in the settings section of the menu */
+
     override fun render(savedInstanceState: Bundle?) {
 
         viewModel.resourceLogout.observe(this, object : ObserverResource<Array<String?>>() {
@@ -84,10 +84,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             override fun onError(throwable: Throwable?) {
                 handleError(throwable) {
-//                    it?.message?.let {
-//                        showDialog("Error", it)
-//                    }
-                    throw it!!
+                    it?.message?.let {
+                        showDialog("Error", it)
+                    }
                 }
             }
         })

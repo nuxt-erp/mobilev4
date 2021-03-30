@@ -16,5 +16,9 @@
             android:id="@+id/nav_receiving"
             android:icon="@drawable/ic_baseline_directions_car_24"
             android:title="@string/menu_receiving" />
+        <item
+            android:id="@+id/nav_product_lookup"
+            android:icon="@drawable/ic_manage_search_black_24dp"
+            android:title="@string/menu_product_lookup" />
     </group>
 </menu>

@@ -1,13 +1,10 @@
 package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving
 
-import com.github.htdangkhoa.nexterp.data.repository.auth.AuthRepository
-import com.github.htdangkhoa.nexterp.data.repository.auth.AuthRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.product.ProductRepository
 import com.github.htdangkhoa.nexterp.data.repository.product.ProductRepositoryImp
 import com.github.htdangkhoa.nexterp.data.repository.receiving.ReceivingRepository
 import com.github.htdangkhoa.nexterp.data.repository.receiving.ReceivingRepositoryImp
 import com.github.htdangkhoa.nexterp.data.service.ApiService
-import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.product.ProductUseCase
 import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel

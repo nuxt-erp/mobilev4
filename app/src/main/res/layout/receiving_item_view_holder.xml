@@ -41,16 +41,26 @@
             android:textFontWeight="800"
             app:layout_constraintStart_toEndOf="@+id/gridIdLabel"
             app:layout_constraintTop_toTopOf="@+id/gridIdLabel" />
+
+
+        <TextView
+            android:id="@+id/gridReceivingName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{receiving.name}"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/gridIdLabel"
+            app:layout_constraintTop_toBottomOf="@+id/gridIdLabel" />
         <TextView
             android:id="@+id/gridIdInvoiceLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invoiceLabel"
             android:fontFamily="sans-serif-light"
-            android:textFontWeight="800"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gridIdLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/gridReceivingName" />
         <TextView
             android:id="@+id/gridName"
             android:layout_width="wrap_content"
@@ -58,10 +68,9 @@
             android:layout_marginStart="4dp"
             android:text="@{receiving.invoice_number}"
             android:fontFamily="sans-serif-light"
-            android:textFontWeight="800"
             android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/gridIdInvoiceLabel"
-            app:layout_constraintTop_toBottomOf="@+id/gridIdLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/gridReceivingName" />
         <TextView
             android:id="@+id/gridStatus"
             android:layout_width="wrap_content"

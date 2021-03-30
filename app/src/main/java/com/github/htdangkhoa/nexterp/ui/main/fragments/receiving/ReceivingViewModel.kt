@@ -8,8 +8,6 @@ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.NewReceivin
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.UpdateReceivingRequest
-import com.github.htdangkhoa.nexterp.domain.auth.AuthParam
-import com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase
 import com.github.htdangkhoa.nexterp.domain.product.ProductParam
 import com.github.htdangkhoa.nexterp.domain.product.ProductUseCase
 import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
@@ -21,7 +19,6 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingL
 class ReceivingViewModel(
     private val receivingUseCase: ReceivingUseCase,
     private val productUseCase: ProductUseCase
-
 ) : ViewModel() {
     val resourceProduct = liveDataOf<Resource<Array<ProductResponse.Product>>>()
     val resourceReceiving = liveDataOf<Resource<Array<ReceivingResponse.Receiving>>>()

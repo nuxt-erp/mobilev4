@@ -7,9 +7,11 @@ class ProductAvailabilityParam constructor(val type: Int) {
         companion object {
             const val GET_PRODUCT_AVAILABILITY = 1
             const val NEW_PRODUCT_AVAILABILITY = 2
+            const val GET_AVAILABILITY = 3
         }
     }
 
+    var product_name: String = ""
     var searchable: String = ""
     var bin_searchable: String = ""
     var location_id: Int = 0
@@ -18,7 +20,16 @@ class ProductAvailabilityParam constructor(val type: Int) {
     var bin_ids: List<Long>? = null
     var category_ids: List<Long>? = null
     var stock_locator_ids: List<Long>? = null
+    
     lateinit var moveAvailabilityRequest: NewAvailabilityRequest
+
+    constructor(type: Int,
+                product_name: String,
+                location_id: Int,
+    ) : this(ProductAvailabilityParam.Type.GET_AVAILABILITY) {
+        this.location_id = location_id
+        this.product_name = product_name
+    }
 
     constructor(type: Int,
                 searchable: String,
@@ -39,6 +50,7 @@ class ProductAvailabilityParam constructor(val type: Int) {
         this.category_ids = category_ids
         this.stock_locator_ids = stock_locator_ids
     }
+
     constructor(type: Int, moveAvailabilityRequest: NewAvailabilityRequest) : this(ProductAvailabilityParam.Type.NEW_PRODUCT_AVAILABILITY) {
         this.moveAvailabilityRequest = moveAvailabilityRequest
     }

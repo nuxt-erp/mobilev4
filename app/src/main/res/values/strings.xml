@@ -29,9 +29,11 @@
     <string name="menu_stock_count_details">Stock Count Detail</string>
     <string name="menu_stock_count_new">New Stock Count</string>
 
-    <string name="menu_receiving">Receiving</string>
+    <string name="menu_product_lookup">Product Lookup</string>
+
     <string name="menu_receiving_details">Receiving Detail</string>
     <string name="menu_receiving_new">New Receiving</string>
+    <string name="menu_receiving">Receiving</string>
 
     <string name="logged_user">Logged User</string>
     <string name="action_settings">Settings</string>
@@ -49,14 +51,23 @@
     <string name="stock_count_action_1">List Stock Counts</string>
     <string name="stock_count_action_2">New Stock Count</string>
 
+    <string name="stock_adjustment_home_title">Stock Adjustment</string>
+    <string name="stock_adjustment_description">Whoa, that\'s not right... I\'ve got to fix that stock right away!</string>
+    <string name="stock_adjustment_action_1">List Stock Adjustments</string>
+    <string name="stock_adjustment_action_2">New Stock Adjustment</string>
+
     <string name="receiving_home_title">Receiving</string>
     <string name="receiving_description">Just received a shipment from a supplier? Navigate to the receiving page now to allocate it!</string>
     <string name="receiving_action_1">List Receiving</string>
     <string name="receiving_action_2">New Receiving</string>
 
 
+    <string name="product_lookup_home_title">Product Lookup</string>
+    <string name="product_lookup_description">Bins Bins Bins, so many bins everywhere!! But which one should I put this product in?</string>
+    <string name="product_lookup_action_1">Product Lookup</string>
 
-
+    <!-- Product Lookup-->
+    <string name="product_lookup_title">Input a barcode to search</string>
     <!-- StockCount New -->
     <string name="bins_spinner_title">Bins-</string>
     <string name="stock_count_name">Stock Count Name</string>

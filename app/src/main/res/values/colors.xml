@@ -2,11 +2,11 @@
 <resources>
     <!--  App Colours  -->
 
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryLight">#7FC2BB</color>
-    <color name="colorPrimaryUltraLight">#e5f2f1</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D68B00</color>
+    <color name="colorPrimary">#0471A6</color>
+    <color name="colorPrimaryLight">#3685B5</color>
+    <color name="colorPrimaryUltraLight">#89AAE6</color>
+    <color name="colorPrimaryDark">#061826</color>
+    <color name="colorAccent">#AC80A0</color>
     <color name="colorBlack">#2d2925</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorRed">#ED5E68</color>

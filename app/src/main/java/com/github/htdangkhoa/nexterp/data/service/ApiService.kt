@@ -3,6 +3,7 @@ import com.github.htdangkhoa.nexterp.data.remote.SuccessResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse
 import com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest
 import com.github.htdangkhoa.nexterp.data.remote.auth.renew_token.RenewTokenRequest
+import com.github.htdangkhoa.nexterp.data.remote.availability.AvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.availability.NewAvailabilityRequest
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityObjectResponse
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
@@ -161,6 +162,12 @@ interface ApiService {
         @Query("category_ids[]") category_ids: List<Long>? = null,
         @Query("stock_locator_ids[]") stock_locator_ids: List<Long>? = null
     ): ProductAvailabilityResponse
+
+    @GET("inventory/availabilities_by_barcode")
+    suspend fun getAvailabilities(
+        @Query("product_name") product_name: String? = null,
+        @Query("location_id") location_id: Int? = null,
+    ): AvailabilityResponse
 
     @POST("inventory/new_availability")
     suspend fun newAvailability(@Body request: NewAvailabilityRequest): ProductAvailabilityObjectResponse

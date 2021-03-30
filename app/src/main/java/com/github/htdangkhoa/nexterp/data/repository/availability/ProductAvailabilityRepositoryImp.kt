@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.data.repository.availability
 
 import com.github.htdangkhoa.nexterp.base.BaseRepositoryImp
+import com.github.htdangkhoa.nexterp.data.remote.availability.AvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.availability.NewAvailabilityRequest
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.service.ApiService
@@ -30,6 +31,20 @@ class ProductAvailabilityRepositoryImp(
                 bin_ids,
                 category_ids,
                 stock_locator_ids)
+            Result.map(res)
+        } catch (e: HttpException) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getAvailability(
+        product_name: String,
+        location_id: Int
+    ): Result<Array<AvailabilityResponse.Availability>> {
+        return try {
+            val res = apiService.getAvailabilities(
+                product_name,
+                location_id)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

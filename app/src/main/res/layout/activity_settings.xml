@@ -17,8 +17,11 @@
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFF"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_save"
+
+        android:src="@drawable/ic_baseline_save_24"
         android:contentDescription="@string/save"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
