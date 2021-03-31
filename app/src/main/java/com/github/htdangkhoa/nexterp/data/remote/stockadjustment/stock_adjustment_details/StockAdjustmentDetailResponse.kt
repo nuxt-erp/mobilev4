@@ -38,6 +38,9 @@ data class StockAdjustmentDetailResponse(
         @SerializedName("product_carton_barcode")
         var product_carton_barcode: String?,
 
+        @SerializedName("product_carton_qty")
+        var product_carton_qty: Int?,
+
         @SerializedName("location_id")
         var location_id: Int,
 

@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         tools:text="Product Name"
+        android:layout_marginRight="10sp"
         android:textFontWeight="800"
         android:textSize="17sp"
         app:layout_constraintTop_toTopOf="parent"

@@ -15,10 +15,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:textSize="22sp"
-        android:textColor="@color/colorWhite"
-        android:text="X"
-        android:textStyle="bold"
+        android:text="x"
         android:layout_gravity="end"
+        android:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"/>
@@ -38,43 +37,17 @@
             android:paddingHorizontal="10dp"
             android:background="@color/colorWhite"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/productDetailId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginVertical="20dp"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/productDetailIdLabel"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/productDetailIdLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" - "
-                android:layout_marginVertical="20dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/productDetailId"
-                app:layout_constraintEnd_toStartOf="@+id/productDetailName"
-                android:layout_gravity="center_horizontal" />
-
             <TextView
                 android:id="@+id/productDetailName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginVertical="20dp"
-                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:gravity="left"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/productDetailIdLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -84,52 +57,125 @@
                 android:layout_marginVertical="20dp"
                 android:textSize="18sp"
                 android:text="PRODUCT DETAILS"
-                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textColor="@color/colorPrimaryLight"
                 app:layout_constraintTop_toBottomOf="@+id/productDetailName"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/productDetailSearchableLabel"
+                android:id="@+id/productDetailSkuLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="SKU / Barcode: "
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:text="Sku: "
                 android:layout_marginVertical="10dp"
-                android:textColor="@color/colorBlack"
                 app:layout_constraintTop_toBottomOf="@+id/productDetailHeader"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/productDetailSearchable"
+                android:id="@+id/productDetailSku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
                 android:textSize="16sp"
-                android:textColor="@color/colorBlack"
+                android:layout_gravity="left"
                 app:layout_constraintTop_toBottomOf="@+id/productDetailHeader"
-                app:layout_constraintStart_toEndOf="@+id/productDetailSearchableLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailSkuLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailBarcodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:text="Barcode: "
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailSkuLabel"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/productDetailQtyLabel"
+                android:id="@+id/productDetailBarcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
                 android:textSize="16sp"
-                android:text="QTY: "
-                android:textColor="@color/colorBlack"
-                app:layout_constraintTop_toBottomOf="@+id/productDetailSearchable"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                android:layout_gravity="left"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailSkuLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailBarcodeLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailCartonBarcodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Carton Barcode: "
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailBarcodeLabel"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/productDetailQty"
+                android:id="@+id/productDetailCartonBarcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
                 android:textSize="16sp"
-                android:textColor="@color/colorBlack"
+                android:layout_gravity="left"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailBarcodeLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailCartonBarcodeLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailCartonQtyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textSize="16sp"
+                android:text="Carton Quantity: "
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonBarcodeLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailCartonQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
                 android:layout_gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/productDetailSearchable"
-                app:layout_constraintStart_toEndOf="@+id/productDetailQtyLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonBarcodeLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailCartonQtyLabel" />
+            <TextView
+                android:id="@+id/productDetailOnHandLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textSize="16sp"
+                android:text="On Hand: "
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonQtyLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailOnHand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonQtyLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailOnHandLabel" />
 
             <TextView
                 android:id="@+id/binDetailHeader"
@@ -138,9 +184,11 @@
                 android:layout_marginVertical="20dp"
                 android:textSize="18sp"
                 android:text="BIN DETAILS"
-                android:textColor="@color/colorPrimaryDark"
-                app:layout_constraintTop_toBottomOf="@+id/productDetailQtyLabel"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textColor="@color/colorPrimaryLight"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailOnHandLabel"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -149,10 +197,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
                 android:text="Bin: "
-                android:textColor="@color/colorBlack"
                 app:layout_constraintTop_toBottomOf="@+id/binDetailHeader"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/binDetailName"
@@ -160,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:textSize="16sp"
-                android:textColor="@color/colorBlack"
+                android:fontFamily="sans-serif"
                 android:layout_gravity="center_horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/binDetailHeader"
                 app:layout_constraintStart_toEndOf="@+id/binDetailNameLabel" />
@@ -171,10 +220,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
                 android:text="Bin Barcode: "
-                android:textColor="@color/colorBlack"
                 app:layout_constraintTop_toBottomOf="@+id/binDetailNameLabel"
-                app:layout_constraintStart_toStartOf="@+id/productDetailId"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/binDetailBarcode"
@@ -182,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:textSize="16sp"
-                android:textColor="@color/colorBlack"
+                android:fontFamily="sans-serif"
                 android:layout_gravity="center_horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/binDetailNameLabel"
                 app:layout_constraintStart_toEndOf="@+id/binDetailBarcodeLabel" />

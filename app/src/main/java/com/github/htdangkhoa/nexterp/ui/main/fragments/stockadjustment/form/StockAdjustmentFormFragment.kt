@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -15,12 +14,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
-import com.github.htdangkhoa.nexterp.data.remote.availability.AvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustment_details.StockAdjustmentDetailResponse
@@ -29,6 +25,7 @@ import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockAdjustmentRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.StockAdjustmentViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.details.StockAdjustmentDetailsFragment
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
@@ -114,32 +111,31 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>>() {
                 override fun onSuccess(data: Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>) {
-//                    stockAdjustmentDetailsAdapter = StockAdjustmentRecyclerAdapter(
-//                        data.toMutableList(),
-//                        callback = {
-//                            productId = it.product_id
-//                            binId = it.bin_id
-//                            itemField.clearFocus()
-//                            itemName.text = it.product_name
-//                            binName.text = it.bin_name
-//                            binField.setText(it.bin_searchable)
-//                            itemField.setText(it.searchable)
-//                            qtyField.setText(it.qty.toString())
-//                            stockAdjustmentDetailsAdapter.notifyDataSetChanged()
-//                        },
-//                        callback2 = {
-//                            val id = stockAdjustmentDetailsAdapter.removeAt(it)
-//                            if (id != null) {
-//                                viewModel.deleteStockAdjustmentDetail(id)
-//                            }
-//                        },
-//                    )
-//
-//
-//                    stockAdjustmentDetails.apply {
-//                        layoutManager = LinearLayoutManager(activity)
-//                        adapter = stockAdjustmentDetailsAdapter
-//                    }
+                    stockAdjustmentDetailsAdapter = StockAdjustmentRecyclerAdapter(
+                        data.toMutableList(),
+                        args.stockAdjustment.adjustment_type,
+                        callback = {
+                            productId = it.product_id
+                            binId = it.bin_id
+                            itemField.clearFocus()
+                            itemName.text = it.product_full_name
+                            binName.text = it.bin_name
+                            binField.setText(it.bin_searchable)
+                            itemField.setText(it.searchable)
+                            qtyField.setText(it.qty.toString())
+                            stockAdjustmentDetailsAdapter.notifyDataSetChanged()
+                        },
+                        callback2 = {
+                            val id = stockAdjustmentDetailsAdapter.removeAt(it)
+                            if (id != null) {
+                                viewModel.deleteStockAdjustmentDetail(id)
+                            }
+                        },
+                    )
+                    stockAdjustmentDetails.apply {
+                        layoutManager = LinearLayoutManager(activity)
+                        adapter = stockAdjustmentDetailsAdapter
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -210,15 +206,15 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
                 override fun onSuccess(data: ProductAvailabilityResponse.ProductAvailability) {
-//                    itemName.text = data.product_name
-//                    binName.text = data.bin_name
-//                    qtyField.setText("0")
-//                    productId = data.product_id
-//                    binId = data.bin_id
-//
-//                    stockAdjustmentDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)
-//                    itemField.selectAll()
-//                    stockAdjustmentDetailsAdapter.notifyDataSetChanged()
+                    itemName.text = data.product_name
+                    binName.text = data.bin_name
+                    qtyField.setText("0")
+                    productId = data.product_id
+                    binId = data.bin_id
+
+                    stockAdjustmentDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)
+                    itemField.selectAll()
+                    stockAdjustmentDetailsAdapter.notifyDataSetChanged()
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -260,49 +256,23 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
                 override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
                     if (data.isNotEmpty()) {
-//                        if (data.size == 1) {
-//                            itemName.text = data[0].product_name
-//                            productId = data[0].product_id
-//                            binId = data[0].bin_id
-//                            if (binId != null) binName.text = data[0].bin_name else binName.text =
-//                                "No bin selected"
-//                            qtyField.setText(data[0].qty.toString())
-//                        } else {
-//                            val previousProductId: Int? = productId
-//                            data.forEach {
-//                                if (it.product_barcode == itemField.text.toString() || it.product_sku == itemField.text.toString() || it.product_carton_barcode == itemField.text.toString()) {
-//                                    itemName.text = it.product_name
-//                                    productId = it.product_id
-//                                    if (previousProductId != productId && previousProductId != null) {
-//                                        binId = null
-//                                        binName.text = "Select a bin"
-//                                    }
-//                                }
-//
-//                                if (binField.text.toString().isEmpty() && it.bin_id == null) {
-//                                    binId = null
-//                                    qtyField.setText(it.qty.toString())
-//                                    itemName.text = it.product_name
-//                                } else if (binField.text.toString()
-//                                        .isNotEmpty() && it.bin_searchable == binField.text.toString()
-//                                ) {
-//                                    binId = it.bin_id
-//                                    qtyField.setText(it.qty.toString())
-//                                    itemName.text = it.product_name
-//                                }
-//                            }
-//                        }
-//                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }
-//
-//                        if(binNoMatches) {
-//                            currentList.clear()
-//                            currentList.addAll(data)
-//                            binNoMatchDialog!!.show()
-//                        } else {
-//                            stockAdjustmentDetailsAdapter.updateList(data, itemField.text.toString(), binId)
-//                            itemField.selectAll()
-//                            stockAdjustmentDetailsAdapter.notifyDataSetChanged()
-//                        }
+                        itemName.text = data[0].product_name
+                        productId = data[0].product_id
+                        binId = data[0].bin_id
+                        if (binId != null) binName.text = data[0].bin_name else binName.text =
+                            "No bin selected"
+                        qtyField.setText(data[0].qty.toString())
+                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }
+
+                        if(binNoMatches) {
+                            currentList.clear()
+                            currentList.addAll(data)
+                            binNoMatchDialog!!.show()
+                        } else {
+                            stockAdjustmentDetailsAdapter.updateList(data, itemField.text.toString(), binId)
+                            itemField.selectAll()
+                            stockAdjustmentDetailsAdapter.notifyDataSetChanged()
+                        }
                     }
                 }
 
@@ -381,24 +351,24 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
         }
 
         btnLinkToStockAdjustmentDetails.setOnClickListener {
-//            if(productId != null) {
-//                val stockAdjustmentDetail : StockAdjustmentDetailResponse.StockAdjustmentDetail? = stockAdjustmentDetailsAdapter.findById(
-//                    productId!!, binId
-//                )
-//
-//                if(stockAdjustmentDetail != null) {
-//                    val fm: FragmentManager = childFragmentManager
-//                    val bundle = Bundle()
-//                    val detailsFragment = StockAdjustmentDetailsFragment()
-//
-//                    bundle.putParcelable("stockAdjustmentDetail", stockAdjustmentDetail)
-//                    detailsFragment.arguments = bundle
-//
-//                    fm.beginTransaction()
-//                        .replace(R.id.outer_frame_sc, detailsFragment)
-//                        .commit()
-//                }
-//            }
+            if(productId != null) {
+                val stockAdjustmentDetail : StockAdjustmentDetailResponse.StockAdjustmentDetail? = stockAdjustmentDetailsAdapter.findById(
+                    productId!!, binId
+                )
+
+                if(stockAdjustmentDetail != null) {
+                    val fm: FragmentManager = childFragmentManager
+                    val bundle = Bundle()
+                    val detailsFragment = StockAdjustmentDetailsFragment()
+
+                    bundle.putParcelable("stockAdjustmentDetail", stockAdjustmentDetail)
+                    detailsFragment.arguments = bundle
+
+                    fm.beginTransaction()
+                        .replace(R.id.outer_frame_sc, detailsFragment)
+                        .commit()
+                }
+            }
         }
     }
 
@@ -408,17 +378,16 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                if (binField.hasFocus()) {
-//                    if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-//                        viewModel.getBin(it.toString(), locationId, 0, 1)
-//                    } else if (TextUtils.isEmpty(it)) {
-//                        binId = null
-//                        binName.text = "No bin selected"
-//                        disableItems()
-//                    }
+            if (binField.hasFocus()) {
+                if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
+                    viewModel.getBin(it.toString(), locationId, 0, 1)
+                } else if (TextUtils.isEmpty(it)) {
+                    binId = null
+                    binName.text = "No bin selected"
+                    disableItems()
                 }
             }
-
+        }
     }
 
     // qty listener
@@ -438,62 +407,44 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (itemField.hasFocus()) {
-//                    if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-//
-//                        val stockAdjustmentDetails: StockAdjustmentDetailResponse.StockAdjustmentDetail? =
-//                            stockAdjustmentDetailsAdapter.checkProductAndUpdate(it, binId)
-//
-//                        if (stockAdjustmentDetails == null) {
-//                            viewModel.getProductAvailability(
-//                                it,
-//                                binField.text.toString(),
-//                                locationId,
-//                                args.stockAdjustment.brand_ids,
-//                                args.stockAdjustment.tag_ids,
-//                                args.stockAdjustment.bin_ids,
-//                                args.stockAdjustment.category_ids,
-//                                args.stockAdjustment.stock_locator_ids
-//                            )
-//                        } else {
-//                            productId = stockAdjustmentDetails.product_id
-//                            itemName.text = stockAdjustmentDetails.product_name
-//                            qtyField.setText(stockAdjustmentDetails.qty.toString())
-//                            itemField.selectAll()
-//                        }
-//                    } else {
-//                        productId = null
-//                        itemName.text = "Product not on count"
-//                    }
+                    if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
+                        val stockAdjustmentDetails: StockAdjustmentDetailResponse.StockAdjustmentDetail? =
+                            stockAdjustmentDetailsAdapter.checkProductAndUpdate(it, binId)
+
+                        if (stockAdjustmentDetails == null) {
+                            viewModel.getProductAvailability(
+                                it,
+                                binField.text.toString(),
+                                locationId
+                            )
+                        } else {
+                            productId = stockAdjustmentDetails.product_id
+                            itemName.text = stockAdjustmentDetails.product_full_name
+                            qtyField.setText(stockAdjustmentDetails.qty.toString())
+                            itemField.selectAll()
+                        }
+                    } else {
+                        productId = null
+                        itemName.text = "Product not on count"
+                    }
                 }
             }
     }
 
-    //return fancy colours depending on status
-    private fun checkStatus(status: String): Int {
-        var color by Delegates.notNull<Int>()
-
-        when (status) {
-            "IN PROGRESS" -> {
-                color = R.color.statusPartiallyReceived
-            }
-            "DONE" -> {
-                color = R.color.statusReceived
-            }
-        }
-        return color
-    }
     private fun disableItems() {
         itemField.isEnabled = false;
         itemField.inputType = InputType.TYPE_NULL;
         itemField.isFocusable = false;
         itemField.isFocusableInTouchMode = false;
     }
+
     private fun enableItems() {
         itemField.isEnabled = true;
         itemField.inputType = InputType.TYPE_CLASS_TEXT;
         itemField.isFocusable = true;
         itemField.isFocusableInTouchMode = true;
     }
+
     //animation and visibility for button expand
     private fun setVisibility(clicked: Boolean) {
         if(!clicked) {

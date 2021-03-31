@@ -31,6 +31,8 @@
 
     <string name="menu_stock_adjustment">Stock Adjustment</string>
     <string name="menu_new_stock_adjustment">New Stock Adjustment</string>
+    <string name="menu_stock_adjustment_details">Stock Adjustment Details</string>
+
     <string name="menu_product_lookup">Product Lookup</string>
 
     <string name="menu_receiving_details">Receiving Detail</string>

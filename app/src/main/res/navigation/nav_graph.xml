@@ -133,7 +133,7 @@
     <fragment
         android:id="@+id/stockAdjustmentFormFragment"
         android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.form.StockAdjustmentFormFragment"
-        android:label="fragment_stock_adjustment_form"
+        android:label="@string/menu_stock_adjustment_details"
         tools:layout="@layout/fragment_stock_adjustment_form" >
         <argument
             android:name="stockAdjustment"

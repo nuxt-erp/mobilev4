@@ -30,6 +30,9 @@ data class StockAdjustmentResponse(
         @SerializedName("location_name")
         var location_name: String,
 
+        @SerializedName("adjustment_type")
+        var adjustment_type: String,
+
         @SerializedName("effective_date")
         var effective_date: String?
     ) : Parcelable
