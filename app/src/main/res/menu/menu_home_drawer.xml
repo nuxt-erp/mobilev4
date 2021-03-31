@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_production_orders"
             android:title="@string/menu_receiving" />
         <item
+            android:id="@+id/nav_receiving_transfers"
+            android:icon="@drawable/ic_truck_loaded"
+            android:title="@string/menu_transfer_receiving" />
+        <item
             android:id="@+id/nav_product_lookup"
             android:icon="@drawable/ic_search_document"
             android:title="@string/menu_product_lookup" />

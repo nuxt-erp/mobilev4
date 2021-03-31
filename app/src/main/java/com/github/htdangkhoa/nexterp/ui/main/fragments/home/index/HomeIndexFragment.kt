@@ -28,6 +28,14 @@ class HomeIndexFragment() : BaseFragment<HomeViewModel>(
             val action = HomeIndexFragmentDirections.actionNavHomeToReceivingNewFragment()
             view.findNavController().navigate(action)
         }
+        btnListReceivingTransfers.setOnClickListener {
+            val action = HomeIndexFragmentDirections.actionNavHomeToNavReceiving()
+            view.findNavController().navigate(action)
+        }
+        btnNewReceivingTransfers.setOnClickListener {
+            val action = HomeIndexFragmentDirections.actionNavHomeToReceivingNewFragment()
+            view.findNavController().navigate(action)
+        }
         btnListStockCount.setOnClickListener {
             val action = HomeIndexFragmentDirections.actionNavHomeToNavStockCount()
             view.findNavController().navigate(action)

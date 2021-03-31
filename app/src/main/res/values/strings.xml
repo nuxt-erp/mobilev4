@@ -35,9 +35,13 @@
 
     <string name="menu_product_lookup">Product Lookup</string>
 
-    <string name="menu_receiving_details">Receiving Detail</string>
-    <string name="menu_receiving_new">New Receiving</string>
-    <string name="menu_receiving">Receiving</string>
+    <string name="menu_receiving_details">Purchase Receiving Detail</string>
+    <string name="menu_receiving_new">New Purchase Receiving</string>
+    <string name="menu_receiving">Purchase Receiving</string>
+
+    <string name="menu_transfer_receiving_details">Transfer Receiving Detail</string>
+    <string name="menu_transfer_receiving_new">New Transfer Receiving</string>
+    <string name="menu_transfer_receiving">Transfer Receiving</string>
 
     <string name="logged_user">Logged User</string>
     <string name="action_settings">Settings</string>
@@ -52,19 +56,23 @@
     <!--  Home  -->
     <string name="stock_count_home_title">Stock Count</string>
     <string name="stock_count_description">Hmmmm, how much inventory stock do we have?\nLet\'s find out! Navigate to the stock count page now. </string>
-    <string name="stock_count_action_1">List Stock Counts</string>
+    <string name="stock_count_action_1">Stock Count List</string>
     <string name="stock_count_action_2">New Stock Count</string>
 
     <string name="stock_adjustment_home_title">Stock Adjustment</string>
     <string name="stock_adjustment_description">Whoa, that\'s not right... I\'ve got to fix that stock right away!</string>
-    <string name="stock_adjustment_action_1">List Stock Adjustments</string>
+    <string name="stock_adjustment_action_1">Stock Adjustment List</string>
     <string name="stock_adjustment_action_2">New Stock Adjustment</string>
 
-    <string name="receiving_home_title">Receiving</string>
+    <string name="receiving_home_title">Purchase Receiving</string>
     <string name="receiving_description">Just received a shipment from a supplier? Navigate to the receiving page now to allocate it!</string>
-    <string name="receiving_action_1">List Receiving</string>
-    <string name="receiving_action_2">New Receiving</string>
+    <string name="receiving_action_1">Purchase Receiving List</string>
+    <string name="receiving_action_2">New Purchase Receiving</string>
 
+    <string name="receiving_transfers_home_title">Transfer Receiving</string>
+    <string name="receiving_transfers_description">Oh wow, we need more of that product pronto, luckily our other location sent some of theirs to us!</string>
+    <string name="receiving_transfers_action_1">Transfer Receiving List</string>
+    <string name="receiving_transfers_action_2">New Transfer Receiving</string>
 
     <string name="product_lookup_home_title">Product Lookup</string>
     <string name="product_lookup_description">Bins Bins Bins, so many bins everywhere!! But which one should I put this product in?</string>

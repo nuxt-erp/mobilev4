@@ -120,6 +120,12 @@
         <action
             android:id="@+id/action_nav_stock_adjustment_to_stockAdjustmentFormFragment"
             app:destination="@id/stockAdjustmentFormFragment" />
+        <action
+            android:id="@+id/action_nav_stock_adjustment_to_receivingTransferListFragment"
+            app:destination="@id/nav_receiving_transfers" />
+        <action
+            android:id="@+id/action_nav_stock_adjustment_to_receivingTransferNewFragment"
+            app:destination="@id/receivingTransferNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/stockAdjustmentNewFragment"
@@ -139,5 +145,38 @@
             android:name="stockAdjustment"
             app:argType="com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.StockAdjustmentResponse$StockAdjustment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/receivingTransferNewFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.new.ReceivingTransferNewFragment"
+        android:label="@string/menu_transfer_receiving_new"
+        tools:layout="@layout/fragment_receiving_transfers_new" >
+        <action
+            android:id="@+id/action_receivingTransferNewFragment_to_receivingTransferFormFragment"
+            app:destination="@id/receivingTransferFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/receivingTransferFormFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.form.ReceivingTransferFormFragment"
+        android:label="@string/menu_transfer_receiving_details"
+        tools:layout="@layout/fragment_receiving_transfers_form" >
+        <argument
+            android:name="receiving"
+            app:argType="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse$Receiving" />
+        <action
+            android:id="@+id/action_receivingTransferFormFragment_to_receivingTransferListFragment"
+            app:destination="@id/nav_receiving_transfers" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_receiving_transfers"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.list.ReceivingTransferListFragment"
+        android:label="@string/menu_transfer_receiving"
+        tools:layout="@layout/fragment_receiving_transfers_list" >
+        <action
+            android:id="@+id/action_receivingTransferListFragment_to_receivingTransferFormFragment"
+            app:destination="@id/receivingTransferFormFragment" />
+        <action
+            android:id="@+id/action_nav_receiving_transfers_to_receivingTransferNewFragment"
+            app:destination="@id/receivingTransferNewFragment" />
     </fragment>
 </navigation>

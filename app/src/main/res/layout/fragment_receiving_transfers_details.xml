@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popupBackground"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/md_tinted"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    tools:context=".ui.main.fragments.receiving_transfers.details.ReceivingTransferDetailsFragment">
+    <TextView
+        android:id="@+id/txtClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textSize="22sp"
+        android:text="x"
+        android:layout_gravity="end"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="30dp"
+            android:paddingHorizontal="10dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/productDetailName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:gravity="left"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/productDetailHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:textSize="18sp"
+                android:text="PRODUCT DETAILS"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textColor="@color/colorPrimaryLight"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailName"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailSkuLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:text="Sku: "
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailHeader"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailSku"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_gravity="left"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailHeader"
+                app:layout_constraintStart_toEndOf="@+id/productDetailSkuLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailBarcodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:text="Barcode: "
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailSkuLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_gravity="left"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailSkuLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailBarcodeLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailCartonBarcodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Carton Barcode: "
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailBarcodeLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailCartonBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_gravity="left"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailBarcodeLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailCartonBarcodeLabel"
+                />
+            <TextView
+                android:id="@+id/productDetailCartonQtyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="800"
+                android:textSize="16sp"
+                android:text="Carton Quantity: "
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonBarcodeLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/productDetailCartonQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailCartonBarcodeLabel"
+                app:layout_constraintStart_toEndOf="@+id/productDetailCartonQtyLabel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>
