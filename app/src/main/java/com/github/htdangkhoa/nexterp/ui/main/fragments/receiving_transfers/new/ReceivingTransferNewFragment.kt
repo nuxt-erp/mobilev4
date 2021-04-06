@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
+import com.github.htdangkhoa.nexterp.Constant.TYPE_TRANSFER
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
@@ -59,7 +60,7 @@ class ReceivingTransferNewFragment() : BaseFragment<ReceivingTransferViewModel>(
             val myInvoice = invoiceInput.text.toString()
             val myTracking = trackingInput.text.toString()
             if(myName.isNotEmpty()) {
-                viewModel.newReceiving(locationId, myName, myTransfer, myInvoice, myTracking)
+                viewModel.newReceiving(locationId, myName, myTransfer, myInvoice, myTracking, TYPE_TRANSFER)
             } else {
                 showDialog("Error", "You must enter a name for the Receiving.")
             }

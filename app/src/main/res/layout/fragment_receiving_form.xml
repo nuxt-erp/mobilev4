@@ -41,7 +41,7 @@
             android:gravity="right"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
-            android:text="@string/po_number"
+            android:text="@string/rc_number"
             app:layout_constraintStart_toEndOf="@+id/receivingNumberLabel"
             app:layout_constraintTop_toTopOf="parent" />
 

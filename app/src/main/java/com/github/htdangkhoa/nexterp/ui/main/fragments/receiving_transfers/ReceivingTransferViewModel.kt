@@ -15,6 +15,7 @@ import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.list.ReceivingTransferListFragmentDirections
 
 class ReceivingTransferViewModel(
     private val receivingUseCase: ReceivingUseCase,
@@ -29,7 +30,7 @@ class ReceivingTransferViewModel(
     val resourceVoid =  liveDataOf<Resource<Array<ReceivingResponse.Receiving?>>>()
 
     fun onReceivingClick(view : View, receiving: ReceivingResponse.Receiving) {
-        val action = ReceivingListFragmentDirections.actionNavReceivingToReceivingFormFragment(receiving)
+        val action = ReceivingTransferListFragmentDirections.actionReceivingTransferListFragmentToReceivingTransferFormFragment(receiving)
         view.findNavController().navigate(action)
     }
 
@@ -51,9 +52,9 @@ class ReceivingTransferViewModel(
         }
     }
 
-    fun getReceiving() {
+    fun getReceiving(receivingType: String) {
         resourceReceiving.postValue(Resource.loading())
-        receivingUseCase.execute<Array<ReceivingResponse.Receiving>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING)) {
+        receivingUseCase.execute<Array<ReceivingResponse.Receiving>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING, receivingType)) {
             onComplete {
                 resourceReceiving.postValue(Resource.success(it))
             }
@@ -93,13 +94,15 @@ class ReceivingTransferViewModel(
         }
     }
 
-    fun newReceiving(locationId: Int, name: String, poNumber: String?, invoiceNumber: String?, trackingNumber: String?) {
+    fun newReceiving(locationId: Int, name: String, transferNumber: String?, invoiceNumber: String?, trackingNumber: String?, receivingType: String) {
         val request = NewReceivingRequest(
             location_id = locationId,
             name = name,
-            poNumber = poNumber,
+            poNumber = null,
+            transferNumber = transferNumber,
             invoiceNumber = invoiceNumber,
-            trackingNumber = trackingNumber
+            trackingNumber = trackingNumber,
+            receivingType = receivingType
         )
 
         resourceReceivingObject.postValue(Resource.loading())

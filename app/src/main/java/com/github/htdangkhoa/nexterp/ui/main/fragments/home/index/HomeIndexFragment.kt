@@ -29,11 +29,11 @@ class HomeIndexFragment() : BaseFragment<HomeViewModel>(
             view.findNavController().navigate(action)
         }
         btnListReceivingTransfers.setOnClickListener {
-            val action = HomeIndexFragmentDirections.actionNavHomeToNavReceiving()
+            val action = HomeIndexFragmentDirections.actionNavHomeToNavReceivingTransfers()
             view.findNavController().navigate(action)
         }
         btnNewReceivingTransfers.setOnClickListener {
-            val action = HomeIndexFragmentDirections.actionNavHomeToReceivingNewFragment()
+            val action = HomeIndexFragmentDirections.actionNavHomeToReceivingTransferNewFragment()
             view.findNavController().navigate(action)
         }
         btnListStockCount.setOnClickListener {

@@ -26,13 +26,16 @@ class ReceivingParam constructor(val type: Int) {
 
     lateinit var receivingRequest: UpdateReceivingRequest
     lateinit var newReceivingRequest: NewReceivingRequest
-
+    lateinit var receivingType: String
     var id: Int = 0
 
     constructor(type: Int, id: Int) : this(type) {
         this.id = id
     }
 
+    constructor(type: Int, receiving_type: String) : this(type) {
+        this.receivingType = receiving_type
+    }
     constructor(type: Int, newReceivingRequest: NewReceivingRequest) : this(ReceivingParam.Type.NEW_RECEIVING) {
         this.newReceivingRequest = newReceivingRequest
     }

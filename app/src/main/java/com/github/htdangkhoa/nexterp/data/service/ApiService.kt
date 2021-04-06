@@ -70,7 +70,7 @@ interface ApiService {
     // Receiving
 
     @GET("inventory/receiving")
-    suspend fun getReceiving(): ReceivingResponse
+    suspend fun getReceiving(@Query("receiving_type") receiving_type: String): ReceivingResponse
 
     @GET("inventory/receiving_details")
     suspend fun getReceivingDetails(@Query("receiving_id") receiving_id: Int) : ReceivingDetailsResponse

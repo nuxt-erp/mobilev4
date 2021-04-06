@@ -10,7 +10,7 @@ import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-object ReceivingTransferDetailsModule {
+object ReceivingTransferModule {
     val module = module {
         single(override = true) { provideReceivingRepository(get()) }
 

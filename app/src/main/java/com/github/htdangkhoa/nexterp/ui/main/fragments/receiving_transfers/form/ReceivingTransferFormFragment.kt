@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
@@ -43,7 +45,7 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
     ReceivingTransferViewModel::class
 ) {
 
-//    private val args: ReceivingFormFragmentArgs by navArgs()
+    private val args: ReceivingTransferFormFragmentArgs by navArgs()
     private lateinit var receivingDetailsAdapter: ReceivingRecyclerAdapter
     private lateinit var sharedPreferences: SharedPreferences
     private var productId : Int? = null
@@ -258,22 +260,22 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
     }
 
     private fun initialize(view: View) {
-//        viewModel.getReceivingDetails(args.receiving.id)
+        viewModel.getReceivingDetails(args.receiving.id)
 
         //variables
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
 
         //xml
-//        receivingNumber.text = args.receiving.id.toString()
-//        receivingStatus.text = args.receiving.status
-//        itemField.setSelectAllOnFocus(true)
-//        receivingStatus.setTextColor(
-//            ContextCompat.getColor(
-//                view.context,
-//                checkStatus(args.receiving.status)
-//            )
-//        )
+        receivingNumber.text = args.receiving.id.toString()
+        receivingStatus.text = args.receiving.status
+        itemField.setSelectAllOnFocus(true)
+        receivingStatus.setTextColor(
+            ContextCompat.getColor(
+                view.context,
+                checkStatus(args.receiving.status)
+            )
+        )
 
         //functions
         itemHandle()
@@ -286,21 +288,21 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
             clicked = !clicked
         }
 
-//        saveButton.setOnClickListener {
-//            viewModel.updateReceiving(
-//                args.receiving.id,
-//                locationId,
-//                receivingDetailsAdapter.getUpdateList()
-//            )
-//        }
-//
-//        finishButton.setOnClickListener {
-//            viewModel.finishReceiving(args.receiving.id)
-//        }
-//
-//        voidButton.setOnClickListener {
-//            viewModel.voidReceiving(args.receiving.id)
-//        }
+        saveButton.setOnClickListener {
+            viewModel.updateReceiving(
+                args.receiving.id,
+                locationId,
+                receivingDetailsAdapter.getUpdateList()
+            )
+        }
+
+        finishButton.setOnClickListener {
+            viewModel.finishReceiving(args.receiving.id)
+        }
+
+        voidButton.setOnClickListener {
+            viewModel.voidReceiving(args.receiving.id)
+        }
         btnLinkToDetails.setOnClickListener {
             if(productId != null) {
                 val receivingDetail : ReceivingDetailsResponse.ReceivingDetails? = receivingDetailsAdapter.findById(

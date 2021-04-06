@@ -51,9 +51,9 @@ class ReceivingViewModel(
         }
     }
 
-    fun getReceiving() {
+    fun getReceiving(receivingType: String) {
         resourceReceiving.postValue(Resource.loading())
-        receivingUseCase.execute<Array<ReceivingResponse.Receiving>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING)) {
+        receivingUseCase.execute<Array<ReceivingResponse.Receiving>> (ReceivingParam(ReceivingParam.Type.GET_RECEIVING, receivingType)) {
             onComplete {
                 resourceReceiving.postValue(Resource.success(it))
             }
@@ -93,13 +93,15 @@ class ReceivingViewModel(
         }
     }
 
-    fun newReceiving(locationId: Int, name: String, poNumber: String?, invoiceNumber: String?, trackingNumber: String?) {
+    fun newReceiving(locationId: Int, name: String, poNumber: String?, invoiceNumber: String?, trackingNumber: String?, receivingType: String) {
         val request = NewReceivingRequest(
             location_id = locationId,
             name = name,
             poNumber = poNumber,
+            transferNumber = null,
             invoiceNumber = invoiceNumber,
-            trackingNumber = trackingNumber
+            trackingNumber = trackingNumber,
+            receivingType = receivingType
         )
 
         resourceReceivingObject.postValue(Resource.loading())

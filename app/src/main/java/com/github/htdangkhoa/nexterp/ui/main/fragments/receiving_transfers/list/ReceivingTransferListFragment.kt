@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.htdangkhoa.nexterp.Constant.TYPE_TRANSFER
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
@@ -55,7 +56,7 @@ class ReceivingTransferListFragment() : BaseFragment<ReceivingTransferViewModel>
             }
 
         })
-        viewModel.getReceiving()
+        viewModel.getReceiving(TYPE_TRANSFER)
 
         newButton.setOnClickListener {
             val action = ReceivingTransferListFragmentDirections.actionNavReceivingTransfersToReceivingTransferNewFragment()
