@@ -24,7 +24,7 @@ data class ProductResponse(
         @SerializedName("name")
         var name: String?,
 
-        @SerializedName("name_full")
+        @SerializedName("display_name")
         var product_full_name: String?,
 
         @SerializedName("sku")

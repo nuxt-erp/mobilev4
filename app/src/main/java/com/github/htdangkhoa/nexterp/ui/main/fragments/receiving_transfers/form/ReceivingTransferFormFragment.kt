@@ -204,7 +204,7 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
                         receivingDetailsAdapter.notifyDataSetChanged()
 
                         productId = data[0].id
-                        itemName.text = data[0].name
+                        itemName.text = data[0].product_full_name
                         qtyField.setText("0")
                         itemField.selectAll()
                     }

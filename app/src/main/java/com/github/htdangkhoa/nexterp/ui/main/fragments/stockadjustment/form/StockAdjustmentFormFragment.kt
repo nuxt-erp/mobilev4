@@ -206,7 +206,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
                 override fun onSuccess(data: ProductAvailabilityResponse.ProductAvailability) {
-                    itemName.text = data.product_name
+                    itemName.text = data.product_full_name
                     binName.text = data.bin_name
                     qtyField.setText("0")
                     productId = data.product_id
@@ -256,7 +256,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
                 override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
                     if (data.isNotEmpty()) {
-                        itemName.text = data[0].product_name
+                        itemName.text = data[0].product_full_name
                         productId = data[0].product_id
                         binId = data[0].bin_id
                         if (binId != null) binName.text = data[0].bin_name else binName.text =
