@@ -137,6 +137,7 @@ class StockCountRecyclerAdapter(
                 bin_name = item.bin_name,
                 bin_id = item.bin_id,
                 qty = item.qty,
+                available_bin_barcodes = item.available_bin_barcodes,
                 bin_searchable = item.bin_searchable
             )
             updateList.add(stockCountDetail)
@@ -182,6 +183,7 @@ class StockCountRecyclerAdapter(
                     bin_name = item.bin_name,
                     bin_id = item.bin_id,
                     qty = item.qty,
+                    available_bin_barcodes = item.available_bin_barcodes,
                     bin_searchable = item.bin_searchable
                 )
                 updateList.add(stockCountDetail)

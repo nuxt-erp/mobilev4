@@ -54,6 +54,9 @@ data class ProductAvailabilityResponse(
         @SerializedName("location_name")
         var location_name: String,
 
+        @SerializedName("available_bin_barcodes")
+        var available_bin_barcodes: String?,
+
         @SerializedName("bin_id")
         var bin_id: Int?,
 

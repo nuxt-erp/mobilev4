@@ -55,16 +55,28 @@
         app:layout_constraintTop_toBottomOf="@+id/productName"
         app:layout_constraintStart_toStartOf="parent"
         />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:fontFamily="sans-serif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+
+        tools:text="Location Name"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/productBrand"
+        app:layout_constraintStart_toStartOf="parent"
+        />
     <TextView
         android:id="@+id/barcodeLabel"
         android:fontFamily="sans-serif"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:textFontWeight="800"
         tools:text="Barcode"
         android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@+id/productBrand"
+        app:layout_constraintTop_toBottomOf="@+id/locationName"
         app:layout_constraintStart_toStartOf="parent"
         />
     <TextView
@@ -74,8 +86,9 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         tools:text="Barcode"
+        android:textFontWeight="800"
         android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@id/productBrand"
+        app:layout_constraintTop_toBottomOf="@id/locationName"
         app:layout_constraintEnd_toEndOf="parent"
         />
     <TextView
@@ -84,7 +97,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:textFontWeight="800"
         tools:text="Carton Barcode"
         android:textSize="17sp"
         app:layout_constraintTop_toBottomOf="@+id/barcodeLabel"
@@ -96,32 +108,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
+        android:textFontWeight="800"
         tools:text="Barcode"
         android:textSize="17sp"
         app:layout_constraintTop_toBottomOf="@id/barcodeLabel"
         app:layout_constraintEnd_toEndOf="parent"
         />
     <TextView
-        android:id="@+id/locationName"
-        android:fontFamily="sans-serif"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        tools:text="Location Name"
-        android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@id/cartonBarcodeLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-    <TextView
         android:id="@+id/binName"
         android:fontFamily="sans-serif"
         android:gravity="left"
         android:textSize="17sp"
-        android:textFontWeight="800"
         app:layout_constraintHorizontal_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/locationName"
+        app:layout_constraintTop_toBottomOf="@id/cartonBarcodeLabel"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Bin Name" />
     <TextView
@@ -130,9 +131,41 @@
         android:gravity="left"
         android:textSize="17sp"
         app:layout_constraintHorizontal_weight="1"
+        android:textFontWeight="800"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/locationName"
+        app:layout_constraintTop_toBottomOf="@id/cartonBarcodeLabel"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Bin Barcode" />
+    <TextView
+        android:id="@+id/onHand"
+        android:fontFamily="sans-serif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textFontWeight="800"
+        android:paddingTop="10dp"
+        android:paddingBottom="2dp"
+        tools:text="ON HAND"
+        android:textColor="@color/colorPrimary"
+        android:textSize="19sp"
+        app:layout_constraintTop_toBottomOf="@id/binName"
+        app:layout_constraintEnd_toStartOf="@+id/onHandLabel"
+        />
+    <TextView
+        android:id="@+id/onHandLabel"
+        android:fontFamily="sans-serif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textFontWeight="800"
+        android:paddingTop="10dp"
+        android:paddingBottom="2dp"
+        tools:text=" on hand"
+        android:textColor="@color/colorPrimary"
+        android:textSize="19sp"
+        app:layout_constraintTop_toBottomOf="@id/binName"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

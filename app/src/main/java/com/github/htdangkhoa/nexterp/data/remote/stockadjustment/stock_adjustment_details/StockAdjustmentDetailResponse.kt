@@ -56,6 +56,9 @@ data class StockAdjustmentDetailResponse(
         @SerializedName("adjustment_type")
         var adjustment_type: String?,
 
+        @SerializedName("available_bin_barcodes")
+        var available_bin_barcodes: String?,
+
         @SerializedName("status")
         var status: String?,
 

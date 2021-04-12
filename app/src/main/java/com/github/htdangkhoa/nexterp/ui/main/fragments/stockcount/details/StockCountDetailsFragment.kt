@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.details
+    package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.details
 
 import android.os.Bundle
 import android.view.View
@@ -7,14 +7,8 @@ import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
-import kotlinx.android.synthetic.main.fragment_stockcount_details.binDetailBarcode
-import kotlinx.android.synthetic.main.fragment_stockcount_details.binDetailName
-import kotlinx.android.synthetic.main.fragment_stockcount_details.productDetailBarcode
-import kotlinx.android.synthetic.main.fragment_stockcount_details.productDetailCartonBarcode
-import kotlinx.android.synthetic.main.fragment_stockcount_details.productDetailCartonQty
-import kotlinx.android.synthetic.main.fragment_stockcount_details.productDetailName
-import kotlinx.android.synthetic.main.fragment_stockcount_details.productDetailSku
-import kotlinx.android.synthetic.main.fragment_stockcount_details.txtClose
+import kotlinx.android.synthetic.main.fragment_stockcount_details.*
+import kotlinx.android.synthetic.main.stockcount_details_item.view.*
 
 
 class StockCountDetailsFragment() : BaseFragment<StockCountViewModel>(
@@ -31,6 +25,7 @@ class StockCountDetailsFragment() : BaseFragment<StockCountViewModel>(
         productDetailCartonBarcode.text = args.product_carton_barcode
         productDetailCartonQty.text = args.product_carton_qty.toString()
 
+
         if(args.bin_id != null) {
             binDetailName.text = args.bin_name
             binDetailBarcode.text = args.bin_searchable
@@ -39,6 +34,12 @@ class StockCountDetailsFragment() : BaseFragment<StockCountViewModel>(
             binDetailBarcode.text = "No bin found."
         }
 
+        if(args.available_bin_barcodes != null) {
+            otherBinsHeader.visibility = View.VISIBLE
+            otherBins.visibility = View.VISIBLE
+            otherBins.text = args.available_bin_barcodes
+
+        }
         txtClose.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
             fm.beginTransaction().remove(this).commit()

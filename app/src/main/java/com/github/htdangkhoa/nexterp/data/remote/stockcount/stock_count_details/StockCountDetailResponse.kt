@@ -45,6 +45,9 @@ data class StockCountDetailResponse(
         @SerializedName("location_id")
         var location_id: Int,
 
+        @SerializedName("available_bin_barcodes")
+        var available_bin_barcodes: String?,
+
         @SerializedName("bin_name")
         var bin_name: String?,
 

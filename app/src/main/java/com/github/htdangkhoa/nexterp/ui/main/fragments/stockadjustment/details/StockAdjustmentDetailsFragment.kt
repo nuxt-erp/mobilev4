@@ -11,7 +11,11 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.StockAdju
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.*
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.binDetailBarcode
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.binDetailName
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.productDetailBarcode
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.productDetailCartonBarcode
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.productDetailCartonQty
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.productDetailName
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.productDetailSku
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_details.txtClose
 
 
@@ -37,6 +41,12 @@ class StockAdjustmentDetailsFragment() : BaseFragment<StockAdjustmentViewModel>(
         } else {
             binDetailName.text = "No bin found."
             binDetailBarcode.text = "No bin found."
+        }
+
+        if(args.available_bin_barcodes != null) {
+            otherBinsHeader.visibility = View.VISIBLE
+            otherBins.visibility = View.VISIBLE
+            otherBins.text = args.available_bin_barcodes
         }
 
         txtClose.setOnClickListener {
