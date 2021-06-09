@@ -288,8 +288,8 @@ class StockCountViewModel(
     }
 
 
-    fun newStockCount(stockCountFilters:  HashMap<String, List<Long>>, name: String) {
-        val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name)
+    fun newStockCount(stockCountFilters:  HashMap<String, List<Long>>, name: String, location_id: Int) {
+        val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name, location_id = location_id)
 
         resourceStockCountObject.postValue(Resource.loading())
 

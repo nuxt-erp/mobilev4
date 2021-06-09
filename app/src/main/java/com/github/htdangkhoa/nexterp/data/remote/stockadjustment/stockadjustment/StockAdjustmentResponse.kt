@@ -27,6 +27,9 @@ data class StockAdjustmentResponse(
         @SerializedName("notes")
         var notes: String,
 
+        @SerializedName("status")
+        var status: String,
+
         @SerializedName("location_name")
         var location_name: String,
 

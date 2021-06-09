@@ -8,5 +8,8 @@ data class UpdateStockAdjustmentRequest(
     var list_products: List<StockAdjustmentDetailResponse.StockAdjustmentDetail>,
 
     @SerializedName("location_id")
-    var location_id: Int
+    var location_id: Int,
+
+    @SerializedName("finish")
+    var finish: Boolean?
 )

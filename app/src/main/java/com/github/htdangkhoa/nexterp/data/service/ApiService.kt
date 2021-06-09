@@ -92,7 +92,7 @@ interface ApiService {
 
     // Stock Count
 
-    @GET("inventory/stock_count"+ "?status=0")
+    @GET("inventory/stock_count" + "?not_received=1")
     suspend fun getStockCount(): StockCountResponse
 
     @GET("inventory/stock_count_details")
@@ -104,8 +104,8 @@ interface ApiService {
     @POST("inventory/stock_count")
     suspend fun newStockCount(@Body request: NewStockCountRequest): StockCountObjectResponse
 
-    @DELETE("inventory/stock_count/{id}")
-    suspend fun deleteStockCount(@Path("id") id: Int) : StockCountResponse
+    @GET("inventory/stock_count/void/{id}")
+    suspend fun voidStockCount(@Path("id") id: Int) : StockCountObjectResponse
 
     @DELETE("inventory/stock_count_details/{id}")
     suspend fun deleteStockCountDetail(@Path("id") id: Int) : StockCountDetailResponse
@@ -115,7 +115,7 @@ interface ApiService {
 
     // Stock Adjustment
 
-    @GET("inventory/stock_adjustments")
+    @GET("inventory/stock_adjustments" + "?not_adjusted=1")
     suspend fun getStockAdjustment(): StockAdjustmentResponse
 
     @GET("inventory/stock_adjustment_details")
@@ -127,8 +127,8 @@ interface ApiService {
     @POST("inventory/stock_adjustments")
     suspend fun newStockAdjustment(@Body request: NewStockAdjustmentRequest): StockAdjustmentObjectResponse
 
-    @DELETE("inventory/stock_adjustments/{id}")
-    suspend fun deleteStockAdjustment(@Path("id") id: Int) : StockAdjustmentResponse
+    @GET("inventory/stock_adjustments/void/{id}")
+    suspend fun voidStockAdjustment(@Path("id") id: Int) : StockAdjustmentObjectResponse
 
     @DELETE("inventory/stock_adjustment_details/{id}")
     suspend fun deleteStockAdjustmentDetail(@Path("id") id: Int) : StockAdjustmentDetailResponse

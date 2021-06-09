@@ -48,7 +48,7 @@ class StockAdjustmentViewModel(
     val resourceStockAdjustment = liveDataOf<Resource<Array<StockAdjustmentResponse.StockAdjustment>>>()
     val resourceStockAdjustmentObject = liveDataOf<Resource<StockAdjustmentResponse.StockAdjustment>>()
     val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()
-    val resourceVoid =  liveDataOf<Resource<Array<StockAdjustmentResponse.StockAdjustment?>>>()
+    val resourceVoid =  liveDataOf<Resource<StockAdjustmentResponse.StockAdjustment?>>()
     val resourceStockAdjustmentDetails = liveDataOf<Resource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>>>()
     val resourceDeleteStockAdjustmentDetails = liveDataOf<Resource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail?>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
@@ -173,10 +173,11 @@ class StockAdjustmentViewModel(
         }
     }
 
-    fun updateStockAdjustment(id: Int, locationId: Int, list_products: List<StockAdjustmentDetailResponse.StockAdjustmentDetail>) {
+    fun updateStockAdjustment(id: Int, locationId: Int, finish: Boolean?, list_products: List<StockAdjustmentDetailResponse.StockAdjustmentDetail>) {
         val request = UpdateStockAdjustmentRequest(
             list_products = list_products,
-            location_id = locationId
+            location_id = locationId,
+            finish = finish
         )
 
         resourceStockAdjustmentObject.postValue(Resource.loading())
@@ -220,7 +221,7 @@ class StockAdjustmentViewModel(
     fun voidStockAdjustment(id: Int) {
         resourceVoid.postValue(Resource.loading())
 
-        stockAdjustmentUseCase.execute<Array<StockAdjustmentResponse.StockAdjustment?>>(StockAdjustmentParam(StockAdjustmentParam.Type.VOID_STOCK_ADJUSTMENT, id)) {
+        stockAdjustmentUseCase.execute<StockAdjustmentResponse.StockAdjustment?>(StockAdjustmentParam(StockAdjustmentParam.Type.VOID_STOCK_ADJUSTMENT, id)) {
             onComplete {
                 resourceVoid.postValue(Resource.success(it))
             }

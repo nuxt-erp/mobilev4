@@ -1,10 +1,12 @@
 
 package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.new
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_stockcount_list.progressCircular
 import kotlinx.android.synthetic.main.fragment_stockcount_new.*
 import timber.log.Timber
 import timber.log.Timber.log
+import kotlin.properties.Delegates
 
 
 class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
@@ -35,11 +38,15 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
     private val brandSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
     private val stockLocatorSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
     private val tagSpinnerItems:  MutableList<KeyPairBoolData> = ArrayList()
+    private lateinit var sharedPreferences: SharedPreferences
+    private var locationId by Delegates.notNull<Int>()
 
     override val layoutResID: Int
         get() = R.layout.fragment_stockcount_new
 
     override fun render(view: View, savedInstanceState: Bundle?) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
+        locationId = sharedPreferences.getString("location", null)?.toInt()!!
 
         viewModel.resourceTags.observe(
             viewLifecycleOwner,
@@ -316,7 +323,7 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
             val myName = nameInput.text.toString()
             if(myName.isNotEmpty()) {
                 createMap()
-                viewModel.newStockCount(createMap(), myName)
+                viewModel.newStockCount(createMap(), myName, location_id = locationId)
             } else {
                 showDialog("Error", "You must enter a name for the Stock Count.")
             }

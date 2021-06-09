@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustment_details
 import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 

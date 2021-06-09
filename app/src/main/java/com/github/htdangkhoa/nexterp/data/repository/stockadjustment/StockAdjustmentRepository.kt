@@ -18,6 +18,6 @@ interface StockAdjustmentRepository : BaseRepository {
     ): Result<StockAdjustmentResponse.StockAdjustment?>
 
     suspend fun getStockAdjustmentDetails(id: Int): Result<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail?>>
-    suspend fun deleteStockAdjustment(id: Int): Result<Array<StockAdjustmentResponse.StockAdjustment?>>
+    suspend fun voidStockAdjustment(id: Int): Result<StockAdjustmentResponse.StockAdjustment?>
     suspend fun deleteStockAdjustmentDetail(id: Int): Result<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail?>>
 }
