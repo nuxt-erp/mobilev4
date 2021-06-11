@@ -96,7 +96,7 @@ interface ApiService {
     suspend fun getStockCount(): StockCountResponse
 
     @GET("inventory/stock_count_details")
-    suspend fun getStockCountDetails(@Query("stockcount_id") stockcount_id: Int) : StockCountDetailResponse
+    suspend fun getStockCountDetails(@Query("stockcount_id") stockcount_id: Int, @Query("page") nextPage: Int) : StockCountDetailResponse
 
     @PUT("inventory/stock_count/{id}")
     suspend fun updateStockCount(@Path("id") id: Int, @Body updateStockCountRequest: UpdateStockCountRequest) : StockCountObjectResponse

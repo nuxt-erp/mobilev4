@@ -36,8 +36,6 @@ class StockCountRecyclerAdapter(
             holder.bindItem(item)
             holder.itemView.setOnClickListener { callback(item) }
             holder.itemView.btnDeleteDetail.setOnClickListener { callback2(position) }
-        } else {
-            holder.bindHeader()
         }
     }
 
@@ -190,6 +188,13 @@ class StockCountRecyclerAdapter(
             }
         }
     }
+
+    fun addAll(list: Array<StockCountDetailResponse.StockCountDetail>) {
+        list.forEach {
+            updateList.add(it)
+        }
+    }
+
     class ListHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private var item: StockCountDetailResponse.StockCountDetail? = null
@@ -203,16 +208,16 @@ class StockCountRecyclerAdapter(
             view.isClickable = false
         }
 
-        fun bindHeader() {
-            view.productName.visibility = View.GONE
-            view.stockQty.visibility = View.GONE
-            view.stockQtyLabel.visibility = View.GONE
-            view.binName.visibility = View.GONE
-            view.btnDeleteDetail.visibility = View.GONE
-
-            view.header.visibility = View.VISIBLE
-            view.header.text = "Stock Count Details"
-        }
+//        fun bindHeader() {
+//            view.productName.visibility = View.GONE
+//            view.stockQty.visibility = View.GONE
+//            view.stockQtyLabel.visibility = View.GONE
+//            view.binName.visibility = View.GONE
+//            view.btnDeleteDetail.visibility = View.GONE
+//
+//            view.header.visibility = View.VISIBLE
+//            view.header.text = "Stock Count Details"
+//        }
 
         fun bindItem(item: StockCountDetailResponse.StockCountDetail) {
             this.item = item

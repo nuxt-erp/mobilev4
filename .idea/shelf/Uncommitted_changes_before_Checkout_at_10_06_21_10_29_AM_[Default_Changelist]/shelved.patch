@@ -1,0 +1,414 @@
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/resource/ObserverResource.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.resource\n\nimport androidx.lifecycle.Observer\n\n/**\n * Created by khoahuynh on 2020-01-06.\n */\nabstract class ObserverResource<T> : Observer<Resource<T>> {\n    override fun onChanged(t: Resource<T>) = handleResource(t)\n\n    abstract fun onSuccess(data: T)\n\n    open fun onError(throwable: Throwable?) = Unit\n\n    open fun onLoading(isShow: Boolean) = Unit\n\n    private fun handleResource(resource: Resource<T>) {\n        val res = resource\n\n        when (res.status) {\n            StatusResource.SUCCESS -> {\n                res.data?.let {\n                    onSuccess(it)\n\n                    onLoading(false)\n                }\n            }\n            StatusResource.ERROR -> {\n                onError(res.throwable)\n\n                onLoading(false)\n            }\n            StatusResource.LOADING -> {\n                onLoading(true)\n            }\n            else -> {\n                onLoading(false)\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/resource/ObserverResource.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/resource/ObserverResource.kt	(date 1623334696000)
+@@ -1,6 +1,8 @@
+ package com.github.htdangkhoa.nexterp.resource
+ 
+ import androidx.lifecycle.Observer
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
++import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+ 
+ /**
+  * Created by khoahuynh on 2020-01-06.
+@@ -8,7 +10,8 @@
+ abstract class ObserverResource<T> : Observer<Resource<T>> {
+     override fun onChanged(t: Resource<T>) = handleResource(t)
+ 
+-    abstract fun onSuccess(data: T)
++    abstract fun onSuccess(data: T?)
++//    abstract fun onSuccess(data: Pair<T, PaginationObject>)
+ 
+     open fun onError(throwable: Throwable?) = Unit
+ 
+@@ -19,11 +22,18 @@
+ 
+         when (res.status) {
+             StatusResource.SUCCESS -> {
+-                res.data?.let {
+-                    onSuccess(it)
++                res.let {
++//                    if(it.paginationObject != null) {
++//
++//                        onSuccess(Pair(it.data!!, it.paginationObject))
++//                    } else {
++//                        onSuccess(it.data!!)
++//                    }
++                    onSuccess(it.data!!)
+ 
+                     onLoading(false)
+                 }
++
+             }
+             StatusResource.ERROR -> {
+                 onError(res.throwable)
+@@ -38,4 +48,9 @@
+             }
+         }
+     }
++
++
++    abstract fun onSuccess(data: Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>)
+ }
++
++
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/extension/ResultExt.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.extension\n\nimport com.github.htdangkhoa.nexterp.data.model.ResponseExceptionModel\nimport com.github.htdangkhoa.nexterp.data.model.ResponseModel\n\ninline fun <reified T> Result.Companion.map(responseModel: ResponseModel<T>): Result<T> {\n    return if (responseModel.code != 200 && responseModel.data == null) {\n        failure(ResponseExceptionModel(responseModel))\n    } else {\n        success(responseModel.data!!)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/extension/ResultExt.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/extension/ResultExt.kt	(date 1623334916000)
+@@ -2,6 +2,7 @@
+ 
+ import com.github.htdangkhoa.nexterp.data.model.ResponseExceptionModel
+ import com.github.htdangkhoa.nexterp.data.model.ResponseModel
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
+ 
+ inline fun <reified T> Result.Companion.map(responseModel: ResponseModel<T>): Result<T> {
+     return if (responseModel.code != 200 && responseModel.data == null) {
+@@ -10,3 +11,7 @@
+         success(responseModel.data!!)
+     }
+ }
++
++//fun <T> Result.Companion.success(value: T, paginationObject: PaginationObject?): Result<Pair<T, PaginationObject?>>{
++//    return success(Pair(value, paginationObject))
++//}
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.data.repository.stockcount\n\nimport com.github.htdangkhoa.nexterp.base.BaseRepository\nimport com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse\n\ninterface StockCountRepository : BaseRepository {\n    suspend fun getStockCount(): Result<Array<StockCountResponse.StockCount?>>\n    suspend fun updateStockCount(\n        id: Int,\n        stockCountRequest: UpdateStockCountRequest\n    ): Result<StockCountResponse.StockCount?>\n\n    suspend fun newStockCount(\n        stockCountRequest: NewStockCountRequest\n    ): Result<StockCountResponse.StockCount?>\n\n    suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>\n    suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>\n    suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?>\n    suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepository.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepository.kt	(date 1623334134000)
+@@ -1,6 +1,7 @@
+ package com.github.htdangkhoa.nexterp.data.repository.stockcount
+ 
+ import com.github.htdangkhoa.nexterp.base.BaseRepository
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
+ import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
+@@ -18,7 +19,8 @@
+         stockCountRequest: NewStockCountRequest
+     ): Result<StockCountResponse.StockCount?>
+ 
+-    suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
++    suspend fun getStockCountDetails(id: Int):
++            Result<Pair<Array<StockCountDetailResponse.StockCountDetail?>, PaginationObject?>>
+     suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>
+     suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?>
+     suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepositoryImp.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.data.repository.stockcount\n\nimport com.github.htdangkhoa.nexterp.base.BaseRepositoryImp\nimport com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse\n\nimport com.github.htdangkhoa.nexterp.data.service.ApiService\nimport com.github.htdangkhoa.nexterp.extension.map\nimport retrofit2.HttpException\n\nclass StockCountRepositoryImp(\n    apiService: ApiService\n) : BaseRepositoryImp(apiService), StockCountRepository {\n\n    override suspend fun updateStockCount(\n        id: Int,\n        stockCountRequest: UpdateStockCountRequest\n    ): Result<StockCountResponse.StockCount?> {\n        return try {\n            val res = apiService.updateStockCount(id, stockCountRequest)\n            Result.map(res)\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n\n    override suspend fun newStockCount(\n        stockCountRequest: NewStockCountRequest\n    ): Result<StockCountResponse.StockCount?> {\n        return try {\n            val res = apiService.newStockCount(stockCountRequest)\n            Result.map(res)\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n\n    override suspend fun getStockCount(): Result<Array<StockCountResponse.StockCount?>> {\n        return try {\n            val res = apiService.getStockCount()\n            Result.map(res)\n        } catch (e: HttpException) {\n            Result.failure(e)\n        }\n    }\n\n    override suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>> {\n        return try {\n            val res = apiService.getStockCountDetails(id)\n            Result.map(res)\n        } catch (e: HttpException) {\n            Result.failure(e)\n        }\n    }\n\n    override suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>> {\n        return try {\n            val res = apiService.finishStockCount(id)\n            Result.map(res)\n        } catch (e: HttpException) {\n            Result.failure(e)\n        }\n    }\n\n    override suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?> {\n        return try {\n            val res = apiService.voidStockCount(id)\n            Result.map(res)\n        } catch (e: HttpException) {\n            Result.failure(e)\n        }\n    }\n    override suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>> {\n        return try {\n            val res = apiService.deleteStockCountDetail(id)\n            Result.map(res)\n        } catch (e: HttpException) {\n            Result.failure(e)\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepositoryImp.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/data/repository/stockcount/StockCountRepositoryImp.kt	(date 1623335287000)
+@@ -1,7 +1,8 @@
+ package com.github.htdangkhoa.nexterp.data.repository.stockcount
+ 
++import android.util.Log
+ import com.github.htdangkhoa.nexterp.base.BaseRepositoryImp
+-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
+@@ -47,10 +48,11 @@
+         }
+     }
+ 
+-    override suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>> {
++    override suspend fun getStockCountDetails(id: Int): Result<Pair<Array<StockCountDetailResponse.StockCountDetail?>, PaginationObject?>> {
+         return try {
+             val res = apiService.getStockCountDetails(id)
+-            Result.map(res)
++
++            Result.success(Pair(res.data, res.pagination))
+         } catch (e: HttpException) {
+             Result.failure(e)
+         }
+@@ -82,3 +84,4 @@
+         }
+     }
+ }
++
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/form/StockCountFormFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.form\n\nimport android.content.DialogInterface\nimport android.content.SharedPreferences\nimport android.os.Bundle\nimport android.text.InputType\nimport android.text.TextUtils\nimport android.util.Log\nimport android.view.View\nimport android.view.animation.Animation\nimport android.view.animation.AnimationUtils\nimport androidx.appcompat.app.AlertDialog\nimport androidx.core.widget.doAfterTextChanged\nimport androidx.fragment.app.FragmentManager\nimport androidx.navigation.fragment.findNavController\nimport androidx.navigation.fragment.navArgs\nimport androidx.preference.PreferenceManager\nimport androidx.recyclerview.widget.ItemTouchHelper\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport androidx.recyclerview.widget.RecyclerView\nimport com.github.htdangkhoa.nexterp.R\nimport com.github.htdangkhoa.nexterp.base.BaseFragment\nimport com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse\nimport com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse\nimport com.github.htdangkhoa.nexterp.resource.ObserverResource\nimport com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter\nimport com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback\nimport com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher\nimport com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel\nimport com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.details.StockCountDetailsFragment\nimport com.pawegio.kandroid.hide\nimport com.pawegio.kandroid.show\nimport com.pawegio.kandroid.toast\nimport io.reactivex.rxjava3.android.schedulers.AndroidSchedulers\nimport kotlinx.android.synthetic.main.fragment_stockcount_form.*\nimport java.util.concurrent.TimeUnit\nimport kotlin.properties.Delegates\n\n\nclass StockCountFormFragment() : BaseFragment<StockCountViewModel>(\n    StockCountViewModel::class\n) {\n    private lateinit var stockCountDetailsAdapter: StockCountRecyclerAdapter\n    private val args: StockCountFormFragmentArgs by navArgs()\n    private lateinit var sharedPreferences: SharedPreferences\n    private var productId: Int? = null\n    private var binId: Int? = null\n    private var locationId by Delegates.notNull<Int>()\n    private var binsMandatory by Delegates.notNull<Boolean>()\n    private val currentList :  MutableList<ProductAvailabilityResponse.ProductAvailability> = ArrayList()\n\n    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(\n        this.context,\n        R.anim.rotate_open_anim\n    )}\n    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(\n        this.context,\n        R.anim.rotate_close_anim\n    )}\n    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(\n        this.context,\n        R.anim.from_bottom_anim\n    )}\n    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(\n        this.context,\n        R.anim.to_bottom_anim\n    )}\n\n\n    private var clicked : Boolean = false\n\n    override val layoutResID: Int\n        get() = R.layout.fragment_stockcount_form\n\n    override fun render(view: View, savedInstanceState: Bundle?) {\n        initialize(view)\n\n        val binNoMatchDialog: AlertDialog? = requireActivity().let {\n            val builder = AlertDialog.Builder(it)\n            builder.apply {\n                setTitle(R.string.are_you_sure_no_bin_match_title)\n                setMessage(R.string.are_you_sure_no_bin_match)\n                setPositiveButton(R.string.update,\n                    DialogInterface.OnClickListener { dialog, _ ->\n                        val noMatch = currentList.find { availability ->\n                            availability.bin_matches == false\n                        }\n//                      send api request\n                        if(noMatch !== null) {\n                            viewModel.newAvailability(binField.text.toString(), noMatch.product_id, noMatch.location_id)\n                        }\n                        dialog.dismiss()\n\n                    })\n                setNegativeButton(R.string.abort,\n                    DialogInterface.OnClickListener { dialog, _ ->\n                        productId = null\n                        binId = null\n                        binName.text = \"Select a bin\"\n                        itemName.text = \"Select a bin\"\n                        itemField.setText(\"\")\n                        binField.setText(\"\")\n                        qtyField.setText(\"\")\n                        binField.requestFocus()\n                        dialog.cancel()\n                    })\n            }\n\n            builder.create()\n        }\n\n        viewModel.resourceStockCountDetails.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {\n                override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {\n                    stockCountDetailsAdapter = StockCountRecyclerAdapter(\n                        data.toMutableList(),\n                        callback = {\n                            productId = it.product_id\n                            binId = it.bin_id\n                            itemField.clearFocus()\n                            itemName.text = it.product_name\n                            binName.text = it.bin_name\n                            binField.setText(it.bin_searchable)\n                            itemField.setText(it.searchable)\n                            qtyField.setText(it.qty.toString())\n                            stockCountDetailsAdapter.notifyDataSetChanged()\n                        },\n                        callback2 = {\n                            val id = stockCountDetailsAdapter.removeAt(it)\n                            if (id != null) {\n                                viewModel.deleteStockCountDetail(id)\n                            }\n                        },\n                    )\n\n\n                    stockCountDetails.apply {\n                        layoutManager = LinearLayoutManager(activity)\n                        adapter = stockCountDetailsAdapter\n                    }\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n\n        viewModel.resourceBins.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<Array<BinResponse.Bin>>() {\n                override fun onSuccess(data: Array<BinResponse.Bin>) {\n                    if (data.isNotEmpty()) {\n                        binName.text = data[0].name\n                        binId = data[0].id\n                        itemField.requestFocus()\n                    } else {\n                        binName.text = binField.text.toString()\n                        binId = null\n\n                    }\n                    enableItems()\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n        viewModel.resourceFinish.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<Array<StockCountResponse.StockCount?>>() {\n                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {\n                    findNavController().popBackStack()\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n\n        viewModel.resourceVoid.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<Array<StockCountResponse.StockCount?>>() {\n                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {\n                    findNavController().popBackStack()\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n        viewModel.resourceNewAvailabilityObject.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {\n                override fun onSuccess(data: ProductAvailabilityResponse.ProductAvailability) {\n                    itemName.text = data.product_name\n                    binName.text = data.bin_name\n                    qtyField.setText(\"0\")\n                    productId = data.product_id\n                    binId = data.bin_id\n\n                    stockCountDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)\n                    itemField.selectAll()\n                    stockCountDetailsAdapter.notifyDataSetChanged()\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n        viewModel.resourceStockCountObject.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<StockCountResponse.StockCount>() {\n                override fun onSuccess(data: StockCountResponse.StockCount) {\n                    viewModel.getStockCountDetails(data.id)\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n\n        viewModel.resourceProductAvailability.observe(\n            viewLifecycleOwner,\n            object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {\n                override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {\n                    if (data.isNotEmpty()) {\n                        if (data.size == 1) {\n                            itemName.text = data[0].product_name\n                            productId = data[0].product_id\n                            binId = data[0].bin_id\n                            if (binId != null) binName.text = data[0].bin_name else binName.text =\n                                \"No bin selected\"\n                            qtyField.setText(data[0].qty.toString())\n                        } else {\n                            val previousProductId: Int? = productId\n                            data.forEach {\n                                if (it.product_barcode == itemField.text.toString() || it.product_sku == itemField.text.toString() || it.product_carton_barcode == itemField.text.toString()) {\n                                    itemName.text = it.product_name\n                                    productId = it.product_id\n                                    if (previousProductId != productId && previousProductId != null) {\n                                        binId = null\n                                        binName.text = \"Select a bin\"\n                                    }\n                                }\n\n                                if (binField.text.toString().isEmpty() && it.bin_id == null) {\n                                    binId = null\n                                    qtyField.setText(it.qty.toString())\n                                    itemName.text = it.product_name\n                                } else if (binField.text.toString()\n                                        .isNotEmpty() && it.bin_searchable == binField.text.toString()\n                                ) {\n                                    binId = it.bin_id\n                                    qtyField.setText(it.qty.toString())\n                                    itemName.text = it.product_name\n                                }\n                            }\n                        }\n                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }\n\n                        if(binNoMatches) {\n                            currentList.clear()\n                            currentList.addAll(data)\n                            binNoMatchDialog!!.show()\n                        } else {\n                            stockCountDetailsAdapter.updateList(data, itemField.text.toString(), binId)\n                            itemField.selectAll()\n                            stockCountDetailsAdapter.notifyDataSetChanged()\n                        }\n                    }\n                }\n\n                override fun onError(throwable: Throwable?) {\n                    handleError(throwable) {\n                        it?.message?.let { toast(it) }\n                        handleHttpError(it)\n                    }\n                }\n\n                override fun onLoading(isShow: Boolean) {\n                    progressCircular.apply {\n                        if (isShow) show() else hide(true)\n                    }\n                }\n            })\n        viewModel.getStockCountDetails(args.stockCount.id)\n    }\n\n    private fun initialize(view: View) {\n        //variables\n        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)\n        locationId = sharedPreferences.getString(\"location\", null)?.toInt()!!\n        binsMandatory = sharedPreferences.getString(\"binsMandatory\", null)?.toBoolean()!!\n        disableItems()\n\n\n        //xml\n        stockCountNumber.text = args.stockCount.id.toString()\n        stockStatus.text = args.stockCount.status_name\n        itemField.setSelectAllOnFocus(true)\n        binField.setSelectAllOnFocus(true)\n\n        //functions\n        binHandle()\n        itemHandle()\n        qtyHandle()\n\n        val finishDialog: AlertDialog? = requireActivity().let {\n            val builder = AlertDialog.Builder(it)\n            builder.apply {\n                setTitle(R.string.are_you_sure_finish_title)\n                setMessage(R.string.are_you_sure_finish)\n                setPositiveButton(R.string.proceed,\n                    DialogInterface.OnClickListener { dialog, _ ->\n                        viewModel.finishStockCount(args.stockCount.id)\n                        dialog.dismiss()\n\n                    })\n                setNegativeButton(R.string.abort,\n                    DialogInterface.OnClickListener { dialog, _ ->\n                        dialog.cancel()\n                    })\n            }\n\n            builder.create()\n        }\n        val voidDialog: AlertDialog? = requireActivity().let {\n            val builder = AlertDialog.Builder(it)\n            builder.apply {\n                setTitle(R.string.are_you_sure_void_title)\n                setMessage(R.string.are_you_sure_void)\n                setPositiveButton(R.string.proceed,\n                    DialogInterface.OnClickListener { dialog, _ ->\n                        viewModel.voidStockCount(args.stockCount.id)\n                        dialog.dismiss()\n                    })\n                setNegativeButton(R.string.abort,\n                    DialogInterface.OnClickListener { dialog, _ ->\n\n                        dialog.cancel()\n                    })\n            }\n\n            builder.create()\n        }\n\n\n        //listeners\n        expandButton.setOnClickListener {\n            setVisibility(clicked)\n            setAnimation(clicked)\n            clicked = !clicked\n        }\n\n        saveButton.setOnClickListener {\n            viewModel.updateStockCount(\n                args.stockCount.id,\n                locationId,\n                stockCountDetailsAdapter.getUpdateList()\n            )\n        }\n\n        finishButton.setOnClickListener {\n            // handle are you sure popup?\n            finishDialog!!.show()\n        }\n\n        voidButton.setOnClickListener {\n            // handle are you sure popup?\n            voidDialog!!.show()\n        }\n\n        btnLinkToStockDetails.setOnClickListener {\n            if(productId != null) {\n                val stockCountDetail : StockCountDetailResponse.StockCountDetail? = stockCountDetailsAdapter.findById(\n                    productId!!, binId\n                )\n\n                if(stockCountDetail != null) {\n                    val fm: FragmentManager = childFragmentManager\n                    val bundle = Bundle()\n                    val detailsFragment = StockCountDetailsFragment()\n\n                    bundle.putParcelable(\"stockCountDetail\", stockCountDetail)\n                    detailsFragment.arguments = bundle\n\n                    fm.beginTransaction()\n                        .replace(R.id.outer_frame_sc, detailsFragment)\n                        .commit()\n                }\n            }\n        }\n    }\n\n    private fun binHandle(){\n        binField.addRxTextWatcher()\n        .debounce(300, TimeUnit.MILLISECONDS)\n        .observeOn(AndroidSchedulers.mainThread())\n        .subscribeOn(AndroidSchedulers.mainThread())\n        .subscribe {\n            if (binField.hasFocus()) {\n                if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {\n                    viewModel.getBin(it.toString(), locationId, 0, 1)\n                } else if (TextUtils.isEmpty(it)) {\n                    binId = null\n                    binName.text = \"No bin selected\"\n                    disableItems()\n                }\n            }\n        }\n\n    }\n\n    // qty listener\n    private fun qtyHandle() {\n        qtyField.doAfterTextChanged { text ->\n            if(itemField.text.toString().isEmpty().not()) {\n                stockCountDetailsAdapter.updateQty(productId!!, binId, text.toString())\n            }\n        }\n    }\n\n    //item text watcher\n    private fun itemHandle() {\n        itemField.addRxTextWatcher()\n            .debounce(300, TimeUnit.MILLISECONDS)\n            .observeOn(AndroidSchedulers.mainThread())\n            .subscribeOn(AndroidSchedulers.mainThread())\n            .subscribe {\n                if (itemField.hasFocus()) {\n                    if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {\n\n                        val stockCountDetails: StockCountDetailResponse.StockCountDetail? =\n                            stockCountDetailsAdapter.checkProductAndUpdate(it, binId)\n\n                        if (stockCountDetails == null) {\n                            viewModel.getProductAvailability(\n                                it,\n                                binField.text.toString(),\n                                locationId,\n                                args.stockCount.brand_ids,\n                                args.stockCount.tag_ids,\n                                args.stockCount.bin_ids,\n                                args.stockCount.category_ids,\n                                args.stockCount.stock_locator_ids\n                            )\n                        } else {\n                            productId = stockCountDetails.product_id\n                            itemName.text = stockCountDetails.product_name\n                            qtyField.setText(stockCountDetails.qty.toString())\n                            itemField.selectAll()\n                        }\n                    } else {\n                        productId = null\n                        itemName.text = \"Product not on count\"\n                    }\n                }\n            }\n    }\n\n    //return fancy colours depending on status\n    private fun checkStatus(status: String): Int {\n        var color by Delegates.notNull<Int>()\n\n        when (status) {\n            \"IN PROGRESS\" -> {\n                color = R.color.statusPartiallyReceived\n            }\n            \"DONE\" -> {\n                color = R.color.statusReceived\n            }\n        }\n        return color\n    }\n    private fun disableItems() {\n        itemField.isEnabled = false;\n        itemField.inputType = InputType.TYPE_NULL;\n        itemField.isFocusable = false;\n        itemField.isFocusableInTouchMode = false;\n    }\n    private fun enableItems() {\n        itemField.isEnabled = true;\n        itemField.inputType = InputType.TYPE_CLASS_TEXT;\n        itemField.isFocusable = true;\n        itemField.isFocusableInTouchMode = true;\n    }\n    //animation and visibility for button expand\n    private fun setVisibility(clicked: Boolean) {\n        if(!clicked) {\n            saveButton.visibility = View.VISIBLE\n            voidButton.visibility = View.VISIBLE\n            finishButton.visibility = View.VISIBLE\n        } else {\n            saveButton.visibility = View.INVISIBLE\n            voidButton.visibility = View.INVISIBLE\n            finishButton.visibility = View.INVISIBLE\n        }\n    }\n\n    private fun setAnimation(clicked: Boolean) {\n        if(!clicked) {\n            saveButton.startAnimation(fromBottom)\n            voidButton.startAnimation(fromBottom)\n            finishButton.startAnimation(fromBottom)\n            expandButton.startAnimation(rotateOpen)\n        } else {\n            saveButton.startAnimation(toBottom)\n            voidButton.startAnimation(toBottom)\n            finishButton.startAnimation(toBottom)\n            expandButton.startAnimation(rotateClose)\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/form/StockCountFormFragment.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/form/StockCountFormFragment.kt	(date 1623334732000)
+@@ -22,8 +22,10 @@
+ import com.github.htdangkhoa.nexterp.base.BaseFragment
+ import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
+ import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
+ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
++import com.github.htdangkhoa.nexterp.extension.map
+ import com.github.htdangkhoa.nexterp.resource.ObserverResource
+ import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
+ import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
+@@ -113,10 +115,26 @@
+ 
+         viewModel.resourceStockCountDetails.observe(
+             viewLifecycleOwner,
+-            object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
+-                override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
++            object : ObserverResource<Pair<Array<StockCountDetailResponse.StockCountDetail?>, PaginationObject?>>() {
++
++                override fun onError(throwable: Throwable?) {
++                    handleError(throwable) {
++                        it?.message?.let { toast(it) }
++                        handleHttpError(it)
++                    }
++                }
++
++                override fun onLoading(isShow: Boolean) {
++                    progressCircular.apply {
++                        if (isShow) show() else hide(true)
++                    }
++                }
++                override fun onSuccess(data: Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>) {
++                    val (arrayData, pagination) = data
++
++//                    Result<StockCountDetailResponse.StockCountDetail>().map(arrayData)
+                     stockCountDetailsAdapter = StockCountRecyclerAdapter(
+-                        data.toMutableList(),
++                        arrayData.toMutableList(),
+                         callback = {
+                             productId = it.product_id
+                             binId = it.bin_id
+@@ -142,26 +160,15 @@
+                         adapter = stockCountDetailsAdapter
+                     }
+                 }
+-
+-                override fun onError(throwable: Throwable?) {
+-                    handleError(throwable) {
+-                        it?.message?.let { toast(it) }
+-                        handleHttpError(it)
+-                    }
+-                }
+-
+-                override fun onLoading(isShow: Boolean) {
+-                    progressCircular.apply {
+-                        if (isShow) show() else hide(true)
+-                    }
+-                }
+             })
+ 
+         viewModel.resourceBins.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<Array<BinResponse.Bin>>() {
+-                override fun onSuccess(data: Array<BinResponse.Bin>) {
+-                    if (data.isNotEmpty()) {
++                override fun onSuccess(
++                    data: Array<BinResponse.Bin>?
++                ) {
++                    if (data!!.isNotEmpty()) {
+                         binName.text = data[0].name
+                         binId = data[0].id
+                         itemField.requestFocus()
+@@ -185,11 +192,16 @@
+                         if (isShow) show() else hide(true)
+                     }
+                 }
++
++
+             })
+         viewModel.resourceFinish.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+-                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
++                override fun onSuccess(
++                    data: Array<StockCountResponse.StockCount?>?,
++                    paginationObject: PaginationObject?
++                ) {
+                     findNavController().popBackStack()
+                 }
+ 
+@@ -205,12 +217,17 @@
+                         if (isShow) show() else hide(true)
+                     }
+                 }
++
++
+             })
+ 
+         viewModel.resourceVoid.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
+-                override fun onSuccess(data: Array<StockCountResponse.StockCount?>) {
++                override fun onSuccess(
++                    data: Array<StockCountResponse.StockCount?>?,
++                    paginationObject: PaginationObject?
++                ) {
+                     findNavController().popBackStack()
+                 }
+ 
+@@ -226,12 +243,17 @@
+                         if (isShow) show() else hide(true)
+                     }
+                 }
++
++
+             })
+         viewModel.resourceNewAvailabilityObject.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
+-                override fun onSuccess(data: ProductAvailabilityResponse.ProductAvailability) {
+-                    itemName.text = data.product_name
++                override fun onSuccess(
++                    data: ProductAvailabilityResponse.ProductAvailability?,
++                    paginationObject: PaginationObject?
++                ) {
++                    itemName.text = data!!.product_name
+                     binName.text = data.bin_name
+                     qtyField.setText("0")
+                     productId = data.product_id
+@@ -241,7 +263,6 @@
+                     itemField.selectAll()
+                     stockCountDetailsAdapter.notifyDataSetChanged()
+                 }
+-
+                 override fun onError(throwable: Throwable?) {
+                     handleError(throwable) {
+                         it?.message?.let { toast(it) }
+@@ -254,12 +275,17 @@
+                         if (isShow) show() else hide(true)
+                     }
+                 }
++
++
+             })
+         viewModel.resourceStockCountObject.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<StockCountResponse.StockCount>() {
+-                override fun onSuccess(data: StockCountResponse.StockCount) {
+-                    viewModel.getStockCountDetails(data.id)
++                override fun onSuccess(
++                    data: StockCountResponse.StockCount?,
++                    paginationObject: PaginationObject?
++                ) {
++                    viewModel.getStockCountDetails(data!!.id)
+                 }
+ 
+                 override fun onError(throwable: Throwable?) {
+@@ -274,13 +300,19 @@
+                         if (isShow) show() else hide(true)
+                     }
+                 }
++
++
+             })
+ 
+         viewModel.resourceProductAvailability.observe(
+             viewLifecycleOwner,
+             object : ObserverResource<Array<ProductAvailabilityResponse.ProductAvailability>>() {
+-                override fun onSuccess(data: Array<ProductAvailabilityResponse.ProductAvailability>) {
+-                    if (data.isNotEmpty()) {
++
++                override fun onSuccess(
++                    data: Array<ProductAvailabilityResponse.ProductAvailability>?,
++                    paginationObject: PaginationObject?
++                ) {
++                    if (data!!.isNotEmpty()) {
+                         if (data.size == 1) {
+                             itemName.text = data[0].product_name
+                             productId = data[0].product_id
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/resource/Resource.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.resource\n\ndata class Resource<T>(\n    val status: StatusResource = StatusResource.NOTHING,\n    val data: T?,\n    val throwable: Throwable? = null\n) {\n    companion object {\n        inline fun <reified T> success(data: T) = Resource(StatusResource.SUCCESS, data)\n\n        inline fun <reified T> error(\n            throwable: Throwable\n        ) = Resource<T>(StatusResource.ERROR, null, throwable)\n\n        inline fun <reified T> loading() = Resource<T>(StatusResource.LOADING, null, null)\n\n        inline fun <reified T> nothing() = Resource<T>(StatusResource.NOTHING, null, null)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/resource/Resource.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/resource/Resource.kt	(date 1623334681000)
+@@ -1,16 +1,20 @@
+ package com.github.htdangkhoa.nexterp.resource
+ 
++import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
++
+ data class Resource<T>(
+     val status: StatusResource = StatusResource.NOTHING,
+     val data: T?,
++    val paginationObject: PaginationObject?,
+     val throwable: Throwable? = null
+ ) {
+     companion object {
+-        inline fun <reified T> success(data: T) = Resource(StatusResource.SUCCESS, data)
++//        inline fun <reified T> success(data: T, paginationObject: PaginationObject?) = Resource(StatusResource.SUCCESS, data, paginationObject)
++        inline fun <reified T> success(data: T) = Resource(StatusResource.SUCCESS, data, null)
+ 
+         inline fun <reified T> error(
+             throwable: Throwable
+-        ) = Resource<T>(StatusResource.ERROR, null, throwable)
++        ) = Resource<T>(StatusResource.ERROR, null, null, throwable)
+ 
+         inline fun <reified T> loading() = Resource<T>(StatusResource.LOADING, null, null)
+ 
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/ui/login/LoginViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.ui.login\n\nimport androidx.lifecycle.ViewModel\nimport com.github.htdangkhoa.nexterp.Constant\nimport com.github.htdangkhoa.nexterp.data.remote.auth.AuthResponse\nimport com.github.htdangkhoa.nexterp.data.remote.auth.login.LoginRequest\nimport com.github.htdangkhoa.nexterp.domain.auth.AuthParam\nimport com.github.htdangkhoa.nexterp.domain.auth.AuthUseCase\nimport com.github.htdangkhoa.nexterp.extension.liveDataOf\nimport com.github.htdangkhoa.nexterp.resource.Resource\n\nclass LoginViewModel(\n    private val authUseCase: AuthUseCase\n) : ViewModel() {\n    val resourceToken = liveDataOf<Resource<AuthResponse.Token>>()\n\n    fun login(username: String, password: String) {\n        val request = LoginRequest(\n            username.trim(),\n            password,\n            clientSecret = Constant.CLIENT_SECRET,\n            clientId = Constant.CLIENT_ID,\n            grantType = Constant.GRANT_TYPE\n            )\n\n        resourceToken.postValue(Resource.loading())\n\n        authUseCase.execute<AuthResponse.Token>(AuthParam(request)) {\n            onComplete {\n                resourceToken.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceToken.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceToken.postValue(Resource.error(it))\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/ui/login/LoginViewModel.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/ui/login/LoginViewModel.kt	(date 1623272192000)
+@@ -27,7 +27,7 @@
+ 
+         authUseCase.execute<AuthResponse.Token>(AuthParam(request)) {
+             onComplete {
+-                resourceToken.postValue(Resource.success(it))
++                resourceToken.postValue(Resource.success(it, paginationObject = null))
+             }
+ 
+             onError {
+Index: app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/StockCountViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount\n\nimport android.view.View\nimport androidx.lifecycle.ViewModel\nimport androidx.navigation.findNavController\nimport com.github.htdangkhoa.nexterp.data.remote.availability.NewAvailabilityRequest\nimport com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse\nimport com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse\nimport com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse\nimport com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest\nimport com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse\nimport com.github.htdangkhoa.nexterp.data.remote.stocklocator.StockLocatorResponse\nimport com.github.htdangkhoa.nexterp.data.remote.tag.TagResponse\nimport com.github.htdangkhoa.nexterp.domain.availability.ProductAvailabilityParam\nimport com.github.htdangkhoa.nexterp.domain.availability.ProductAvailabilityUseCase\nimport com.github.htdangkhoa.nexterp.domain.locationbin.BinParam\nimport com.github.htdangkhoa.nexterp.domain.locationbin.BinUseCase\nimport com.github.htdangkhoa.nexterp.domain.brand.BrandParam\nimport com.github.htdangkhoa.nexterp.domain.brand.BrandUseCase\nimport com.github.htdangkhoa.nexterp.domain.category.CategoryParam\nimport com.github.htdangkhoa.nexterp.domain.category.CategoryUseCase\nimport com.github.htdangkhoa.nexterp.domain.stockcount.StockCountParam\nimport com.github.htdangkhoa.nexterp.domain.stockcount.StockCountUseCase\nimport com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorParam\nimport com.github.htdangkhoa.nexterp.domain.stocklocator.StockLocatorUseCase\nimport com.github.htdangkhoa.nexterp.domain.tag.TagParam\nimport com.github.htdangkhoa.nexterp.domain.tag.TagUseCase\nimport com.github.htdangkhoa.nexterp.extension.liveDataOf\nimport com.github.htdangkhoa.nexterp.resource.Resource\nimport com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.list.StockCountListFragmentDirections\n\nclass StockCountViewModel(\n    private val stockCountUseCase: StockCountUseCase,\n    private val binUseCase: BinUseCase,\n    private val availabilityUseCase: ProductAvailabilityUseCase,\n    private val brandUseCase: BrandUseCase,\n    private val categoryUseCase: CategoryUseCase,\n    private val tagUseCase: TagUseCase,\n    private val stockLocatorUseCase: StockLocatorUseCase\n\n) : ViewModel() {\n    val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()\n    val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()\n    val resourceStockCountObject = liveDataOf<Resource<StockCountResponse.StockCount>>()\n    val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()\n    val resourceFinish = liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()\n    val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()\n    val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()\n    val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()\n    val resourceBrands = liveDataOf<Resource<Array<BrandResponse.Brand>>>()\n    val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()\n    val resourceTags = liveDataOf<Resource<Array<TagResponse.Tag>>>()\n    val resourceStockLocators = liveDataOf<Resource<Array<StockLocatorResponse.StockLocator>>>()\n    val resourceDeleteStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail?>>>()\n\n    fun onStockCountClick(view : View, stockCount: StockCountResponse.StockCount) {\n        val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)\n        view.findNavController().navigate(action)\n    }\n    fun getStockCount() {\n        resourceStockCount.postValue(Resource.loading())\n\n        stockCountUseCase.execute<Array<StockCountResponse.StockCount>> (StockCountParam(StockCountParam.Type.GET_STOCK_COUNT)) {\n            onComplete {\n                resourceStockCount.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceStockCount.postValue(Resource.error(it))\n                throw it\n\n            }\n\n            onCancel {\n                resourceStockCount.postValue(Resource.error(it))\n            }\n        }\n    }\n    fun getStockCountDetails(id: Int) {\n        resourceStockCountDetails.postValue(Resource.loading())\n        stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail>> (\n            StockCountParam(\n                StockCountParam.Type.GET_STOCK_COUNT_DETAILS, id)\n        ) {\n            onComplete {\n                resourceStockCountDetails.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceStockCountDetails.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceStockCountDetails.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getBin(barcode: String?,\n               location_id: Int?,\n               list: Int,\n               is_enabled: Int) {\n        resourceBins.postValue(Resource.loading())\n        binUseCase.execute<Array<BinResponse.Bin>> (\n            BinParam(\n                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled)\n        ) {\n            onComplete {\n                resourceBins.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceBins.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceBins.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getBrand(list: Int,\n                 is_enabled: Int) {\n        resourceBrands.postValue(Resource.loading())\n        brandUseCase.execute<Array<BrandResponse.Brand>> (\n            BrandParam(\n                BrandParam.Type.GET_BRANDS, list, is_enabled)\n        ) {\n            onComplete {\n                resourceBrands.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceBrands.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceBrands.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getCategory(list: Int,\n                 is_enabled: Int) {\n        resourceCategories.postValue(Resource.loading())\n        categoryUseCase.execute<Array<CategoryResponse.Category>> (\n            CategoryParam(\n                CategoryParam.Type.GET_CATEGORIES, list, is_enabled)\n        ) {\n            onComplete {\n                resourceCategories.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceCategories.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceCategories.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getTag(list: Int) {\n        resourceTags.postValue(Resource.loading())\n        tagUseCase.execute<Array<TagResponse.Tag>> (\n            TagParam(\n                TagParam.Type.GET_TAG, list)\n        ) {\n            onComplete {\n                resourceTags.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceTags.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceTags.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getStockLocator(list: Int,\n                    is_enabled: Int) {\n        resourceStockLocators.postValue(Resource.loading())\n        stockLocatorUseCase.execute<Array<StockLocatorResponse.StockLocator>> (\n            StockLocatorParam(\n                StockLocatorParam.Type.GET_STOCK_LOCATOR, list, is_enabled)\n        ) {\n            onComplete {\n                resourceStockLocators.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceStockLocators.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceStockLocators.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun getProductAvailability(\n           searchable: String,\n           bin_searchable: String,\n           location_id: Int,\n           brand_ids: List<Long>? = null,\n           tag_ids: List<Long>? = null,\n           bin_ids: List<Long>? = null,\n           category_ids: List<Long>? = null,\n           stock_locator_ids: List<Long>? = null) {\n        resourceProductAvailability.postValue(Resource.loading())\n        availabilityUseCase.execute<Array<ProductAvailabilityResponse.ProductAvailability>> (\n            ProductAvailabilityParam(\n                ProductAvailabilityParam.Type.GET_PRODUCT_AVAILABILITY, searchable, bin_searchable, location_id, brand_ids, tag_ids, bin_ids, category_ids, stock_locator_ids)\n        )\n        {\n            onComplete {\n                resourceProductAvailability.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceProductAvailability.postValue(Resource.error(it))\n                throw it\n            }\n\n            onCancel {\n                resourceProductAvailability.postValue(Resource.error(it))\n            }\n        }\n    }\n    fun newAvailability(bin_barcode: String, product_id: Int, locationId: Int) {\n        val request = NewAvailabilityRequest(\n            bin_barcode = bin_barcode,\n            product_id = product_id,\n            location_id = locationId\n        )\n\n        resourceNewAvailabilityObject.postValue(Resource.loading())\n\n        availabilityUseCase.execute<ProductAvailabilityResponse.ProductAvailability>(ProductAvailabilityParam(ProductAvailabilityParam.Type.NEW_PRODUCT_AVAILABILITY, request)) {\n            onComplete {\n                resourceNewAvailabilityObject.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceNewAvailabilityObject.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceNewAvailabilityObject.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun updateStockCount(id: Int, locationId: Int, list_products: List<StockCountDetailResponse.StockCountDetail>) {\n        val request = UpdateStockCountRequest(\n            list_products = list_products,\n            location_id = locationId\n        )\n\n        resourceStockCountObject.postValue(Resource.loading())\n\n        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.UPDATE_STOCK_COUNT, id, request)) {\n            onComplete {\n                resourceStockCountObject.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceStockCountObject.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceStockCountObject.postValue(Resource.error(it))\n            }\n        }\n    }\n\n\n    fun newStockCount(stockCountFilters:  HashMap<String, List<Long>>, name: String, location_id: Int) {\n        val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name, location_id = location_id)\n\n        resourceStockCountObject.postValue(Resource.loading())\n\n        stockCountUseCase.execute<StockCountResponse.StockCount>(StockCountParam(StockCountParam.Type.NEW_STOCK_COUNT, request)) {\n            onComplete {\n                resourceStockCountObject.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceStockCountObject.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceStockCountObject.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun voidStockCount(id: Int) {\n        resourceVoid.postValue(Resource.loading())\n\n        stockCountUseCase.execute<Array<StockCountResponse.StockCount?>>(StockCountParam(StockCountParam.Type.VOID_STOCK_COUNT, id)) {\n            onComplete {\n                resourceVoid.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceVoid.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceVoid.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun finishStockCount(id: Int) {\n        resourceFinish.postValue(Resource.loading())\n\n        stockCountUseCase.execute<Array<StockCountResponse.StockCount?>>(StockCountParam(StockCountParam.Type.FINISH_STOCK_COUNT, id)) {\n            onComplete {\n                resourceFinish.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceFinish.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceFinish.postValue(Resource.error(it))\n            }\n        }\n    }\n\n    fun deleteStockCountDetail(id: Int) {\n        resourceDeleteStockCountDetails.postValue(Resource.loading())\n\n        stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail?>>(\n            StockCountParam(\n                StockCountParam.Type.DELETE_STOCK_COUNT_DETAIL, id)\n        ) {\n            onComplete {\n                resourceDeleteStockCountDetails.postValue(Resource.success(it))\n            }\n\n            onError {\n                resourceDeleteStockCountDetails.postValue(Resource.error(it))\n            }\n\n            onCancel {\n                resourceDeleteStockCountDetails.postValue(Resource.error(it))\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/StockCountViewModel.kt	(revision 5283a531912db8c18625eec51137e33310ec3a52)
++++ app/src/main/java/com/github/htdangkhoa/nexterp/ui/main/fragments/stockcount/StockCountViewModel.kt	(date 1623332140000)
+@@ -48,7 +48,7 @@
+     val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()
+     val resourceFinish = liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
+     val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
+-    val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
++    val resourceStockCountDetails = liveDataOf<Resource<HashMap<String, Any>>>()
+     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
+     val resourceBrands = liveDataOf<Resource<Array<BrandResponse.Brand>>>()
+     val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()
+@@ -81,7 +81,7 @@
+     }
+     fun getStockCountDetails(id: Int) {
+         resourceStockCountDetails.postValue(Resource.loading())
+-        stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail>> (
++        stockCountUseCase.execute<HashMap<String, Any>> (
+             StockCountParam(
+                 StockCountParam.Type.GET_STOCK_COUNT_DETAILS, id)
+         ) {

@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.data.repository.stockcount
 
 import com.github.htdangkhoa.nexterp.base.BaseRepositoryImp
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
@@ -47,10 +48,11 @@ class StockCountRepositoryImp(
         }
     }
 
-    override suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>> {
+    override suspend fun getStockCountDetails(id: Int, nextPage: Int): Result<Pair<Array<StockCountDetailResponse.StockCountDetail?>, PaginationObject?>> {
         return try {
-            val res = apiService.getStockCountDetails(id)
-            Result.map(res)
+            val res = apiService.getStockCountDetails(id, nextPage)
+
+            Result.success(Pair(res.data, res.pagination))
         } catch (e: HttpException) {
             Result.failure(e)
         }

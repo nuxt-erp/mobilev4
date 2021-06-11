@@ -15,18 +15,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockCountRecyclerAdapter
-import com.github.htdangkhoa.nexterp.ui.components.SwipeToDeleteCallback
+import com.github.htdangkhoa.nexterp.ui.components.PaginationListener
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.details.StockCountDetailsFragment
@@ -50,6 +49,21 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     private var locationId by Delegates.notNull<Int>()
     private var binsMandatory by Delegates.notNull<Boolean>()
     private val currentList :  MutableList<ProductAvailabilityResponse.ProductAvailability> = ArrayList()
+
+    // Index from which pagination should start (0 is 1st page in our case)
+    private val start = 1
+    private var initialized = false
+
+    // If current page is the last page (Pagination will stop after this page load)
+    private val isLastPage = false
+
+    // total no. of pages to load. Initial load is page 0, after which 2 more pages will load.
+    private var totalPages = 1
+
+    // indicates the current page which Pagination is fetching.
+    private var currentPage = start
+
+    private var nextPage = start
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(
         this.context,
@@ -88,8 +102,12 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                             availability.bin_matches == false
                         }
 //                      send api request
-                        if(noMatch !== null) {
-                            viewModel.newAvailability(binField.text.toString(), noMatch.product_id, noMatch.location_id)
+                        if (noMatch !== null) {
+                            viewModel.newAvailability(
+                                binField.text.toString(),
+                                noMatch.product_id,
+                                noMatch.location_id
+                            )
                         }
                         dialog.dismiss()
 
@@ -113,34 +131,18 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
         viewModel.resourceStockCountDetails.observe(
             viewLifecycleOwner,
-            object : ObserverResource<Array<StockCountDetailResponse.StockCountDetail>>() {
-                override fun onSuccess(data: Array<StockCountDetailResponse.StockCountDetail>) {
-                    stockCountDetailsAdapter = StockCountRecyclerAdapter(
-                        data.toMutableList(),
-                        callback = {
-                            productId = it.product_id
-                            binId = it.bin_id
-                            itemField.clearFocus()
-                            itemName.text = it.product_name
-                            binName.text = it.bin_name
-                            binField.setText(it.bin_searchable)
-                            itemField.setText(it.searchable)
-                            qtyField.setText(it.qty.toString())
-                            stockCountDetailsAdapter.notifyDataSetChanged()
-                        },
-                        callback2 = {
-                            val id = stockCountDetailsAdapter.removeAt(it)
-                            if (id != null) {
-                                viewModel.deleteStockCountDetail(id)
-                            }
-                        },
-                    )
-
-
-                    stockCountDetails.apply {
-                        layoutManager = LinearLayoutManager(activity)
-                        adapter = stockCountDetailsAdapter
+            object :
+                ObserverResource<Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>>() {
+                override fun onSuccess(data: Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>) {
+                    val (dataArray, pagination) = data
+                    Log.e("PAGINATION ->>>", pagination.toString())
+                    totalPages = pagination!!.total
+                    currentPage = pagination.current_page
+                    if(currentPage + 1 < pagination.last_page) {
+                        nextPage = currentPage + 1
                     }
+                    stockCountDetailsAdapter.addAll(dataArray)
+                    stockCountDetailsAdapter.notifyDataSetChanged()
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -237,7 +239,11 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     productId = data.product_id
                     binId = data.bin_id
 
-                    stockCountDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)
+                    stockCountDetailsAdapter.updateListWithObj(
+                        data,
+                        itemField.text.toString(),
+                        binId
+                    )
                     itemField.selectAll()
                     stockCountDetailsAdapter.notifyDataSetChanged()
                 }
@@ -259,7 +265,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<StockCountResponse.StockCount>() {
                 override fun onSuccess(data: StockCountResponse.StockCount) {
-                    viewModel.getStockCountDetails(data.id)
+                    viewModel.getStockCountDetails(data.id, nextPage)
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -313,14 +319,18 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                                 }
                             }
                         }
-                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }
+                        val binNoMatches = data.any { obj -> obj.bin_matches == false }
 
-                        if(binNoMatches) {
+                        if (binNoMatches) {
                             currentList.clear()
                             currentList.addAll(data)
                             binNoMatchDialog!!.show()
                         } else {
-                            stockCountDetailsAdapter.updateList(data, itemField.text.toString(), binId)
+                            stockCountDetailsAdapter.updateList(
+                                data,
+                                itemField.text.toString(),
+                                binId
+                            )
                             itemField.selectAll()
                             stockCountDetailsAdapter.notifyDataSetChanged()
                         }
@@ -340,7 +350,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                 }
             })
-        viewModel.getStockCountDetails(args.stockCount.id)
+        viewModel.getStockCountDetails(args.stockCount.id, nextPage)
+
     }
 
     private fun initialize(view: View) {
@@ -398,6 +409,46 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     })
             }
 
+            val mutableList : MutableList<StockCountDetailResponse.StockCountDetail> = ArrayList()
+            stockCountDetailsAdapter = StockCountRecyclerAdapter(
+                mutableList,
+                callback = {
+                    productId = it.product_id
+                    binId = it.bin_id
+                    itemField.clearFocus()
+                    itemName.text = it.product_name
+                    binName.text = it.bin_name
+                    binField.setText(it.bin_searchable)
+                    itemField.setText(it.searchable)
+                    qtyField.setText(it.qty.toString())
+                    stockCountDetailsAdapter.notifyDataSetChanged()
+                },
+                callback2 = {
+                    val id = stockCountDetailsAdapter.removeAt(it)
+                    if (id != null) {
+                        viewModel.deleteStockCountDetail(id)
+                    }
+                },
+            )
+            val linearLayoutManager = LinearLayoutManager(activity)
+
+            stockCountDetails.apply {
+                layoutManager = linearLayoutManager
+                adapter = stockCountDetailsAdapter
+            }
+            initialized = true
+
+            stockCountDetails.addOnScrollListener(object : PaginationListener(linearLayoutManager) {
+                override fun loadMoreItems() {
+                    Log.e("LOAD MORE->>>", "FRAGMENT")
+                    //  API call
+                    viewModel.getStockCountDetails(args.stockCount.id, nextPage)
+                }
+                val totalPageCount: Int
+                    get() = totalPages
+                override val isLastPage: Boolean = false
+                override val isLoading: Boolean = false
+            })
             builder.create()
         }
 

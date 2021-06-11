@@ -8,6 +8,7 @@ import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilit
 import com.github.htdangkhoa.nexterp.data.remote.locationbin.BinResponse
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.UpdateStockCountRequest
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockCountRequest
@@ -48,7 +49,7 @@ class StockCountViewModel(
     val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()
     val resourceFinish = liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
     val resourceVoid =  liveDataOf<Resource<Array<StockCountResponse.StockCount?>>>()
-    val resourceStockCountDetails = liveDataOf<Resource<Array<StockCountDetailResponse.StockCountDetail>>>()
+    val resourceStockCountDetails = liveDataOf<Resource<Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>>>()
     val resourceProductAvailability = liveDataOf<Resource<Array<ProductAvailabilityResponse.ProductAvailability>>>()
     val resourceBrands = liveDataOf<Resource<Array<BrandResponse.Brand>>>()
     val resourceCategories = liveDataOf<Resource<Array<CategoryResponse.Category>>>()
@@ -79,11 +80,11 @@ class StockCountViewModel(
             }
         }
     }
-    fun getStockCountDetails(id: Int) {
+    fun getStockCountDetails(id: Int, nextPage: Int) {
         resourceStockCountDetails.postValue(Resource.loading())
-        stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail>> (
+        stockCountUseCase.execute<Pair<Array<StockCountDetailResponse.StockCountDetail>, PaginationObject?>> (
             StockCountParam(
-                StockCountParam.Type.GET_STOCK_COUNT_DETAILS, id)
+                StockCountParam.Type.GET_STOCK_COUNT_DETAILS, id, nextPage)
         ) {
             onComplete {
                 resourceStockCountDetails.postValue(Resource.success(it))

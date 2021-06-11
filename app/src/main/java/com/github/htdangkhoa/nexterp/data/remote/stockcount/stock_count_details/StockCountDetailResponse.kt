@@ -1,7 +1,9 @@
 package com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details
 
 import android.os.Parcelable
+import com.evrencoskun.tableview.pagination.Pagination
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -13,7 +15,7 @@ data class StockCountDetailResponse(
     override val data: Array<StockCountDetail?>,
 
     @SerializedName("message")
-    var message: String
+    var message: String,
 
 ) : ResponseModel<Array<StockCountDetailResponse.StockCountDetail?>>() {
     @Parcelize
