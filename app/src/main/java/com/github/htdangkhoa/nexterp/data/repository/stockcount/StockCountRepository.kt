@@ -9,7 +9,7 @@ import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.NewStockC
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stockcount.StockCountResponse
 
 interface StockCountRepository : BaseRepository {
-    suspend fun getStockCount(): Result<Array<StockCountResponse.StockCount?>>
+    suspend fun getStockCount(nextPage: Int): Result<Pair<Array<StockCountResponse.StockCount?>, PaginationObject?>>
     suspend fun updateStockCount(
         id: Int,
         stockCountRequest: UpdateStockCountRequest
@@ -23,5 +23,4 @@ interface StockCountRepository : BaseRepository {
     suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>
     suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?>
     suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
-
 }

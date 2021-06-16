@@ -438,17 +438,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             }
             initialized = true
 
-            stockCountDetails.addOnScrollListener(object : PaginationListener(linearLayoutManager) {
-                override fun loadMoreItems() {
-                    Log.e("LOAD MORE->>>", "FRAGMENT")
-                    //  API call
-                    viewModel.getStockCountDetails(args.stockCount.id, nextPage)
-                }
-                val totalPageCount: Int
-                    get() = totalPages
-                override val isLastPage: Boolean = false
-                override val isLoading: Boolean = false
-            })
+
             builder.create()
         }
 

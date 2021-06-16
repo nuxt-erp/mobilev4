@@ -92,8 +92,8 @@ interface ApiService {
 
     // Stock Count
 
-    @GET("inventory/stock_count" + "?not_received=1")
-    suspend fun getStockCount(): StockCountResponse
+    @GET("inventory/stock_count")
+    suspend fun getStockCount(@Query("page") nextPage: Int) : StockCountResponse
 
     @GET("inventory/stock_count_details")
     suspend fun getStockCountDetails(@Query("stockcount_id") stockcount_id: Int, @Query("page") nextPage: Int) : StockCountDetailResponse
@@ -132,7 +132,6 @@ interface ApiService {
 
     @DELETE("inventory/stock_adjustment_details/{id}")
     suspend fun deleteStockAdjustmentDetail(@Path("id") id: Int) : StockAdjustmentDetailResponse
-
 
     // Bin
 

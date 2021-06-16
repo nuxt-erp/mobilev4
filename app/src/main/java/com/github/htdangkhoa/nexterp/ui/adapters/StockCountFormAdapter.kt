@@ -12,6 +12,7 @@ import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.availability.ProductAvailabilityResponse
 import com.github.htdangkhoa.nexterp.data.remote.stockcount.stock_count_details.StockCountDetailResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
+import com.pawegio.kandroid.setHeight
 import kotlinx.android.synthetic.main.receiving_details_item.view.productName
 import kotlinx.android.synthetic.main.stockcount_details_item.view.*
 import java.util.*
@@ -36,6 +37,8 @@ class StockCountRecyclerAdapter(
             holder.bindItem(item)
             holder.itemView.setOnClickListener { callback(item) }
             holder.itemView.btnDeleteDetail.setOnClickListener { callback2(position) }
+        } else {
+            holder.bindHeader()
         }
     }
 
@@ -208,16 +211,17 @@ class StockCountRecyclerAdapter(
             view.isClickable = false
         }
 
-//        fun bindHeader() {
-//            view.productName.visibility = View.GONE
-//            view.stockQty.visibility = View.GONE
-//            view.stockQtyLabel.visibility = View.GONE
-//            view.binName.visibility = View.GONE
-//            view.btnDeleteDetail.visibility = View.GONE
-//
-//            view.header.visibility = View.VISIBLE
-//            view.header.text = "Stock Count Details"
-//        }
+        fun bindHeader() {
+            view.setHeight(0)
+            view.visibility = View.GONE
+            view.productName.visibility = View.GONE
+            view.stockQty.visibility = View.GONE
+            view.stockQtyLabel.visibility = View.GONE
+            view.binName.visibility = View.GONE
+            view.btnDeleteDetail.visibility = View.GONE
+
+//            view.header.visibility = View.GONE
+        }
 
         fun bindItem(item: StockCountDetailResponse.StockCountDetail) {
             this.item = item

@@ -23,9 +23,9 @@ class StockCountParam constructor(val type: Int) {
     var id: Int = 0
     var nextPage: Int = 1
 
-    constructor(type: Int, id: Int) : this(type) {
-        this.id = id
-    }
+//    constructor(type: Int, id: Int) : this(type) {
+//        this.id = id
+//    }
 
     constructor(type: Int, newStockCountRequest: NewStockCountRequest) : this(StockCountParam.Type.NEW_STOCK_COUNT) {
         this.newStockCountRequest = newStockCountRequest
@@ -34,6 +34,10 @@ class StockCountParam constructor(val type: Int) {
     constructor(type: Int, id: Int, stockCountRequest: UpdateStockCountRequest) : this(StockCountParam.Type.UPDATE_STOCK_COUNT) {
         this.stockCountRequest = stockCountRequest
         this.id = id
+    }
+
+    constructor(type: Int, nextPage: Int) : this(StockCountParam.Type.GET_STOCK_COUNT) {
+        this.nextPage = nextPage
     }
 
     constructor(type: Int, id: Int, nextPage: Int) : this(StockCountParam.Type.GET_STOCK_COUNT_DETAILS) {

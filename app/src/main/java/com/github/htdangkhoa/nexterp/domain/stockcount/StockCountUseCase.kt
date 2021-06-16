@@ -8,7 +8,7 @@ class StockCountUseCase(
 ) : BaseUseCase<StockCountRepository, StockCountParam>(repository) {
     override suspend fun buildUseCase(params: StockCountParam?): Result<*> {
         return when (params?.type) {
-            StockCountParam.Type.GET_STOCK_COUNT -> repository.getStockCount()
+            StockCountParam.Type.GET_STOCK_COUNT -> repository.getStockCount(params.nextPage)
             StockCountParam.Type.GET_STOCK_COUNT_DETAILS -> repository.getStockCountDetails(params.id, params.nextPage)
             StockCountParam.Type.UPDATE_STOCK_COUNT -> repository.updateStockCount(params.id, params.stockCountRequest)
             StockCountParam.Type.NEW_STOCK_COUNT -> repository.newStockCount(params.newStockCountRequest)

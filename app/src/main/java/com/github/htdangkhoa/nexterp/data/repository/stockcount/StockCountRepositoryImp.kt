@@ -39,10 +39,10 @@ class StockCountRepositoryImp(
         }
     }
 
-    override suspend fun getStockCount(): Result<Array<StockCountResponse.StockCount?>> {
+    override suspend fun getStockCount(nextPage: Int): Result<Pair<Array<StockCountResponse.StockCount?>, PaginationObject?>> {
         return try {
-            val res = apiService.getStockCount()
-            Result.map(res)
+            val res = apiService.getStockCount(nextPage)
+            Result.success(Pair(res.data, res.pagination))
         } catch (e: HttpException) {
             Result.failure(e)
         }
@@ -51,7 +51,6 @@ class StockCountRepositoryImp(
     override suspend fun getStockCountDetails(id: Int, nextPage: Int): Result<Pair<Array<StockCountDetailResponse.StockCountDetail?>, PaginationObject?>> {
         return try {
             val res = apiService.getStockCountDetails(id, nextPage)
-
             Result.success(Pair(res.data, res.pagination))
         } catch (e: HttpException) {
             Result.failure(e)

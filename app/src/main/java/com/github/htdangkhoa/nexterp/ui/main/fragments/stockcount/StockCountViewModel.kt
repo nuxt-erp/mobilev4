@@ -43,7 +43,7 @@ class StockCountViewModel(
     private val stockLocatorUseCase: StockLocatorUseCase
 
 ) : ViewModel() {
-    val resourceStockCount = liveDataOf<Resource<Array<StockCountResponse.StockCount>>>()
+    val resourceStockCount = liveDataOf<Resource<Pair<Array<StockCountResponse.StockCount>, PaginationObject?>>>()
     val resourceBins = liveDataOf<Resource<Array<BinResponse.Bin>>>()
     val resourceStockCountObject = liveDataOf<Resource<StockCountResponse.StockCount>>()
     val resourceNewAvailabilityObject = liveDataOf<Resource<ProductAvailabilityResponse.ProductAvailability>>()
@@ -61,10 +61,10 @@ class StockCountViewModel(
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
         view.findNavController().navigate(action)
     }
-    fun getStockCount() {
+    fun getStockCount(nextPage: Int) {
         resourceStockCount.postValue(Resource.loading())
 
-        stockCountUseCase.execute<Array<StockCountResponse.StockCount>> (StockCountParam(StockCountParam.Type.GET_STOCK_COUNT)) {
+        stockCountUseCase.execute<Pair<Array<StockCountResponse.StockCount>, PaginationObject?>> (StockCountParam(StockCountParam.Type.GET_STOCK_COUNT, nextPage)) {
             onComplete {
                 resourceStockCount.postValue(Resource.success(it))
             }
