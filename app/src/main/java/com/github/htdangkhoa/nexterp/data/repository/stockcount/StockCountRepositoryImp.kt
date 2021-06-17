@@ -65,9 +65,9 @@ class StockCountRepositoryImp(
         }
     }
 
-    override suspend fun deleteStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>> {
+    override suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?> {
         return try {
-            val res = apiService.deleteStockCount(id)
+            val res = apiService.voidStockCount(id)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

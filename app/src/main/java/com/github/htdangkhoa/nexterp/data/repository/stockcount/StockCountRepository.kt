@@ -20,7 +20,7 @@ interface StockCountRepository : BaseRepository {
 
     suspend fun getStockCountDetails(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
     suspend fun finishStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>
-    suspend fun deleteStockCount(id: Int): Result<Array<StockCountResponse.StockCount?>>
+    suspend fun voidStockCount(id: Int): Result<StockCountResponse.StockCount?>
     suspend fun deleteStockCountDetail(id: Int): Result<Array<StockCountDetailResponse.StockCountDetail?>>
 
 }

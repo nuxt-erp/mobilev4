@@ -56,9 +56,9 @@ class StockAdjustmentRepositoryImp(
         }
     }
 
-    override suspend fun deleteStockAdjustment(id: Int): Result<Array<StockAdjustmentResponse.StockAdjustment?>> {
+    override suspend fun voidStockAdjustment(id: Int): Result<StockAdjustmentResponse.StockAdjustment?> {
         return try {
-            val res = apiService.deleteStockAdjustment(id)
+            val res = apiService.voidStockAdjustment(id)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

@@ -71,6 +71,8 @@ class ProductLookupAdapter(
             view.barcodeLabel.visibility = View.GONE
             view.cartonBarcodeLabel.visibility = View.GONE
             view.locationName.visibility = View.GONE
+            view.onHand.visibility = View.GONE
+            view.onHandLabel.visibility = View.GONE
             view.binName.visibility = View.GONE
             view.binBarcode.visibility = View.GONE
 
@@ -83,6 +85,7 @@ class ProductLookupAdapter(
             view.productName.text = item.product_name
             view.productSku.text = item.product_sku
             view.productBrand.text = item.product_brand
+            view.onHand.text = item.on_hand.toString()
             if(item.product_barcode != null) {
                 view.barcode.text = item.product_barcode
             } else {
@@ -93,8 +96,9 @@ class ProductLookupAdapter(
             } else {
                 view.cartonBarcode.text = "-"
             }
-            view.cartonBarcodeLabel.text = "CARTON BARCODE"
-            view.barcodeLabel.text = "BARCODE"
+            view.cartonBarcodeLabel.text = "Carton Barcode"
+            view.barcodeLabel.text = "Barcode"
+            view.onHandLabel.text = " On Hand"
 
             view.locationName.text = item.location_name
             view.binName.text = item.bin_name

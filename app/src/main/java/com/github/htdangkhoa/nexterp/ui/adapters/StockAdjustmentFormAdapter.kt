@@ -113,6 +113,7 @@ class StockAdjustmentRecyclerAdapter(
                 qty = item.qty,
                 on_hand = item.on_hand,
                 variance =  item.qty - item.on_hand,
+                available_bin_barcodes = item.available_bin_barcodes,
                 status = "adjusted",
                 adjustment_type = adjustment_type,
                 bin_searchable = item.bin_searchable
@@ -162,6 +163,7 @@ class StockAdjustmentRecyclerAdapter(
                     qty = item.qty,
                     on_hand = item.on_hand,
                     variance =  item.qty - item.on_hand,
+                    available_bin_barcodes = item.available_bin_barcodes,
                     status = "adjusted",
                     adjustment_type = adjustment_type,
                     bin_searchable = item.bin_searchable

@@ -1,6 +1,7 @@
 package com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustment_details
 import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
+import com.github.htdangkhoa.nexterp.data.remote.pagination.PaginationObject
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -55,6 +56,9 @@ data class StockAdjustmentDetailResponse(
 
         @SerializedName("adjustment_type")
         var adjustment_type: String?,
+
+        @SerializedName("available_bin_barcodes")
+        var available_bin_barcodes: String?,
 
         @SerializedName("status")
         var status: String?,

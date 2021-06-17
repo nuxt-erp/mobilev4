@@ -23,6 +23,7 @@ import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stock_adjustmen
 import com.github.htdangkhoa.nexterp.data.remote.stockadjustment.stockadjustment.StockAdjustmentResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.StockAdjustmentRecyclerAdapter
+import com.github.htdangkhoa.nexterp.ui.components.PaginationListener
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.StockAdjustmentViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.details.StockAdjustmentDetailsFragment
@@ -84,8 +85,12 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                             availability.bin_matches == false
                         }
 //                      send api request
-                        if(noMatch !== null) {
-                            viewModel.newAvailability(binField.text.toString(), noMatch.product_id, noMatch.location_id)
+                        if (noMatch !== null) {
+                            viewModel.newAvailability(
+                                binField.text.toString(),
+                                noMatch.product_id,
+                                noMatch.location_id
+                            )
                         }
                         dialog.dismiss()
 
@@ -103,14 +108,15 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                         dialog.cancel()
                     })
             }
-
             builder.create()
         }
 
         viewModel.resourceStockAdjustmentDetails.observe(
             viewLifecycleOwner,
-            object : ObserverResource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>>() {
+            object :
+                ObserverResource<Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>>() {
                 override fun onSuccess(data: Array<StockAdjustmentDetailResponse.StockAdjustmentDetail>) {
+                    val linearLayoutManager = LinearLayoutManager(activity)
                     stockAdjustmentDetailsAdapter = StockAdjustmentRecyclerAdapter(
                         data.toMutableList(),
                         args.stockAdjustment.adjustment_type,
@@ -132,10 +138,13 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                             }
                         },
                     )
+
                     stockAdjustmentDetails.apply {
-                        layoutManager = LinearLayoutManager(activity)
+                        layoutManager = linearLayoutManager
                         adapter = stockAdjustmentDetailsAdapter
                     }
+
+
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -184,8 +193,8 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
 
         viewModel.resourceVoid.observe(
             viewLifecycleOwner,
-            object : ObserverResource<Array<StockAdjustmentResponse.StockAdjustment?>>() {
-                override fun onSuccess(data: Array<StockAdjustmentResponse.StockAdjustment?>) {
+            object : ObserverResource<StockAdjustmentResponse.StockAdjustment?>() {
+                override fun onSuccess(data: StockAdjustmentResponse.StockAdjustment?) {
                     findNavController().popBackStack()
                 }
 
@@ -212,7 +221,11 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                     productId = data.product_id
                     binId = data.bin_id
 
-                    stockAdjustmentDetailsAdapter.updateListWithObj(data, itemField.text.toString(), binId)
+                    stockAdjustmentDetailsAdapter.updateListWithObj(
+                        data,
+                        itemField.text.toString(),
+                        binId
+                    )
                     itemField.selectAll()
                     stockAdjustmentDetailsAdapter.notifyDataSetChanged()
                 }
@@ -234,6 +247,10 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<StockAdjustmentResponse.StockAdjustment>() {
                 override fun onSuccess(data: StockAdjustmentResponse.StockAdjustment) {
+                    if (data.status == "adjusted") {
+                        findNavController().popBackStack()
+                    }
+
                     viewModel.getStockAdjustmentDetails(data.id)
                 }
 
@@ -262,14 +279,18 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                         if (binId != null) binName.text = data[0].bin_name else binName.text =
                             "No bin selected"
                         qtyField.setText(data[0].qty.toString())
-                        val binNoMatches = data.any{ obj -> obj.bin_matches == false }
+                        val binNoMatches = data.any { obj -> obj.bin_matches == false }
 
-                        if(binNoMatches) {
+                        if (binNoMatches) {
                             currentList.clear()
                             currentList.addAll(data)
                             binNoMatchDialog!!.show()
                         } else {
-                            stockAdjustmentDetailsAdapter.updateList(data, itemField.text.toString(), binId)
+                            stockAdjustmentDetailsAdapter.updateList(
+                                data,
+                                itemField.text.toString(),
+                                binId
+                            )
                             itemField.selectAll()
                             stockAdjustmentDetailsAdapter.notifyDataSetChanged()
                         }
@@ -342,6 +363,15 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             viewModel.updateStockAdjustment(
                 args.stockAdjustment.id,
                 locationId,
+                null,
+                stockAdjustmentDetailsAdapter.getUpdateList()
+            )
+        }
+        finishButton.setOnClickListener {
+            viewModel.updateStockAdjustment(
+                args.stockAdjustment.id,
+                locationId,
+                true,
                 stockAdjustmentDetailsAdapter.getUpdateList()
             )
         }
@@ -448,9 +478,11 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
     //animation and visibility for button expand
     private fun setVisibility(clicked: Boolean) {
         if(!clicked) {
+            finishButton.visibility = View.VISIBLE
             saveButton.visibility = View.VISIBLE
             voidButton.visibility = View.VISIBLE
         } else {
+            finishButton.visibility = View.INVISIBLE
             saveButton.visibility = View.INVISIBLE
             voidButton.visibility = View.INVISIBLE
         }
@@ -458,10 +490,12 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
 
     private fun setAnimation(clicked: Boolean) {
         if(!clicked) {
+            finishButton.startAnimation(fromBottom)
             saveButton.startAnimation(fromBottom)
             voidButton.startAnimation(fromBottom)
             expandButton.startAnimation(rotateOpen)
         } else {
+            finishButton.startAnimation(toBottom)
             saveButton.startAnimation(toBottom)
             voidButton.startAnimation(toBottom)
             expandButton.startAnimation(rotateClose)

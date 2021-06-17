@@ -169,6 +169,20 @@
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/finishButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:contentDescription="@string/button_finish"
+        android:text="@string/button_finish"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
+        app:layout_constraintEnd_toEndOf="@id/expandButton" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/saveButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

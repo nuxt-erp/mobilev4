@@ -1,80 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Drop Shadow Stack -->
-    <item>
-        <shape>
-            <corners android:radius="4dp" />
-
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#00CCCCCC" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <corners android:radius="4dp" />
-
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#10CCCCCC" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <corners android:radius="4dp" />
-
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#20d5d5d5" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <corners android:radius="6dp" />
-
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#30cbcbcb" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <corners android:radius="4dp" />
-
-            <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
-            <solid android:color="#50bababa" />
-        </shape>
-    </item>
-
-    <!-- Background -->
-    <item>
-        <shape>
-            <solid android:color="#FFF" />
-
-            <corners android:radius="4dp" />
-        </shape>
-    </item>
-
-</layer-list>
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/listview_background_shape">
+    <stroke android:width="1dip" android:color="#c8c8c8" />
+    <padding
+        android:left="1dp"
+        android:top="1dp"
+        android:right="1dp"
+        android:bottom="1dp" />
+    <corners android:radius="3dp" />
+    <solid android:color="#ffffffff" />
+</shape>

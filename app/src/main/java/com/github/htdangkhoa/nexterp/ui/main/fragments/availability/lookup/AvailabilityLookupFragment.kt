@@ -79,7 +79,6 @@ class AvailabilityLookupFragment() : BaseFragment<AvailabilityViewModel>(
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (itemField.hasFocus()) {
-                    Log.e("yoyoyo", "SADAS")
                     if (it != null && !TextUtils.isEmpty(it) && it.trim().length >= 3) {
                         viewModel.getAvailability(it, locationId)
                     }

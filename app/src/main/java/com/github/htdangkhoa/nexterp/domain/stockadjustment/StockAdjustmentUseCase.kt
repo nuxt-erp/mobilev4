@@ -11,7 +11,7 @@ class StockAdjustmentUseCase(
             StockAdjustmentParam.Type.GET_STOCK_ADJUSTMENT_DETAILS -> repository.getStockAdjustmentDetails(params.id)
             StockAdjustmentParam.Type.UPDATE_STOCK_ADJUSTMENT -> repository.updateStockAdjustment(params.id, params.stockAdjustmentRequest)
             StockAdjustmentParam.Type.NEW_STOCK_ADJUSTMENT -> repository.newStockAdjustment(params.newStockAdjustmentRequest)
-            StockAdjustmentParam.Type.VOID_STOCK_ADJUSTMENT -> repository.deleteStockAdjustment(params.id)
+            StockAdjustmentParam.Type.VOID_STOCK_ADJUSTMENT -> repository.voidStockAdjustment(params.id)
             StockAdjustmentParam.Type.DELETE_STOCK_ADJUSTMENT_DETAIL -> repository.deleteStockAdjustmentDetail(params.id)
 
             else -> throw UnsupportedOperationException("This request is not support in this case!")
