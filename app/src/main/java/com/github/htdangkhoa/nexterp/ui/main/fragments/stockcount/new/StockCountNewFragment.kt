@@ -313,31 +313,19 @@ class StockCountNewFragment() : BaseFragment<StockCountViewModel>(
                 }
             })
 
-        viewModel.getTag(1)
-        viewModel.getBrand(1, 1)
-        viewModel.getCategory(1, 1)
-        viewModel.getStockLocator(1, 1)
-        viewModel.getBin(null, null, 1, 1)
+        viewModel.getTag(1, 200)
+        viewModel.getBrand(1, 1, 200)
+        viewModel.getCategory(1, 1, 200)
+        viewModel.getStockLocator(1, 1, 200)
+        viewModel.getBin(null, null, 1, 1, 200)
 
         btnSaveFilters.setOnClickListener {
             val myName = nameInput.text.toString()
             if(myName.isNotEmpty()) {
-                createMap()
-                viewModel.newStockCount(createMap(), myName, location_id = locationId)
+                viewModel.newStockCount(bin_ids = binSpinner.selectedIds, brand_ids = brandSpinner.selectedIds, category_ids = categorySpinner.selectedIds, stock_locator_ids = stockLocatorSpinner.selectedIds, tag_ids = tagSpinner.selectedIds, name = myName, location_id = locationId)
             } else {
                 showDialog("Error", "You must enter a name for the Stock Count.")
             }
         }
     }
-
-    private fun createMap() : HashMap<String, List<Long>> {
-        val map =  HashMap<String, List<Long>>()
-        map["bin_ids"] = binSpinner.selectedIds
-        map["brand_ids"] = brandSpinner.selectedIds
-        map["category_ids"] = categorySpinner.selectedIds
-        map["stock_locator_ids"] = stockLocatorSpinner.selectedIds
-        map["tag_ids"] = tagSpinner.selectedIds
-        return map
-    }
-
 }

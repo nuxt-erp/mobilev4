@@ -12,12 +12,14 @@ class BinParam constructor(val type: Int) {
     var location_id: Int? = null
     var list: Int = 0
     var is_enabled: Int = 0
+    var per_page: Int? = 20
     var barcode: String? = null
 
-    constructor(type: Int, location_id: Int?, barcode: String?, list : Int, is_enabled: Int) : this(BinParam.Type.GET_BINS) {
+    constructor(type: Int, location_id: Int?, barcode: String?, list : Int, is_enabled: Int, per_page: Int?) : this(BinParam.Type.GET_BINS) {
         this.location_id = location_id
         this.barcode = barcode
         this.list = list
         this.is_enabled = is_enabled
+        this.per_page = per_page
     }
 }

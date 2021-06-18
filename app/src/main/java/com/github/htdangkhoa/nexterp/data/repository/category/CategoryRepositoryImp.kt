@@ -12,10 +12,11 @@ class CategoryRepositoryImp(
 
     override suspend fun getCategory(
         list: Int,
-        is_enabled: Int
+        is_enabled: Int,
+        per_page: Int?
     ): Result<Array<CategoryResponse.Category>> {
         return try {
-            val res = apiService.getCategory(list, is_enabled)
+            val res = apiService.getCategory(list, is_enabled, per_page)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

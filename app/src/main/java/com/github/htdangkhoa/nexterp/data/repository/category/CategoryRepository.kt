@@ -4,5 +4,5 @@ import com.github.htdangkhoa.nexterp.base.BaseRepository
 import com.github.htdangkhoa.nexterp.data.remote.category.CategoryResponse
 
 interface CategoryRepository : BaseRepository {
-    suspend fun getCategory(list: Int, is_enabled: Int): Result<Array<CategoryResponse.Category>>
+    suspend fun getCategory(list: Int, is_enabled: Int, per_page: Int?): Result<Array<CategoryResponse.Category>>
 }

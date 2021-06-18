@@ -7,7 +7,7 @@ class BrandUseCase(
 ) : BaseUseCase<BrandRepository, BrandParam>(repository) {
     override suspend fun buildUseCase(params: BrandParam?): Result<*> {
         return when (params?.type) {
-            BrandParam.Type.GET_BRANDS -> repository.getBrand(params.list, params.is_enabled)
+            BrandParam.Type.GET_BRANDS -> repository.getBrand(params.list, params.is_enabled, params.per_page)
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
     }

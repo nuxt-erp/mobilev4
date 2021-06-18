@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -172,9 +173,11 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                     } else {
                         binName.text = binField.text.toString()
                         binId = null
-
                     }
-                    enableItems()
+
+                    if(binsMandatory) {
+                        enableItems()
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -318,7 +321,9 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
         binsMandatory = sharedPreferences.getString("binsMandatory", null)?.toBoolean()!!
-        disableItems()
+        if(binsMandatory) {
+            disableItems()
+        }
 
 
         //xml
@@ -410,11 +415,13 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             .subscribe {
             if (binField.hasFocus()) {
                 if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-                    viewModel.getBin(it.toString(), locationId, 0, 1)
+                    viewModel.getBin(it.toString(), locationId, 0, 1, 1)
                 } else if (TextUtils.isEmpty(it)) {
                     binId = null
                     binName.text = "No bin selected"
-                    disableItems()
+                    if(binsMandatory) {
+                        disableItems()
+                    }
                 }
             }
         }

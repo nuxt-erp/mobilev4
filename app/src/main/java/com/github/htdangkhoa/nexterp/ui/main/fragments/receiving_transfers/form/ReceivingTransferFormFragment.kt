@@ -159,8 +159,8 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
 
         viewModel.resourceVoid.observe(
             this,
-            object : ObserverResource<Array<ReceivingResponse.Receiving?>>() {
-                override fun onSuccess(data: Array<ReceivingResponse.Receiving?>) {
+            object : ObserverResource<Int>() {
+                override fun onSuccess(data: Int) {
                     findNavController().popBackStack()
                 }
 

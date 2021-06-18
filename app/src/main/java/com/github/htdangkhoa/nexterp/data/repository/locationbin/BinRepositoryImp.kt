@@ -14,10 +14,11 @@ class BinRepositoryImp(
         barcode: String?,
         location_id: Int?,
         list: Int,
-        is_enabled: Int
+        is_enabled: Int,
+        per_page: Int?
     ): Result<Array<BinResponse.Bin>> {
         return try {
-            val res = apiService.getBin(barcode, location_id, list, is_enabled)
+            val res = apiService.getBin(barcode, location_id, list, is_enabled, per_page)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

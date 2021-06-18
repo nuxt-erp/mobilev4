@@ -11,10 +11,11 @@ class TagRepositoryImp(
 ) : BaseRepositoryImp(apiService), TagRepository {
 
     override suspend fun getTag(
-        list: Int
+        list: Int,
+        per_page: Int?
     ): Result<Array<TagResponse.Tag>> {
         return try {
-            val res = apiService.getTag(list)
+            val res = apiService.getTag(list, per_page)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

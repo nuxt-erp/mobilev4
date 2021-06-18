@@ -7,7 +7,7 @@ class CategoryUseCase(
 ) : BaseUseCase<CategoryRepository, CategoryParam>(repository) {
     override suspend fun buildUseCase(params: CategoryParam?): Result<*> {
         return when (params?.type) {
-            CategoryParam.Type.GET_CATEGORIES -> repository.getCategory(params.list, params.is_enabled)
+            CategoryParam.Type.GET_CATEGORIES -> repository.getCategory(params.list, params.is_enabled, params.per_page)
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
     }

@@ -80,11 +80,12 @@ class StockAdjustmentViewModel(
     fun getBin(barcode: String?,
                location_id: Int?,
                list: Int,
-               is_enabled: Int) {
+               is_enabled: Int,
+               per_page: Int?) {
         resourceBins.postValue(Resource.loading())
         binUseCase.execute<Array<BinResponse.Bin>> (
             BinParam(
-                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled)
+                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled, per_page)
         ) {
             onComplete {
                 resourceBins.postValue(Resource.success(it))

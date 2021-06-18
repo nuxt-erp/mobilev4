@@ -11,9 +11,11 @@ class BrandParam constructor(val type: Int) {
     }
     var list: Int = 0
     var is_enabled: Int = 0
+    var per_page: Int? = 20
 
-    constructor(type: Int, list : Int, is_enabled: Int) : this(BrandParam.Type.GET_BRANDS) {
+    constructor(type: Int, list : Int, is_enabled: Int, per_page: Int?) : this(BrandParam.Type.GET_BRANDS) {
         this.list = list
         this.is_enabled = is_enabled
+        this.per_page = per_page
     }
 }

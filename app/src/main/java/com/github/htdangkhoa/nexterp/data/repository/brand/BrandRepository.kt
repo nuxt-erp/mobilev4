@@ -4,5 +4,5 @@ import com.github.htdangkhoa.nexterp.base.BaseRepository
 import com.github.htdangkhoa.nexterp.data.remote.brand.BrandResponse
 
 interface BrandRepository : BaseRepository {
-    suspend fun getBrand(list: Int, is_enabled: Int): Result<Array<BrandResponse.Brand>>
+    suspend fun getBrand(list: Int, is_enabled: Int, per_page: Int?): Result<Array<BrandResponse.Brand>>
 }

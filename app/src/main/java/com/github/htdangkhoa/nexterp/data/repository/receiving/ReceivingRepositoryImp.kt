@@ -61,10 +61,10 @@ class ReceivingRepositoryImp(
         }
     }
 
-    override suspend fun deleteReceiving(id: Int): Result<Array<ReceivingResponse.Receiving?>> {
+    override suspend fun voidReceiving(id: Int): Result<Int> {
         return try {
-            val res = apiService.deleteReceiving(id)
-            Result.map(res)
+            val res = apiService.voidReceiving(id)
+            Result.success(res.code)
         } catch (e: HttpException) {
             Result.failure(e)
         }

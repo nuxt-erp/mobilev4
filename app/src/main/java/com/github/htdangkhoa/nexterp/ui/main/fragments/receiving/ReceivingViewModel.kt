@@ -26,7 +26,7 @@ class ReceivingViewModel(
     val resourceReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails?>>>()
     val resourceDeleteReceivingDetails = liveDataOf<Resource<Array<ReceivingDetailsResponse.ReceivingDetails?>>>()
     val resourceFinish = liveDataOf<Resource<ReceivingResponse.Receiving>>()
-    val resourceVoid =  liveDataOf<Resource<Array<ReceivingResponse.Receiving?>>>()
+    val resourceVoid =  liveDataOf<Resource<Int>>()
 
     fun onReceivingClick(view : View, receiving: ReceivingResponse.Receiving) {
         val action = ReceivingListFragmentDirections.actionNavReceivingToReceivingFormFragment(receiving)
@@ -124,7 +124,7 @@ class ReceivingViewModel(
     fun voidReceiving(id: Int) {
         resourceVoid.postValue(Resource.loading())
 
-        receivingUseCase.execute<Array<ReceivingResponse.Receiving?>>(ReceivingParam(ReceivingParam.Type.VOID_RECEIVING, id)) {
+        receivingUseCase.execute<Int>(ReceivingParam(ReceivingParam.Type.VOID_RECEIVING, id)) {
             onComplete {
                 resourceVoid.postValue(Resource.success(it))
             }

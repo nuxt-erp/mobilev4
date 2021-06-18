@@ -17,7 +17,7 @@ interface ReceivingRepository : BaseRepository {
     suspend fun getReceiving(receivingType: String): Result<Array<ReceivingResponse.Receiving?>>
     suspend fun getReceivingDetails(id: Int): Result<Array<ReceivingDetailsResponse.ReceivingDetails?>>
     suspend fun finishReceiving(id: Int): Result<ReceivingResponse.Receiving?>
-    suspend fun deleteReceiving(id: Int): Result<Array<ReceivingResponse.Receiving?>>
+    suspend fun voidReceiving(id: Int): Result<Int>
     suspend fun deleteReceivingDetail(id: Int): Result<Array<ReceivingDetailsResponse.ReceivingDetails?>>
 }
 

@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -24,6 +25,7 @@ import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment
+import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.list.StockAdjustmentListFragmentDirections
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
@@ -160,17 +162,18 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
 
         viewModel.resourceVoid.observe(
             this,
-            object : ObserverResource<Array<ReceivingResponse.Receiving?>>() {
-                override fun onSuccess(data: Array<ReceivingResponse.Receiving?>) {
-                    findNavController().popBackStack()
+            object : ObserverResource<Int>() {
+                override fun onSuccess(data: Int) {
+                    val action = ReceivingFormFragmentDirections.actionReceivingFormFragmentToNavReceiving()
+                    findNavController().navigate(action)
                 }
 
                 override fun onError(throwable: Throwable?) {
                     handleError(throwable) {
                         it?.message?.let {
+
                             showDialog("Error", it)
                         }
-                        throw it!!
                     }
                 }
             })

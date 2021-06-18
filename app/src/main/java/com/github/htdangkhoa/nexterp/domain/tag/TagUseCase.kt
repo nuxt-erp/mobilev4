@@ -8,7 +8,7 @@ class TagUseCase(
 ) : BaseUseCase<TagRepository, TagParam>(repository) {
     override suspend fun buildUseCase(params: TagParam?): Result<*> {
         return when (params?.type) {
-            TagParam.Type.GET_TAG -> repository.getTag(params.list)
+            TagParam.Type.GET_TAG -> repository.getTag(params.list, params.per_page)
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
     }

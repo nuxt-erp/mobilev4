@@ -7,7 +7,7 @@ class StockLocatorUseCase(
 ) : BaseUseCase<StockLocatorRepository, StockLocatorParam>(repository) {
     override suspend fun buildUseCase(params: StockLocatorParam?): Result<*> {
         return when (params?.type) {
-            StockLocatorParam.Type.GET_STOCK_LOCATOR -> repository.getStockLocator(params.list, params.is_enabled)
+            StockLocatorParam.Type.GET_STOCK_LOCATOR -> repository.getStockLocator(params.list, params.is_enabled, params.per_page)
             else -> throw UnsupportedOperationException("This request is not support in this case!")
         }
     }

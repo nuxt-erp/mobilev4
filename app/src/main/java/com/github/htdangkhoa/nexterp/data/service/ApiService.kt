@@ -82,7 +82,7 @@ interface ApiService {
     suspend fun newReceiving(@Body request: NewReceivingRequest): ReceivingObjectResponse
 
     @DELETE("inventory/receiving/{id}")
-    suspend fun deleteReceiving(@Path("id") id: Int) : ReceivingResponse
+    suspend fun voidReceiving(@Path("id") id: Int) : ReceivingObjectResponse
 
     @DELETE("inventory/receiving_details/{id}")
     suspend fun deleteReceivingDetail(@Path("id") id: Int) : ReceivingDetailsResponse
@@ -141,7 +141,8 @@ interface ApiService {
         @Query("barcode") barcode: String? = null,
         @Query("location_id") location_id: Int? = null,
         @Query("list") list: Int = 1,
-        @Query("is_enabled") is_enabled: Int = 1
+        @Query("is_enabled") is_enabled: Int = 1,
+        @Query("per_page") per_page: Int? = 20
     ):BinResponse
 
     // Category
@@ -149,14 +150,18 @@ interface ApiService {
     @GET("inventory/categories")
     suspend fun getCategory(
         @Query("list") list: Int = 1,
-        @Query("is_enabled") is_enabled: Int = 1
+        @Query("is_enabled") is_enabled: Int = 1,
+        @Query("per_page") per_page: Int? = 20
+
     ):CategoryResponse
 
     // Tag
 
     @GET("general/tags")
     suspend fun getTag(
-        @Query("list") list: Int = 1
+        @Query("list") list: Int = 1,
+        @Query("per_page") per_page: Int? = 20
+
     ):TagResponse
 
     // Brand
@@ -164,7 +169,9 @@ interface ApiService {
     @GET("inventory/brands")
     suspend fun getBrand(
         @Query("list") list: Int = 1,
-        @Query("is_enabled") is_enabled: Int = 1
+        @Query("is_enabled") is_enabled: Int = 1,
+        @Query("per_page") per_page: Int? = 20
+
     ):BrandResponse
 
     // Stock Locator
@@ -172,7 +179,9 @@ interface ApiService {
     @GET("inventory/stock_locator")
     suspend fun getStockLocator(
         @Query("list") list: Int = 1,
-        @Query("is_enabled") is_enabled: Int = 1
+        @Query("is_enabled") is_enabled: Int = 1,
+        @Query("per_page") per_page: Int? = 20
+
     ):StockLocatorResponse
 
     // Availabilities

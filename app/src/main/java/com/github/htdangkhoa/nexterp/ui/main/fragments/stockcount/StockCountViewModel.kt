@@ -103,11 +103,12 @@ class StockCountViewModel(
     fun getBin(barcode: String?,
                location_id: Int?,
                list: Int,
-               is_enabled: Int) {
+               is_enabled: Int,
+               per_page: Int?) {
         resourceBins.postValue(Resource.loading())
         binUseCase.execute<Array<BinResponse.Bin>> (
             BinParam(
-                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled)
+                BinParam.Type.GET_BINS, location_id, barcode, list, is_enabled, per_page)
         ) {
             onComplete {
                 resourceBins.postValue(Resource.success(it))
@@ -125,11 +126,12 @@ class StockCountViewModel(
     }
 
     fun getBrand(list: Int,
-                 is_enabled: Int) {
+                 is_enabled: Int,
+                 per_page: Int?) {
         resourceBrands.postValue(Resource.loading())
         brandUseCase.execute<Array<BrandResponse.Brand>> (
             BrandParam(
-                BrandParam.Type.GET_BRANDS, list, is_enabled)
+                BrandParam.Type.GET_BRANDS, list, is_enabled, per_page)
         ) {
             onComplete {
                 resourceBrands.postValue(Resource.success(it))
@@ -147,11 +149,12 @@ class StockCountViewModel(
     }
 
     fun getCategory(list: Int,
-                 is_enabled: Int) {
+                 is_enabled: Int,
+                 per_page: Int?) {
         resourceCategories.postValue(Resource.loading())
         categoryUseCase.execute<Array<CategoryResponse.Category>> (
             CategoryParam(
-                CategoryParam.Type.GET_CATEGORIES, list, is_enabled)
+                CategoryParam.Type.GET_CATEGORIES, list, is_enabled, per_page)
         ) {
             onComplete {
                 resourceCategories.postValue(Resource.success(it))
@@ -168,11 +171,11 @@ class StockCountViewModel(
         }
     }
 
-    fun getTag(list: Int) {
+    fun getTag(list: Int, per_page: Int?) {
         resourceTags.postValue(Resource.loading())
         tagUseCase.execute<Array<TagResponse.Tag>> (
             TagParam(
-                TagParam.Type.GET_TAG, list)
+                TagParam.Type.GET_TAG, list, per_page)
         ) {
             onComplete {
                 resourceTags.postValue(Resource.success(it))
@@ -190,11 +193,11 @@ class StockCountViewModel(
     }
 
     fun getStockLocator(list: Int,
-                    is_enabled: Int) {
+                    is_enabled: Int, per_page: Int?) {
         resourceStockLocators.postValue(Resource.loading())
         stockLocatorUseCase.execute<Array<StockLocatorResponse.StockLocator>> (
             StockLocatorParam(
-                StockLocatorParam.Type.GET_STOCK_LOCATOR, list, is_enabled)
+                StockLocatorParam.Type.GET_STOCK_LOCATOR, list, is_enabled, per_page)
         ) {
             onComplete {
                 resourceStockLocators.postValue(Resource.success(it))
@@ -288,8 +291,8 @@ class StockCountViewModel(
     }
 
 
-    fun newStockCount(stockCountFilters:  HashMap<String, List<Long>>, name: String, location_id: Int) {
-        val request = NewStockCountRequest(stock_count_filters = stockCountFilters, name = name, location_id = location_id)
+    fun newStockCount(tag_ids: List<Long>, bin_ids: List<Long>, brand_ids: List<Long>, category_ids: List<Long>, stock_locator_ids: List<Long>, name: String, location_id: Int) {
+        val request = NewStockCountRequest(tag_ids = tag_ids, bin_ids = bin_ids,  brand_ids = brand_ids, category_ids = category_ids, stock_locator_ids = stock_locator_ids, name = name, location_id = location_id)
 
         resourceStockCountObject.postValue(Resource.loading())
 

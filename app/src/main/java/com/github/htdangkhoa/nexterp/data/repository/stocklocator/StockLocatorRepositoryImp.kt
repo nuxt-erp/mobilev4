@@ -12,10 +12,11 @@ class StockLocatorRepositoryImp(
 
     override suspend fun getStockLocator(
         list: Int,
-        is_enabled: Int
+        is_enabled: Int,
+        per_page: Int?
     ): Result<Array<StockLocatorResponse.StockLocator>> {
         return try {
-            val res = apiService.getStockLocator(list, is_enabled)
+            val res = apiService.getStockLocator(list, is_enabled, per_page)
             Result.map(res)
         } catch (e: HttpException) {
             Result.failure(e)

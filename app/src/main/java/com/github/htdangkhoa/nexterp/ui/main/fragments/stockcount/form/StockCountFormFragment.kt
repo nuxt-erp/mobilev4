@@ -170,7 +170,9 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         binId = null
 
                     }
-                    enableItems()
+                    if(binsMandatory) {
+                        enableItems()
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -186,6 +188,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                 }
             })
+
         viewModel.resourceFinish.observe(
             viewLifecycleOwner,
             object : ObserverResource<Array<StockCountResponse.StockCount?>>() {
@@ -227,6 +230,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     }
                 }
             })
+
         viewModel.resourceNewAvailabilityObject.observe(
             viewLifecycleOwner,
             object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
@@ -348,8 +352,9 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
         binsMandatory = sharedPreferences.getString("binsMandatory", null)?.toBoolean()!!
-        disableItems()
-
+        if(binsMandatory) {
+            disableItems()
+        }
 
         //xml
         stockCountNumber.text = args.stockCount.id.toString()
@@ -457,11 +462,13 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         .subscribe {
             if (binField.hasFocus()) {
                 if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-                    viewModel.getBin(it.toString(), locationId, 0, 1)
+                    viewModel.getBin(it.toString(), locationId, 0, 1, 1)
                 } else if (TextUtils.isEmpty(it)) {
                     binId = null
                     binName.text = "No bin selected"
-                    disableItems()
+                    if(binsMandatory) {
+                        disableItems()
+                    }
                 }
             }
         }
