@@ -168,7 +168,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                     } else {
                         binName.text = binField.text.toString()
                         binId = null
-
                     }
                     if(binsMandatory) {
                         enableItems()
