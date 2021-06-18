@@ -255,13 +255,22 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
 
     // qty listener
     private fun qtyHandle() {
-        qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
-                receivingDetailsAdapter.updateQty(productId!!, text.toString())
-                receivingDetailsAdapter.notifyDataSetChanged()
+        qtyField.addRxTextWatcher()
+            .debounce(1000, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (qtyField.hasFocus()) {
+                    if (it != null && !TextUtils.isEmpty(it)) {
+                        Log.e("UPDATE->>>", "UPDATED")
+                        receivingDetailsAdapter.updateQty(productId!!, it, switchReceivingAddQty.isChecked)
+                        receivingDetailsAdapter.notifyDataSetChanged()
+                        qtyField.clearFocus()
+                    }
+                }
             }
-        }
     }
+
 
     private fun initialize(view: View) {
         viewModel.getReceivingDetails(args.receiving.id)
@@ -274,6 +283,8 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
         receivingNumber.text = args.receiving.id.toString()
         receivingStatus.text = args.receiving.status
         itemField.setSelectAllOnFocus(true)
+        qtyField.setSelectAllOnFocus(true)
+
         receivingStatus.setTextColor(
             ContextCompat.getColor(
                 view.context,
@@ -290,6 +301,10 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             setVisibility(clicked)
             setAnimation(clicked)
             clicked = !clicked
+        }
+
+        itemField.setOnClickListener {
+            itemField.selectAll()
         }
 
         saveButton.setOnClickListener {

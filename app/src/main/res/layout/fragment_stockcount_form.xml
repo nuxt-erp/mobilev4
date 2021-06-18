@@ -87,13 +87,27 @@
     <com.google.android.material.button.MaterialButton
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/binName"
+        app:layout_constraintEnd_toStartOf="@+id/switchAddQty"
+        app:layout_constraintHorizontal_weight="3"
         android:id="@+id/btnLinkToStockDetails"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:text="@string/view_item_details"
         style="?attr/borderlessButtonStyle"
         />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchAddQty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/binName"
+            app:layout_constraintStart_toEndOf="@+id/btnLinkToStockDetails"
+            app:layout_constraintHorizontal_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:textColor="@color/colorPrimary"
+            android:checked="true"
+            android:text="@string/switchText"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/binLayout"
         android:layout_width="0dp"

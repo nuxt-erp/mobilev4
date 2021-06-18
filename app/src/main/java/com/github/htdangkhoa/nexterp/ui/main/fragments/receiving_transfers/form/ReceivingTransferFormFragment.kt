@@ -8,7 +8,6 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -29,14 +28,20 @@ import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_receiving_form.*
+import kotlinx.android.synthetic.main.fragment_receiving_form.btnLinkToDetails
 import kotlinx.android.synthetic.main.fragment_receiving_form.expandButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.finishButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.itemField
 import kotlinx.android.synthetic.main.fragment_receiving_form.itemName
 import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
-import kotlinx.android.synthetic.main.fragment_receiving_form.qtyField
+import kotlinx.android.synthetic.main.fragment_receiving_form.receivingDetails
+import kotlinx.android.synthetic.main.fragment_receiving_form.receivingNumber
+import kotlinx.android.synthetic.main.fragment_receiving_form.receivingStatus
 import kotlinx.android.synthetic.main.fragment_receiving_form.saveButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.voidButton
+import kotlinx.android.synthetic.main.fragment_receiving_transfers_form.qtyField
+import kotlinx.android.synthetic.main.fragment_receiving_transfers_form.*
+import kotlinx.android.synthetic.main.fragment_stockcount_form.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -251,13 +256,22 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
 
     // qty listener
     private fun qtyHandle() {
-        qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
-                receivingDetailsAdapter.updateQty(productId!!, text.toString())
-                receivingDetailsAdapter.notifyDataSetChanged()
+        qtyField.addRxTextWatcher()
+            .debounce(1000, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (qtyField.hasFocus()) {
+                    if (it != null && !TextUtils.isEmpty(it)) {
+                        Log.e("UPDATE->>>", "UPDATED")
+                        receivingDetailsAdapter.updateQty(productId!!, it, switchTransferAddQty.isChecked)
+                        receivingDetailsAdapter.notifyDataSetChanged()
+                        qtyField.clearFocus()
+                    }
+                }
             }
-        }
     }
+
 
     private fun initialize(view: View) {
         viewModel.getReceivingDetails(args.receiving.id)
@@ -270,6 +284,8 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
         receivingNumber.text = args.receiving.id.toString()
         receivingStatus.text = args.receiving.status
         itemField.setSelectAllOnFocus(true)
+        qtyField.setSelectAllOnFocus(true)
+
         receivingStatus.setTextColor(
             ContextCompat.getColor(
                 view.context,
@@ -286,6 +302,10 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
             setVisibility(clicked)
             setAnimation(clicked)
             clicked = !clicked
+        }
+
+        itemField.setOnClickListener {
+            itemField.selectAll()
         }
 
         saveButton.setOnClickListener {

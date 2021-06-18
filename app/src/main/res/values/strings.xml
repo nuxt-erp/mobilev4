@@ -91,6 +91,7 @@
     <!-- StockCount Form -->
     <string name="select_a_bin">Select a bin</string>
     <string name="sc_number">SC Number</string>
+    <string name="switchText">ADD</string>
 
     <!-- Receiving New -->
     <string name="receiving_name">Receiving Name</string>

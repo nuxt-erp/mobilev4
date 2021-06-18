@@ -32,7 +32,20 @@ import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_receiving_form.*
 import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.*
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.binField
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.binName
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.expandButton
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.finishButton
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.itemField
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.itemName
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.progressCircular
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.qtyField
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.saveButton
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.switchAddQty
+import kotlinx.android.synthetic.main.fragment_stock_adjustment_form.voidButton
+import kotlinx.android.synthetic.main.fragment_stockcount_form.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -329,6 +342,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
         //xml
         stockAdjustmentNumber.text = args.stockAdjustment.id.toString()
         itemField.setSelectAllOnFocus(true)
+        qtyField.setSelectAllOnFocus(true)
         binField.setSelectAllOnFocus(true)
 
         //functions
@@ -362,6 +376,10 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
             setVisibility(clicked)
             setAnimation(clicked)
             clicked = !clicked
+        }
+
+        itemField.setOnClickListener {
+            itemField.selectAll()
         }
 
         saveButton.setOnClickListener {
@@ -429,17 +447,26 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
 
     // qty listener
     private fun qtyHandle() {
-        qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
-                stockAdjustmentDetailsAdapter.updateQty(productId!!, binId, text.toString())
+        qtyField.addRxTextWatcher()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (qtyField.hasFocus()) {
+                    if (it != null && !TextUtils.isEmpty(it)) {
+                        Log.e("UPDATE->>>", "UPDATED")
+                        stockAdjustmentDetailsAdapter.updateQty(productId!!, binId, it, switchAddQty.isChecked)
+                        qtyField.clearFocus()
+                    }
+                }
             }
-        }
     }
+
 
     //item text watcher
     private fun itemHandle() {
         itemField.addRxTextWatcher()
-            .debounce(300, TimeUnit.MILLISECONDS)
+            .debounce(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {

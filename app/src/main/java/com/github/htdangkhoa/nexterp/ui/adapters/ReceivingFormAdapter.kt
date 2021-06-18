@@ -52,12 +52,16 @@ class ReceivingRecyclerAdapter(
         return updateList.toList()
     }
 
-    fun updateQty(productId : Int, text: String) {
+    fun updateQty(productId : Int, text: String, typeAdd: Boolean) {
         updateList.forEach {
             if(it!!.product_id == productId) {
                 val previousQty = it.qty_received
                 it.qty_received = try {
-                    text.toInt()
+                    if(typeAdd) {
+                        text.toInt() + previousQty
+                    } else {
+                        text.toInt()
+                    }
                 } catch (e: NumberFormatException) {
                     previousQty
                 }

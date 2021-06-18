@@ -172,12 +172,17 @@ class StockAdjustmentRecyclerAdapter(
             }
         }
     }
-    fun updateQty(productId: Int, binId: Int?, text: String) {
+
+    fun updateQty(productId: Int, binId: Int?, text: String, typeAdd: Boolean) {
         updateList.forEach {
             if(it.product_id == productId && it.bin_id == binId) {
                 val previousQty = it.qty
                 it.qty = try {
-                    text.toInt()
+                    if(typeAdd) {
+                        text.toInt() + previousQty
+                    } else {
+                        text.toInt()
+                    }
                 } catch (e: NumberFormatException) {
                     previousQty
                 }
