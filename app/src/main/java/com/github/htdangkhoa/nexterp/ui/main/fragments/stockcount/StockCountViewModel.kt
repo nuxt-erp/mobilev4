@@ -60,6 +60,7 @@ class StockCountViewModel(
         val action = StockCountListFragmentDirections.actionNavStockCountToStockCountFormFragment(stockCount)
         view.findNavController().navigate(action)
     }
+
     fun getStockCount() {
         resourceStockCount.postValue(Resource.loading())
 
@@ -79,6 +80,7 @@ class StockCountViewModel(
             }
         }
     }
+
     fun getStockCountDetails(id: Int) {
         resourceStockCountDetails.postValue(Resource.loading())
         stockCountUseCase.execute<Array<StockCountDetailResponse.StockCountDetail>> (
@@ -243,6 +245,7 @@ class StockCountViewModel(
             }
         }
     }
+
     fun newAvailability(bin_barcode: String, product_id: Int, locationId: Int) {
         val request = NewAvailabilityRequest(
             bin_barcode = bin_barcode,
@@ -289,7 +292,6 @@ class StockCountViewModel(
             }
         }
     }
-
 
     fun newStockCount(tag_ids: List<Long>, bin_ids: List<Long>, brand_ids: List<Long>, category_ids: List<Long>, stock_locator_ids: List<Long>, name: String, location_id: Int) {
         val request = NewStockCountRequest(tag_ids = tag_ids, bin_ids = bin_ids,  brand_ids = brand_ids, category_ids = category_ids, stock_locator_ids = stock_locator_ids, name = name, location_id = location_id)

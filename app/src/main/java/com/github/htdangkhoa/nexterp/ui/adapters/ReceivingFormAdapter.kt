@@ -52,35 +52,30 @@ class ReceivingRecyclerAdapter(
         return updateList.toList()
     }
 
-    fun updateQty(productId : Int, text: String) {
+    fun updateQty(productId : Int, qty: Int) {
         updateList.forEach {
             if(it!!.product_id == productId) {
-                val previousQty = it.qty_received
-                it.qty_received = try {
-                    text.toInt()
-                } catch (e: NumberFormatException) {
-                    previousQty
-                }
+                it.qty_received = qty
             }
         }
         notifyDataSetChanged()
     }
 
-    fun checkProductAndUpdate(searchable : String): ReceivingDetailsResponse.ReceivingDetails? {
+    fun checkProductAndUpdate(searchable : String, multiplier: Int): ReceivingDetailsResponse.ReceivingDetails? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
                 when {
-                    it!!.product_sku.trim().toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
-                        it.qty_received = it.qty_received + 1
+                    it!!.product_sku.trim().equals(searchable.trim(), ignoreCase = true) -> {
+                        it.qty_received = it.qty_received + multiplier
                         notifyDataSetChanged()
                         return it
                     }
-                    it.product_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
-                        it.qty_received = it.qty_received + 1
+                    it.product_barcode?.trim().equals(searchable.trim(), ignoreCase = true) -> {
+                        it.qty_received = it.qty_received + multiplier
                         notifyDataSetChanged()
                         return it
                     }
-                    it.product_carton_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT) -> {
+                    it.product_carton_barcode?.trim().equals(searchable.trim(), ignoreCase = true) -> {
                         if(it.product_carton_qty != null) {
                             it.qty_received = it.qty_received + it.product_carton_qty!!
                             notifyDataSetChanged()

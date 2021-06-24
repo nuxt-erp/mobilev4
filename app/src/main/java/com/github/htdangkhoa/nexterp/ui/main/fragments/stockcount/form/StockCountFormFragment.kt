@@ -47,6 +47,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     private lateinit var sharedPreferences: SharedPreferences
     private var productId: Int? = null
     private var binId: Int? = null
+    private var multiplier: Int = 1
     private var locationId by Delegates.notNull<Int>()
     private var binsMandatory by Delegates.notNull<Boolean>()
     private val currentList :  MutableList<ProductAvailabilityResponse.ProductAvailability> = ArrayList()
@@ -360,11 +361,13 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         stockStatus.text = args.stockCount.status_name
         itemField.setSelectAllOnFocus(true)
         binField.setSelectAllOnFocus(true)
+        multiplierField.setText("1")
 
         //functions
         binHandle()
         itemHandle()
         qtyHandle()
+        multiplierHandle()
 
         val finishDialog: AlertDialog? = requireActivity().let {
             val builder = AlertDialog.Builder(it)
@@ -453,6 +456,15 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         }
     }
 
+    // multiplier listener
+    private fun multiplierHandle() {
+        multiplierField.doAfterTextChanged { text ->
+            if(text.isNullOrEmpty().not()){
+                multiplier = Integer.parseInt(multiplierField.text.toString())
+            }
+        }
+    }
+
     private fun binHandle(){
         binField.addRxTextWatcher()
         .debounce(300, TimeUnit.MILLISECONDS)
@@ -477,8 +489,8 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
-                stockCountDetailsAdapter.updateQty(productId!!, binId, text.toString())
+            if(productId != null) {
+                stockCountDetailsAdapter.updateQty(productId!!, binId, Integer.parseInt(text.toString()))
             }
         }
     }
@@ -492,9 +504,11 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
             .subscribe {
                 if (itemField.hasFocus()) {
                     if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
-
+                        if(multiplier < 1){
+                            multiplierField.setText("1")
+                        }
                         val stockCountDetails: StockCountDetailResponse.StockCountDetail? =
-                            stockCountDetailsAdapter.checkProductAndUpdate(it, binId)
+                            stockCountDetailsAdapter.checkProductAndUpdate(it, multiplier, binId)
 
                         if (stockCountDetails == null) {
                             viewModel.getProductAvailability(
@@ -512,6 +526,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                             itemName.text = stockCountDetails.product_name
                             qtyField.setText(stockCountDetails.qty.toString())
                             itemField.selectAll()
+                            multiplierField.setText("1")
                         }
                     } else {
                         productId = null

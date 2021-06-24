@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_receiving_form.expandButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.finishButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.itemField
 import kotlinx.android.synthetic.main.fragment_receiving_form.itemName
+import kotlinx.android.synthetic.main.fragment_receiving_form.multiplierField
 import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
 import kotlinx.android.synthetic.main.fragment_receiving_form.qtyField
 import kotlinx.android.synthetic.main.fragment_receiving_form.saveButton
@@ -52,6 +53,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     private lateinit var receivingDetailsAdapter: ReceivingRecyclerAdapter
     private lateinit var sharedPreferences: SharedPreferences
     private var productId : Int? = null
+    private var multiplier: Int = 1
     private var locationId by Delegates.notNull<Int>()
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(
@@ -238,8 +240,13 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             .subscribe {
             if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                 if (itemField.hasFocus()) {
+
+                    if(multiplier < 1){
+                        multiplierField.setText("1")
+                    }
+
                     val receivingDetails: ReceivingDetailsResponse.ReceivingDetails? =
-                        receivingDetailsAdapter.checkProductAndUpdate(it)
+                        receivingDetailsAdapter.checkProductAndUpdate(it, multiplier)
                     if (receivingDetails == null) {
                         viewModel.getProduct(null, it.toString())
                     } else {
@@ -247,6 +254,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                         itemName.text = receivingDetails.product_name
                         qtyField.setText(receivingDetails.qty_received.toString())
                         itemField.selectAll()
+                        multiplierField.setText("1")
                     }
                 }
             }
@@ -257,8 +265,17 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
             if(itemField.text.toString().isEmpty().not()) {
-                receivingDetailsAdapter.updateQty(productId!!, text.toString())
+                receivingDetailsAdapter.updateQty(productId!!, Integer.parseInt(text.toString()))
                 receivingDetailsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    // multiplier listener
+    private fun multiplierHandle() {
+        multiplierField.doAfterTextChanged { text ->
+            if(text.isNullOrEmpty().not()){
+                multiplier = Integer.parseInt(multiplierField.text.toString())
             }
         }
     }
@@ -280,10 +297,12 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                 checkStatus(args.receiving.status)
             )
         )
+        multiplierField.setText("1")
 
         //functions
         itemHandle()
         qtyHandle()
+        multiplierHandle()
 
         //listeners
         expandButton.setOnClickListener {

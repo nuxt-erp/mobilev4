@@ -114,6 +114,7 @@
     <!-- Receiving Form -->
     <string name="select_an_item">Select an item</string>
     <string name="input_a_qty">Input a qty</string>
+    <string name="input_a_multiplier">Input a multiplier</string>
     <string name="no_item_selected">No item selected</string>
     <string name="no_bin_selected">No bin selected</string>
     <string name="in_progress">IN PROGRESS</string>

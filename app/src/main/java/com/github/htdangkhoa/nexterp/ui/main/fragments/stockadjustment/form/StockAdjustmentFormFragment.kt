@@ -430,7 +430,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
+            if(productId != null) {
                 stockAdjustmentDetailsAdapter.updateQty(productId!!, binId, text.toString())
             }
         }

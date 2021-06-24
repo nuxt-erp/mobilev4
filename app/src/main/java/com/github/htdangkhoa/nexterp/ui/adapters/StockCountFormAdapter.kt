@@ -47,7 +47,7 @@ class StockCountRecyclerAdapter(
 
     fun findById(id: Int, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         updateList.forEach {
-            if(it!!.product_id == id && it!!.bin_id == binId) {
+            if(it.product_id == id && it.bin_id == binId) {
                 return it
             }
         }
@@ -58,15 +58,10 @@ class StockCountRecyclerAdapter(
         return updateList.toList()
     }
 
-    fun updateQty(productId: Int, binId: Int?, text: String) {
+    fun updateQty(productId: Int, binId: Int?, qty: Int) {
         updateList.forEach {
             if(it.product_id == productId && it.bin_id == binId) {
-                val previousQty = it.qty
-                it.qty = try {
-                    text.toInt()
-                } catch (e: NumberFormatException) {
-                    previousQty
-                }
+                it.qty = qty
             }
         }
         notifyDataSetChanged()
@@ -78,19 +73,19 @@ class StockCountRecyclerAdapter(
         notifyItemRemoved(position)
         return id
     }
-    fun checkProductAndUpdate(searchable: String, binId: Int?): StockCountDetailResponse.StockCountDetail? {
+    fun checkProductAndUpdate(searchable: String, multiplier: Int, binId: Int?): StockCountDetailResponse.StockCountDetail? {
         if(searchable.isEmpty().not()) {
             updateList.forEach {
-                if(it.searchable.isNullOrEmpty().not()) {
-                    if ((it.product_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
-                        it.qty = it.qty + 1
+                if(it.searchable.isEmpty().not()) {
+                    if ((it.product_barcode?.trim().equals(searchable.trim(), ignoreCase = true)) && it.bin_id == binId) {
+                        it.qty = it.qty + multiplier
                         notifyDataSetChanged()
                         return it
-                    } else if ((it.product_sku?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT)) && it.bin_id == binId) {
-                        it.qty = it.qty + 1
+                    } else if ((it.product_sku?.trim().equals(searchable.trim(), ignoreCase = true)) && it.bin_id == binId) {
+                        it.qty = it.qty + multiplier
                         notifyDataSetChanged()
                         return it
-                    } else if((it.product_carton_barcode?.trim()?.toLowerCase(Locale.ROOT) == searchable.trim().toLowerCase(Locale.ROOT))  && it.bin_id == binId){
+                    } else if((it.product_carton_barcode?.trim().equals(searchable.trim(), ignoreCase = true))  && it.bin_id == binId){
                         it.qty = it.qty + it.product_carton_qty!!
                         notifyDataSetChanged()
                         return it
@@ -104,9 +99,7 @@ class StockCountRecyclerAdapter(
         var found = false
 
         for (detail in updateList) {
-            if (item.product_sku != null &&
-                item.product_sku == detail.product_sku && item.bin_id == detail.bin_id &&
-                item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+            if (item.product_sku == detail.product_sku && item.bin_id == detail.bin_id && item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                 found = true
                 detail.qty += 1
             } else if (item.product_barcode != null &&
@@ -149,9 +142,7 @@ class StockCountRecyclerAdapter(
             var found = false
 
             for (detail in updateList) {
-                if (item.product_sku != null &&
-                    item.product_sku == detail.product_sku && item.bin_id == detail.bin_id &&
-                    item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
+                if (item.product_sku == detail.product_sku && item.bin_id == detail.bin_id && item.bin_id == binId && item.product_barcode  == searchable.trim().toLowerCase(Locale.ROOT)) {
                     found = true
                     detail.qty += 1
                 } else if (item.product_barcode != null &&

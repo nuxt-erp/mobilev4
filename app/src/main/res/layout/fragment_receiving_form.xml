@@ -72,6 +72,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/receivingNumberLabel" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/multiplierFieldLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:hint="@string/input_a_multiplier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/multiplierField"
+                android:inputType="number"
+                android:digits="0123456789"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/itemLayout"
@@ -84,7 +104,7 @@
             android:paddingRight="5dp"
             app:layout_constraintEnd_toStartOf="@+id/qtyLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemName">
+            app:layout_constraintTop_toBottomOf="@+id/multiplierFieldLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemField"
@@ -105,13 +125,14 @@
             android:hint="@string/input_a_qty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemLayout"
-            app:layout_constraintTop_toBottomOf="@+id/itemName">
+            app:layout_constraintTop_toBottomOf="@+id/multiplierFieldLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/qtyField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 

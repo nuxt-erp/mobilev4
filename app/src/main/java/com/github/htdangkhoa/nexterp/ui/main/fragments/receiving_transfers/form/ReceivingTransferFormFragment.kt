@@ -235,7 +235,7 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
                 if (it != null && !TextUtils.isEmpty(it) && it.length >= 3) {
                     if (itemField.hasFocus()) {
                         val receivingDetails: ReceivingDetailsResponse.ReceivingDetails? =
-                            receivingDetailsAdapter.checkProductAndUpdate(it)
+                            receivingDetailsAdapter.checkProductAndUpdate(it, 1)
                         if (receivingDetails == null) {
                             viewModel.getProduct(null, it.toString())
                         } else {
@@ -253,7 +253,7 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
             if(itemField.text.toString().isEmpty().not()) {
-                receivingDetailsAdapter.updateQty(productId!!, text.toString())
+                receivingDetailsAdapter.updateQty(productId!!, Integer.parseInt(text.toString()))
                 receivingDetailsAdapter.notifyDataSetChanged()
             }
         }
