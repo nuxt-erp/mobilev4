@@ -3,6 +3,7 @@ package com.github.htdangkhoa.nexterp.ui.adapters
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.availability.AvailabilityResponse
@@ -85,7 +86,17 @@ class ProductLookupAdapter(
             view.productName.text = item.product_name
             view.productSku.text = item.product_sku
             view.productBrand.text = item.product_brand
-            view.onHand.text = item.on_hand.toString()
+
+            var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
+            var binsMandatory = sharedPreferences.getString("binsMandatory", null)?.toBoolean()!!
+
+            if (!binsMandatory && (item.bin_name == "" || item.bin_name == null)) {
+                view.onHand.text = item.on_hand.toString()
+                view.onHandLabel.text = " On Hand"
+            } else if (binsMandatory) {
+                view.onHand.text = item.on_hand.toString()
+            }
+
             if(item.product_barcode != null) {
                 view.barcode.text = item.product_barcode
             } else {
@@ -98,8 +109,10 @@ class ProductLookupAdapter(
             }
             view.cartonBarcodeLabel.text = "Carton Barcode"
             view.barcodeLabel.text = "Barcode"
-            view.onHandLabel.text = " On Hand"
 
+            if (binsMandatory) {
+                view.onHandLabel.text = " On Hand"
+            }
             view.locationName.text = item.location_name
             view.binName.text = item.bin_name
             view.binBarcode.text = item.bin_barcode
