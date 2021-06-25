@@ -78,7 +78,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
     override fun render(view: View, savedInstanceState: Bundle?) {
         initialize(view)
 
-        val binNoMatchDialog: AlertDialog? = requireActivity().let {
+        val binNoMatchDialog: AlertDialog = requireActivity().let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle(R.string.are_you_sure_no_bin_match_title)
@@ -369,7 +369,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         qtyHandle()
         multiplierHandle()
 
-        val finishDialog: AlertDialog? = requireActivity().let {
+        val finishDialog: AlertDialog = requireActivity().let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle(R.string.are_you_sure_finish_title)
@@ -388,7 +388,7 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
 
             builder.create()
         }
-        val voidDialog: AlertDialog? = requireActivity().let {
+        val voidDialog: AlertDialog = requireActivity().let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle(R.string.are_you_sure_void_title)
@@ -530,7 +530,6 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
                         }
                     } else {
                         productId = null
-                        itemName.text = "Product not on count"
                     }
                 }
             }
@@ -551,16 +550,16 @@ class StockCountFormFragment() : BaseFragment<StockCountViewModel>(
         return color
     }
     private fun disableItems() {
-        itemField.isEnabled = false;
-        itemField.inputType = InputType.TYPE_NULL;
-        itemField.isFocusable = false;
-        itemField.isFocusableInTouchMode = false;
+        itemField.isEnabled = false
+        itemField.inputType = InputType.TYPE_NULL
+        itemField.isFocusable = false
+        itemField.isFocusableInTouchMode = false
     }
     private fun enableItems() {
-        itemField.isEnabled = true;
-        itemField.inputType = InputType.TYPE_CLASS_TEXT;
-        itemField.isFocusable = true;
-        itemField.isFocusableInTouchMode = true;
+        itemField.isEnabled = true
+        itemField.inputType = InputType.TYPE_CLASS_TEXT
+        itemField.isFocusable = true
+        itemField.isFocusableInTouchMode = true
     }
     //animation and visibility for button expand
     private fun setVisibility(clicked: Boolean) {

@@ -214,6 +214,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                     }
                 }
             })
+
         viewModel.resourceNewAvailabilityObject.observe(
             viewLifecycleOwner,
             object : ObserverResource<ProductAvailabilityResponse.ProductAvailability>() {
@@ -246,6 +247,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
                     }
                 }
             })
+
         viewModel.resourceStockAdjustmentObject.observe(
             viewLifecycleOwner,
             object : ObserverResource<StockAdjustmentResponse.StockAdjustment>() {
@@ -336,7 +338,7 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
         itemHandle()
         qtyHandle()
 
-        val voidDialog: AlertDialog? = requireActivity().let {
+        val voidDialog: AlertDialog = requireActivity().let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle(R.string.are_you_sure_void_title)
@@ -469,17 +471,17 @@ class StockAdjustmentFormFragment() : BaseFragment<StockAdjustmentViewModel>(
     }
 
     private fun disableItems() {
-        itemField.isEnabled = false;
-        itemField.inputType = InputType.TYPE_NULL;
-        itemField.isFocusable = false;
-        itemField.isFocusableInTouchMode = false;
+        itemField.isEnabled = false
+        itemField.inputType = InputType.TYPE_NULL
+        itemField.isFocusable = false
+        itemField.isFocusableInTouchMode = false
     }
 
     private fun enableItems() {
-        itemField.isEnabled = true;
-        itemField.inputType = InputType.TYPE_CLASS_TEXT;
-        itemField.isFocusable = true;
-        itemField.isFocusableInTouchMode = true;
+        itemField.isEnabled = true
+        itemField.inputType = InputType.TYPE_CLASS_TEXT
+        itemField.isFocusable = true
+        itemField.isFocusableInTouchMode = true
     }
 
     //animation and visibility for button expand

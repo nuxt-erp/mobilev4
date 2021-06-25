@@ -37,6 +37,8 @@ import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
 import kotlinx.android.synthetic.main.fragment_receiving_form.qtyField
 import kotlinx.android.synthetic.main.fragment_receiving_form.saveButton
 import kotlinx.android.synthetic.main.fragment_receiving_form.voidButton
+import kotlinx.android.synthetic.main.fragment_stockcount_form.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -143,7 +145,7 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
             this,
             object : ObserverResource<Array<ReceivingDetailsResponse.ReceivingDetails?>>() {
                 override fun onSuccess(data: Array<ReceivingDetailsResponse.ReceivingDetails?>) {
-                    Log.e("VOID->>>", data.toString())
+                    Timber.tag("VOID->>>").e(data.toString())
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -208,6 +210,9 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
                         qtyField.setText("0")
                         itemField.selectAll()
                     }
+                    else{
+                        itemName.text = "Product not found!"
+                    }
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -245,6 +250,9 @@ class ReceivingTransferFormFragment() : BaseFragment<ReceivingTransferViewModel>
                             itemField.selectAll()
                         }
                     }
+                }
+                else {
+                    productId = null
                 }
             }
     }

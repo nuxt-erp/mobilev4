@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_stock_adjustment_new.*
 import kotlinx.android.synthetic.main.fragment_stockcount_new.btnSaveFilters
 import kotlinx.android.synthetic.main.fragment_stockcount_new.nameInput
 import kotlinx.android.synthetic.main.fragment_stockcount_new.progressCircular
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 
@@ -48,8 +49,6 @@ class StockAdjustmentNewFragment() : BaseFragment<StockAdjustmentViewModel>(
                 override fun onError(throwable: Throwable?) {
 
                     handleError(throwable) {
-                        throw it!!
-
                         it?.message?.let { toast(it) }
                         handleHttpError(it)
                     }
@@ -66,11 +65,11 @@ class StockAdjustmentNewFragment() : BaseFragment<StockAdjustmentViewModel>(
             val myName = nameInput.text.toString()
             val myNote = noteInput.text.toString()
 //            val adjustment_type = adjustmentInput.text.toString()
-            val checkedRadioButtonId = radioAdjustmentType.checkedRadioButtonId // Returns View.NO_ID if nothing is checked.
-            Log.e("FIELDS->>>", adjustmentType)
-            Log.e("FIELDS->>>", myName)
-            Log.e("FIELDS->>>", myNote)
-            if(myName.isNotEmpty()) {
+            //val checkedRadioButtonId = radioAdjustmentType.checkedRadioButtonId // Returns View.NO_ID if nothing is checked.
+            Timber.tag("FIELDS->>>").e(adjustmentType)
+            Timber.tag("FIELDS->>>").e(myName)
+            Timber.tag("FIELDS->>>").e(myNote)
+            if (myName.isNotEmpty()) {
                 viewModel.newStockAdjustment(myName, myNote, adjustmentType, locationId)
             } else {
                 showDialog("Error", "You must enter a name for the Stock Adjustment.")
@@ -90,8 +89,8 @@ class StockAdjustmentNewFragment() : BaseFragment<StockAdjustmentViewModel>(
                     adjustmentType = "Replace current stock"
                 }
             }
-            Log.e("FIELDS->>>", group.toString())
-            Log.e("FIELDS->>>", checkedId.toString())
+            Timber.tag("FIELDS->>>").e(group.toString())
+            Timber.tag("FIELDS->>>").e(checkedId.toString())
         }
     }
 }
