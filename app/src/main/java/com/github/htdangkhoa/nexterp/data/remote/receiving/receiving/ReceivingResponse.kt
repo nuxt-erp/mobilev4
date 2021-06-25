@@ -2,6 +2,8 @@ package com.github.htdangkhoa.nexterp.data.remote.receiving.receiving
 
 import android.os.Parcelable
 import com.github.htdangkhoa.nexterp.data.model.ResponseModel
+import com.github.htdangkhoa.nexterp.data.remote.purchase.PurchaseDetailsResponse
+import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -40,7 +42,14 @@ data class ReceivingResponse(
         var status: String,
 
         @SerializedName("created_at")
-        var created_at: String
+        var created_at: String,
+
+        @SerializedName("receiving_details")
+        var receiving_details: List<ReceivingDetailsResponse.ReceivingDetails?>,
+
+        @SerializedName("purchase_details")
+        var purchase_details: List<PurchaseDetailsResponse.PurchaseDetails?>
+
     ) : Parcelable
 
     override fun equals(other: Any?): Boolean {

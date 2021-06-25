@@ -17,4 +17,8 @@
     <color name="statusPartiallyReceived">#d49e31</color>
     <color name="statusNew">#4272f5</color>
 
+    <color name="wrongQty">#F9E79F</color>
+    <color name="missingQty">#F5B7B1</color>
+    <color name="completedQty">#17A589</color>
+
 </resources>

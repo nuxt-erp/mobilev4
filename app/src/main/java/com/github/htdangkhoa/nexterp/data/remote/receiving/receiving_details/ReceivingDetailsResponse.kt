@@ -49,7 +49,11 @@ data class ReceivingDetailsResponse(
         var qty_allocated: Int,
 
         @SerializedName("qty_received")
-        var qty_received: Int
+        var qty_received: Int,
+
+        @SerializedName("qty_on_purchase")
+        var qty_on_purchase: Int?
+
     ) :Parcelable
 
     override fun equals(other: Any?): Boolean {

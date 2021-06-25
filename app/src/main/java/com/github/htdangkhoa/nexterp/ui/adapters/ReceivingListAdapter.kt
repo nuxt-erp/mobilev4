@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.databinding.ReceivingItemViewHolderBinding
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel
 import com.github.htdangkhoa.nexterp.ui.viewholders.ReceivingListViewHolder
 
 

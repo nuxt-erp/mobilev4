@@ -1,5 +1,5 @@
 
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.new
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.new
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,11 +11,11 @@ import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_receiving_new.*
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_new.*
 import timber.log.Timber
 import kotlin.properties.Delegates
 
@@ -27,7 +27,7 @@ class ReceivingNewFragment() : BaseFragment<ReceivingViewModel>(
     private var locationId by Delegates.notNull<Int>()
 
     override val layoutResID: Int
-        get() = R.layout.fragment_receiving_new
+        get() = R.layout.fragment_receiving_purchase_new
 
     override fun render(view: View, savedInstanceState: Bundle?) {
 

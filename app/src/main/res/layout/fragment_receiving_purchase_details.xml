@@ -9,7 +9,7 @@
     android:background="@drawable/md_tinted"
     android:padding="5dp"
     android:layout_gravity="center"
-    tools:context=".ui.main.fragments.receiving.details.ReceivingDetailsFragment">
+    tools:context=".ui.main.fragments.receiving_purchase.details.ReceivingDetailsFragment">
     <TextView
         android:id="@+id/txtClose"
         android:layout_width="30dp"

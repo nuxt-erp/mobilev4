@@ -4,7 +4,7 @@
 
     <data>
         <import type="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse.Receiving"/>
-        <import type="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel"/>
+        <import type="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel"/>
 
         <variable name="receiving" type="Receiving"/>
         <variable

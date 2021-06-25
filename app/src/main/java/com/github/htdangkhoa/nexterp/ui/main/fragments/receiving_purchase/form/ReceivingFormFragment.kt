@@ -1,16 +1,14 @@
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.form
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -18,29 +16,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
+import com.github.htdangkhoa.nexterp.data.remote.purchase.PurchaseDetailsResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingRecyclerAdapter
 import com.github.htdangkhoa.nexterp.ui.components.addRxTextWatcher
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details.ReceivingDetailsFragment
-import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.list.StockAdjustmentListFragmentDirections
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.details.ReceivingDetailsFragment
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_receiving_form.*
-import kotlinx.android.synthetic.main.fragment_receiving_form.expandButton
-import kotlinx.android.synthetic.main.fragment_receiving_form.finishButton
-import kotlinx.android.synthetic.main.fragment_receiving_form.itemField
-import kotlinx.android.synthetic.main.fragment_receiving_form.itemName
-import kotlinx.android.synthetic.main.fragment_receiving_form.multiplierField
-import kotlinx.android.synthetic.main.fragment_receiving_form.progressCircular
-import kotlinx.android.synthetic.main.fragment_receiving_form.qtyField
-import kotlinx.android.synthetic.main.fragment_receiving_form.saveButton
-import kotlinx.android.synthetic.main.fragment_receiving_form.voidButton
-import kotlinx.android.synthetic.main.fragment_stockcount_form.*
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_form.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
@@ -77,51 +65,11 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     private var clicked : Boolean = false
 
     override val layoutResID: Int
-        get() = R.layout.fragment_receiving_form
+        get() = R.layout.fragment_receiving_purchase_form
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         initialize(view)
-        //resources (data) from view model
-        viewModel.resourceReceivingDetails.observe(
-            viewLifecycleOwner,
-            object : ObserverResource<Array<ReceivingDetailsResponse.ReceivingDetails?>>() {
-                override fun onSuccess(data: Array<ReceivingDetailsResponse.ReceivingDetails?>) {
-                    receivingDetailsAdapter = ReceivingRecyclerAdapter(data.toMutableList(),
-                    callback = {
-                        productId = it.product_id
-                        itemField.setText(it.searchable)
-                        itemField.clearFocus()
-                        itemName.text = it.product_name
-                        qtyField.setText(it.qty_received.toString())
-                        receivingDetailsAdapter.notifyDataSetChanged()
-                    },
-                    callback2 = {
-                        val id = receivingDetailsAdapter.removeAt(it)
-                        if (id != null) {
-                            viewModel.deleteReceivingDetail(id)
-                        }
-                    })
 
-                    receivingDetails.apply {
-                        layoutManager = LinearLayoutManager(activity)
-                        adapter = receivingDetailsAdapter
-                    }
-
-                }
-
-                override fun onError(throwable: Throwable?) {
-                    handleError(throwable) {
-                        it?.message?.let { toast(it) }
-                        handleHttpError(it)
-                    }
-                }
-
-                override fun onLoading(isShow: Boolean) {
-                    progressCircular.apply {
-                        if (isShow) show() else hide(true)
-                    }
-                }
-            })
         viewModel.resourceFinish.observe(
             viewLifecycleOwner,
             object : ObserverResource<ReceivingResponse.Receiving>() {
@@ -143,7 +91,6 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
                 }
 
             })
-
 
         viewModel.resourceDeleteReceivingDetails.observe(
             this,
@@ -185,7 +132,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             viewLifecycleOwner,
             object : ObserverResource<ReceivingResponse.Receiving>() {
                 override fun onSuccess(data: ReceivingResponse.Receiving) {
-                    viewModel.getReceivingDetails(data.id)
+                    initDetails(data.receiving_details, data.purchase_details)
                 }
 
                 override fun onError(throwable: Throwable?) {
@@ -272,7 +219,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
     // qty listener
     private fun qtyHandle() {
         qtyField.doAfterTextChanged { text ->
-            if(itemField.text.toString().isEmpty().not()) {
+            if(text.toString().isEmpty().not()) {
                 receivingDetailsAdapter.updateQty(productId!!, Integer.parseInt(text.toString()))
                 receivingDetailsAdapter.notifyDataSetChanged()
             }
@@ -288,15 +235,48 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
         }
     }
 
-    private fun initialize(view: View) {
-        viewModel.getReceivingDetails(args.receiving.id)
+    private fun initDetails(receiving_details: List<ReceivingDetailsResponse.ReceivingDetails?>, purchase_details: List<PurchaseDetailsResponse.PurchaseDetails?>){
+        if(receiving_details.isNotEmpty() && purchase_details.isNotEmpty()){
+            receiving_details.asSequence().zip(purchase_details.asSequence()).forEach { (a, b) ->
+                if(a != null && b != null && a.product_id == b.product_id){
+                    a.qty_on_purchase = b.qty
+                }
+            }
+        }
+        receivingDetailsAdapter = ReceivingRecyclerAdapter(receiving_details,
+            callback = {
+                productId = it.product_id
+                itemField.setText(it.searchable)
+                itemField.clearFocus()
+                itemName.text = it.product_name
+                qtyField.setText(it.qty_received.toString())
+                receivingDetailsAdapter.notifyDataSetChanged()
+            },
+            callback2 = {
+                val id = receivingDetailsAdapter.removeAt(it)
+                if (id != null) {
+                    viewModel.deleteReceivingDetail(id)
+                }
+            })
 
+        receivingDetails.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = receivingDetailsAdapter
+        }
+    }
+
+    private fun initialize(view: View) {
+
+        initDetails(args.receiving.receiving_details, args.receiving.purchase_details)
         //variables
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.context)
         locationId = sharedPreferences.getString("location", null)?.toInt()!!
 
         //xml
         receivingNumber.text = args.receiving.id.toString()
+        if(args.receiving.po_number != null){
+            poNumber.text = args.receiving.po_number.toString()
+        }
         receivingStatus.text = args.receiving.status
         itemField.setSelectAllOnFocus(true)
         receivingStatus.setTextColor(
@@ -334,6 +314,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
         voidButton.setOnClickListener {
             viewModel.voidReceiving(args.receiving.id)
         }
+
         btnLinkToDetails.setOnClickListener {
             if(productId != null) {
                 val receivingDetail : ReceivingDetailsResponse.ReceivingDetails? = receivingDetailsAdapter.findById(
@@ -355,6 +336,7 @@ class ReceivingFormFragment() : BaseFragment<ReceivingViewModel>(
             }
         }
     }
+
     //return fancy colours depending on status
     private fun checkStatus(status: String): Int {
         var color by Delegates.notNull<Int>()

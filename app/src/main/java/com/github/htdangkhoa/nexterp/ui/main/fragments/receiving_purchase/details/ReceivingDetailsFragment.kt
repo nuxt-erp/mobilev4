@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.details
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.details
 
 import android.os.Bundle
 import android.view.View
@@ -6,21 +6,21 @@ import androidx.fragment.app.FragmentManager
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
-import kotlinx.android.synthetic.main.fragment_receiving_details.popupBackground
-import kotlinx.android.synthetic.main.fragment_receiving_details.productDetailBarcode
-import kotlinx.android.synthetic.main.fragment_receiving_details.productDetailCartonBarcode
-import kotlinx.android.synthetic.main.fragment_receiving_details.productDetailCartonQty
-import kotlinx.android.synthetic.main.fragment_receiving_details.productDetailName
-import kotlinx.android.synthetic.main.fragment_receiving_details.productDetailSku
-import kotlinx.android.synthetic.main.fragment_receiving_details.txtClose
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.popupBackground
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.productDetailBarcode
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.productDetailCartonBarcode
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.productDetailCartonQty
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.productDetailName
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.productDetailSku
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_details.txtClose
 
 
 class ReceivingDetailsFragment() : BaseFragment<ReceivingViewModel>(
     ReceivingViewModel::class
 ) {
     override val layoutResID: Int
-        get() = R.layout.fragment_receiving_details
+        get() = R.layout.fragment_receiving_purchase_details
 
     override fun render(view: View, savedInstanceState: Bundle?) {
         val args = this.requireArguments().getParcelable<ReceivingDetailsResponse.ReceivingDetails>("receivingDetails")

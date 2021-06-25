@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase
 
 import android.view.View
 import androidx.lifecycle.ViewModel
@@ -14,7 +14,7 @@ import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.list.ReceivingListFragmentDirections
 
 class ReceivingViewModel(
     private val receivingUseCase: ReceivingUseCase,

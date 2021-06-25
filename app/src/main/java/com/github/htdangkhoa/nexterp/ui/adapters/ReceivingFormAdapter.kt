@@ -1,23 +1,19 @@
 package com.github.htdangkhoa.nexterp.ui.adapters
 
-import android.graphics.Typeface
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.blankj.utilcode.util.StringUtils.getString
 import com.github.htdangkhoa.nexterp.R
 import com.github.htdangkhoa.nexterp.data.remote.product.ProductResponse
-import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving_details.ReceivingDetailsResponse
 import com.github.htdangkhoa.nexterp.ui.utils.inflate
 import kotlinx.android.synthetic.main.receiving_details_item.view.*
 import kotlinx.android.synthetic.main.receiving_details_item.view.btnDeleteDetail
 import kotlinx.android.synthetic.main.receiving_details_item.view.header
 import kotlinx.android.synthetic.main.receiving_details_item.view.productName
-import kotlinx.android.synthetic.main.stockcount_details_item.view.*
-import java.util.*
+import kotlin.properties.Delegates
 
 
 class ReceivingRecyclerAdapter(
@@ -31,7 +27,7 @@ class ReceivingRecyclerAdapter(
         return ListHolder(inflatedView)
     }
 
-    override fun onBindViewHolder(holder: ReceivingRecyclerAdapter.ListHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListHolder, position: Int) {
 
         if (position == 0) {
             holder.bindHeader()
@@ -58,6 +54,11 @@ class ReceivingRecyclerAdapter(
                 it.qty_received = qty
             }
         }
+        updateList.sortedWith(fun(a: ReceivingDetailsResponse.ReceivingDetails?, b: ReceivingDetailsResponse.ReceivingDetails?): Int = when {
+            a != null && b != null && a.qty_received > b.qty_received -> 1
+            a != null && b != null && a.qty_received < b.qty_received -> -1
+            else -> 1
+        })
         notifyDataSetChanged()
     }
 
@@ -139,6 +140,7 @@ class ReceivingRecyclerAdapter(
                     product_barcode = item.barcode,
                     qty_allocated = 0,
                     qty_received = 0,
+                    qty_on_purchase = null,
                     searchable = item.searchable
                 )
                 updateList.add(receivingDetail)
@@ -163,6 +165,8 @@ class ReceivingRecyclerAdapter(
         fun bindHeader() {
             view.productName.visibility = View.GONE
             view.receivingQtyReceived.visibility = View.GONE
+            view.receivingQtyPurchased.visibility = View.GONE
+            view.slash.visibility = View.GONE
             view.receivingQtyReceivedLabel.visibility = View.GONE
             view.btnDeleteDetail.visibility = View.GONE
             view.header.visibility = View.VISIBLE
@@ -173,10 +177,35 @@ class ReceivingRecyclerAdapter(
             this.item = item
 
             view.receivingQtyReceivedLabel.text = " ITEM(S)"
-
+            if(item.qty_on_purchase != null){
+                view.slash.text = "/"
+                view.receivingQtyPurchased.text = item.qty_on_purchase.toString()
+                view.setBackgroundColor(
+                    ContextCompat.getColor(
+                        view.context,
+                        checkQty(item)
+                    )
+                )
+            }
             view.productName.text = item.product_full_name
             view.receivingQtyReceived.text = item.qty_received.toString()
+        }
 
+        //return fancy colours depending on status
+        private fun checkQty(detail: ReceivingDetailsResponse.ReceivingDetails): Int {
+            var color by Delegates.notNull<Int>()
+            color = R.color.wrongQty
+
+            if(detail.qty_on_purchase != null && detail.qty_on_purchase!! > 0){
+
+                if(detail.qty_received == detail.qty_on_purchase){
+                    color = R.color.completedQty
+                }
+                else if(detail.qty_received < detail.qty_on_purchase!!){
+                    color = R.color.missingQty
+                }
+            }
+            return color
         }
 
         override fun onClick(p0: View?) {

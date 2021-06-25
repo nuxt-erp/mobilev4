@@ -4,7 +4,7 @@ import com.github.htdangkhoa.nexterp.di.module.NetModule
 import com.github.htdangkhoa.nexterp.ui.login.LoginModule
 import com.github.htdangkhoa.nexterp.ui.main.MainModule
 import com.github.htdangkhoa.nexterp.ui.main.fragments.availability.AvailabilityModule
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingModule
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingModule
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.ReceivingTransferModule
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockadjustment.StockAdjustmentModule
 import com.github.htdangkhoa.nexterp.ui.main.fragments.stockcount.StockCountModule

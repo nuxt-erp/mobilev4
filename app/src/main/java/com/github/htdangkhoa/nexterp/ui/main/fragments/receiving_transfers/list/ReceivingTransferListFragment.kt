@@ -15,7 +15,7 @@ import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.Recei
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_receiving_list.*
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_list.*
 
 class ReceivingTransferListFragment() : BaseFragment<ReceivingTransferViewModel>(
     ReceivingTransferViewModel::class) {

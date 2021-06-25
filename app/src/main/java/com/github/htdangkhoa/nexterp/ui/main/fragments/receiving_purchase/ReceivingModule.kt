@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase
 
 import com.github.htdangkhoa.nexterp.data.repository.product.ProductRepository
 import com.github.htdangkhoa.nexterp.data.repository.product.ProductRepositoryImp

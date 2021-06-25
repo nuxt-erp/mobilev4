@@ -119,6 +119,7 @@
     <string name="no_bin_selected">No bin selected</string>
     <string name="in_progress">IN PROGRESS</string>
     <string name="rc_number">RC Number</string>
+    <string name="po_number">PO Number</string>
     <string name="view_item_details">View Item Details</string>
 
     <!--  Form Headers  -->

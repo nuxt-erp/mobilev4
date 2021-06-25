@@ -14,7 +14,6 @@ import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingParam
 import com.github.htdangkhoa.nexterp.domain.receiving.ReceivingUseCase
 import com.github.htdangkhoa.nexterp.extension.liveDataOf
 import com.github.htdangkhoa.nexterp.resource.Resource
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragmentDirections
 import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_transfers.list.ReceivingTransferListFragmentDirections
 
 class ReceivingTransferViewModel(

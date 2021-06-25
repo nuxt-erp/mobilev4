@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.fragments.receiving.form.ReceivingFormFragment">
+    tools:context=".ui.main.fragments.receiving_purchase.form.ReceivingFormFragment">
         <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,12 +38,25 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:textSize="18sp"
-            android:gravity="right"
-            android:paddingRight="5dp"
+            android:gravity="end"
+            android:paddingEnd="5dp"
             android:paddingTop="5dp"
             android:text="@string/rc_number"
             app:layout_constraintStart_toEndOf="@+id/receivingNumberLabel"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry" />
+        <TextView
+            android:id="@+id/poNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textSize="18sp"
+            android:gravity="end"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            app:layout_constraintStart_toEndOf="@+id/receivingNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry" />
 
 
         <TextView
@@ -121,11 +134,12 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
             android:hint="@string/input_a_qty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemLayout"
-            app:layout_constraintTop_toBottomOf="@+id/multiplierFieldLayout">
+            app:layout_constraintTop_toBottomOf="@+id/multiplierFieldLayout"
+            tools:ignore="RtlSymmetry">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/qtyField"

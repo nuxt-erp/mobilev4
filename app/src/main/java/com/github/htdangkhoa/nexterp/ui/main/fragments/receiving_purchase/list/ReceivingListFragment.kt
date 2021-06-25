@@ -1,5 +1,5 @@
 
-package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list
+package com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.list
 
 import android.os.Bundle
 import android.view.View
@@ -11,17 +11,17 @@ import com.github.htdangkhoa.nexterp.base.BaseFragment
 import com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse
 import com.github.htdangkhoa.nexterp.resource.ObserverResource
 import com.github.htdangkhoa.nexterp.ui.adapters.ReceivingListAdapter
-import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.ReceivingViewModel
+import com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.ReceivingViewModel
 import com.pawegio.kandroid.hide
 import com.pawegio.kandroid.show
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.fragment_receiving_list.*
+import kotlinx.android.synthetic.main.fragment_receiving_purchase_list.*
 
 class ReceivingListFragment() : BaseFragment<ReceivingViewModel>(
     ReceivingViewModel::class) {
 
     override val layoutResID: Int
-        get() = R.layout.fragment_receiving_list
+        get() = R.layout.fragment_receiving_purchase_list
 
     private val alphabeticalComparator: Comparator<ReceivingResponse.Receiving> =
         Comparator { a, b -> a.id.compareTo(b.id) }

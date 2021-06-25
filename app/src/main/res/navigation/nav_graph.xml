@@ -39,9 +39,9 @@
     </fragment>
     <fragment
         android:id="@+id/nav_receiving"
-        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.list.ReceivingListFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.list.ReceivingListFragment"
         android:label="@string/menu_receiving"
-        tools:layout="@layout/fragment_receiving_list">
+        tools:layout="@layout/fragment_receiving_purchase_list">
         <action
             android:id="@+id/action_nav_receiving_to_receivingFormFragment"
             app:destination="@id/receivingFormFragment" />
@@ -51,9 +51,9 @@
     </fragment>
     <fragment
         android:id="@+id/receivingFormFragment"
-        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.form.ReceivingFormFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.form.ReceivingFormFragment"
         android:label="@string/menu_receiving_details"
-        tools:layout="@layout/fragment_receiving_form" >
+        tools:layout="@layout/fragment_receiving_purchase_form" >
         <argument
             android:name="receiving"
             app:argType="com.github.htdangkhoa.nexterp.data.remote.receiving.receiving.ReceivingResponse$Receiving" />
@@ -103,9 +103,9 @@
     </fragment>
     <fragment
         android:id="@+id/receivingNewFragment"
-        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving.new.ReceivingNewFragment"
+        android:name="com.github.htdangkhoa.nexterp.ui.main.fragments.receiving_purchase.new.ReceivingNewFragment"
         android:label="@string/menu_receiving_new"
-        tools:layout="@layout/fragment_receiving_new">
+        tools:layout="@layout/fragment_receiving_purchase_new">
         <action
             android:id="@+id/action_receivingNewFragment_to_receivingFormFragment"
             app:destination="@id/receivingFormFragment" />

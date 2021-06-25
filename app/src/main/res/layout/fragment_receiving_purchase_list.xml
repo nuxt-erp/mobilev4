@@ -5,7 +5,7 @@
     android:id="@+id/receiving"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.fragments.receiving.list.ReceivingListFragment">
+    tools:context=".ui.main.fragments.receiving_purchase.list.ReceivingListFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/receivingList"
         android:layout_width="match_parent"
